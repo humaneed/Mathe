@@ -908,165 +908,474 @@ const state = {
 const synth = 'speechSynthesis' in window ? window.speechSynthesis : null;
 
 // Aufgabengenerierung
+// Zufallszahl
 function rand(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function createTask(grade) {
-  const types = grade === 1 ? ['add', 'sub'] : 
-                grade === 2 ? ['add', 'sub', 'mul'] :
-                grade === 3 ? ['add', 'sub', 'mul', 'div'] :
-                ['add', 'sub', 'mul', 'div', 'word'];
-  
-  const type = types[rand(0, types.length - 1)];
-  
-  if (type === 'word') {
-    return createWordTask(grade);
+// Hilfsfunktionen für "schlauere" Aufgaben
+function choice(arr) {
+  return arr[rand(0, arr.length - 1)];
+}
+
+function shuffleOptions(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-  
+  return arr;
+}
+
+/**
+ * Erzeuge Antwortoptionen rund um die richtige Lösung:
+ * - Nah dran (typische Rechenfehler)
+ * - Alle positiv und im sinnvollen Bereich
+ */
+function buildOptions(answer, cfg = {}) {
+  const min = cfg.min ?? 0;
+  const max = cfg.max ?? 9999;
+  const spread = cfg.spread ?? Math.max(3, Math.round((max - min) / 10));
+
+  const set = new Set();
+  set.add(answer);
+
+  let guard = 0;
+  // typische „knapp daneben“-Fehler
+  while (set.size < 4 && guard < 50) {
+    guard++;
+    let delta = rand(-spread, spread);
+    if (delta === 0) continue;
+    let wrong = answer + delta;
+    if (wrong < min || wrong > max) continue;
+    set.add(wrong);
+  }
+
+  // notfalls auffüllen
+  guard = 0;
+  while (set.size < 4 && guard < 50) {
+    guard++;
+    let wrong = rand(min, max);
+    if (wrong === answer) continue;
+    set.add(wrong);
+  }
+
+  const options = shuffleOptions(Array.from(set));
+  return { options, correctIndex: options.indexOf(answer) };
+}
+
+/**
+ * Addition mit optionalem Zehnerübergang
+ */
+function makeAddition(config) {
+  const {
+    minA, maxA,
+    minB, maxB,
+    sumMin = null,
+    sumMax = null,
+    requireBridge = false
+  } = config;
+
+  let attempts = 0;
+  while (attempts < 50) {
+    attempts++;
+    let a = rand(minA, maxA);
+    let b = rand(minB, maxB);
+    let s = a + b;
+
+    if (sumMin !== null && s < sumMin) continue;
+    if (sumMax !== null && s > sumMax) continue;
+    if (requireBridge && ((a % 10) + (b % 10) < 10)) continue; // kein Zehnerübergang
+
+    return { num1: a, num2: b, answer: s };
+  }
+
+  // Fallback
+  let a = rand(minA, maxA);
+  let b = rand(minB, maxB);
+  return { num1: a, num2: b, answer: a + b };
+}
+
+/**
+ * Subtraktion mit optionalem „Borgen“
+ */
+function makeSubtraction(config) {
+  const {
+    minResult,
+    maxResult,
+    minSub = 1,
+    maxSub = null,
+    requireBorrow = false
+  } = config;
+
+  let attempts = 0;
+  while (attempts < 50) {
+    attempts++;
+    let result = rand(minResult, maxResult);
+    let sub = rand(minSub, maxSub ?? result);
+    if (sub > result) {
+      // vertauschen, damit Ergebnis positiv bleibt
+      [sub, result] = [result, sub];
+    }
+    const minuend = result + sub;
+
+    if (requireBorrow && (minuend % 10) >= (sub % 10)) {
+      // wir wollen, dass hinten „geborgt“ werden muss (z.B. 42 - 7)
+      continue;
+    }
+
+    return { num1: minuend, num2: sub, answer: result };
+  }
+
+  // Fallback
+  let result = rand(minResult, maxResult);
+  let sub = rand(minSub, result);
+  const minuend = result + sub;
+  return { num1: minuend, num2: sub, answer: result };
+}
+
+/**
+ * Kern-Aufgabengenerator pro Klassenstufe
+ * - Klasse 1: Zahlzerlegungen + einfache Plus/Minus
+ * - Klasse 2: Plus/Minus bis 100 mit Zehnerübergang, erstes Einmaleins
+ * - Klasse 3: größere Zahlen, Multiplikation & Division aus dem Einmaleins
+ * - Klasse 4: dreistellige Zahlen, schwierigere Mal- und Geteiltaufgaben
+ */
+function createTask(grade) {
   let num1, num2, answer, op, symbol;
-  
-  if (type === 'add') {
-    if (grade === 1) {
-      num1 = rand(1, 10);
-      num2 = rand(1, 10);
-    } else if (grade === 2) {
-      num1 = rand(10, 50);
-      num2 = rand(10, 50);
+
+  // --- Aufgaben nach Klasse ---
+  if (grade === 1) {
+    const r = Math.random();
+    if (r < 0.5) {
+      // Zahlzerlegung: a + b = 10 (oder 6–10)
+      answer = rand(5, 10);
+      num1 = rand(1, answer - 1);
+      num2 = answer - num1;
+      op = 'add';
+      symbol = '+';
+    } else if (r < 0.8) {
+      // Addition bis 20 (oft mit Zehnerübergang)
+      const cfg = makeAddition({
+        minA: 2, maxA: 15,
+        minB: 2, maxB: 15,
+        sumMin: 6, sumMax: 20,
+        requireBridge: Math.random() < 0.6
+      });
+      num1 = cfg.num1;
+      num2 = cfg.num2;
+      answer = cfg.answer;
+      op = 'add';
+      symbol = '+';
     } else {
-      num1 = rand(10, 999);
-      num2 = rand(10, 999);
+      // Subtraktion mit kleinem Ergebnis
+      const cfg = makeSubtraction({
+        minResult: 1,
+        maxResult: 10,
+        minSub: 1,
+        requireBorrow: false
+      });
+      num1 = cfg.num1;
+      num2 = cfg.num2;
+      answer = cfg.answer;
+      op = 'sub';
+      symbol = '−';
     }
-    answer = num1 + num2;
-    op = 'add';
-    symbol = '+';
-  } else if (type === 'sub') {
-    if (grade === 1) {
-      answer = rand(1, 10);
-      num2 = rand(1, answer);
-      num1 = answer + num2;
-    } else if (grade === 2) {
-      answer = rand(10, 50);
-      num2 = rand(10, answer);
-      num1 = answer + num2;
+  } else if (grade === 2) {
+    const r = Math.random();
+    if (r < 0.4) {
+      // Addition bis 100 mit Zehnerübergang
+      const cfg = makeAddition({
+        minA: 10, maxA: 80,
+        minB: 10, maxB: 80,
+        sumMin: 20, sumMax: 100,
+        requireBridge: true
+      });
+      num1 = cfg.num1;
+      num2 = cfg.num2;
+      answer = cfg.answer;
+      op = 'add';
+      symbol = '+';
+    } else if (r < 0.8) {
+      // Subtraktion bis 100, häufig mit „Borgen“
+      const cfg = makeSubtraction({
+        minResult: 5,
+        maxResult: 90,
+        minSub: 3,
+        requireBorrow: Math.random() < 0.7
+      });
+      num1 = cfg.num1;
+      num2 = cfg.num2;
+      answer = cfg.answer;
+      op = 'sub';
+      symbol = '−';
     } else {
-      answer = rand(10, 999);
-      num2 = rand(10, answer);
-      num1 = answer + num2;
-    }
-    op = 'sub';
-    symbol = '−';
-  } else if (type === 'mul') {
-    if (grade === 2) {
+      // Kleines Einmaleins
       num1 = rand(2, 10);
       num2 = rand(2, 10);
-    } else if (grade === 3) {
-      num1 = rand(2, 12);
-      num2 = rand(2, 12);
-    } else {
-      num1 = rand(2, 99);
-      num2 = rand(2, 12);
+      answer = num1 * num2;
+      op = 'mul';
+      symbol = '×';
     }
-    answer = num1 * num2;
-    op = 'mul';
-    symbol = '×';
+  } else if (grade === 3) {
+    const r = Math.random();
+    if (r < 0.35) {
+      // Plus mit 2-stelligen / 3-stelligen Zahlen
+      const cfg = makeAddition({
+        minA: 20, maxA: 150,
+        minB: 20, maxB: 150,
+        sumMin: 40, sumMax: 200,
+        requireBridge: true
+      });
+      num1 = cfg.num1;
+      num2 = cfg.num2;
+      answer = cfg.answer;
+      op = 'add';
+      symbol = '+';
+    } else if (r < 0.7) {
+      // Minus mit „Borgen“
+      const cfg = makeSubtraction({
+        minResult: 10,
+        maxResult: 150,
+        minSub: 5,
+        requireBorrow: Math.random() < 0.8
+      });
+      num1 = cfg.num1;
+      num2 = cfg.num2;
+      answer = cfg.answer;
+      op = 'sub';
+      symbol = '−';
+    } else if (r < 0.9) {
+      // 2-stellig × 1-stellig
+      num1 = rand(12, 99);
+      num2 = rand(2, 9);
+      answer = num1 * num2;
+      op = 'mul';
+      symbol = '×';
+    } else {
+      // Division aus dem Einmaleins
+      num2 = rand(2, 12);
+      answer = rand(2, 12);
+      num1 = num2 * answer;
+      op = 'div';
+      symbol = '÷';
+    }
   } else {
-    if (grade === 3) {
-      num2 = rand(2, 10);
-      answer = rand(2, 10);
+    // Klasse 4
+    const r = Math.random();
+    if (r < 0.3) {
+      // 3-stellige Addition
+      const cfg = makeAddition({
+        minA: 100, maxA: 999,
+        minB: 100, maxB: 999,
+        sumMin: 200, sumMax: 1800,
+        requireBridge: true
+      });
+      num1 = cfg.num1;
+      num2 = cfg.num2;
+      answer = cfg.answer;
+      op = 'add';
+      symbol = '+';
+    } else if (r < 0.6) {
+      // 3-stellige Subtraktion
+      const cfg = makeSubtraction({
+        minResult: 50,
+        maxResult: 900,
+        minSub: 20,
+        requireBorrow: true
+      });
+      num1 = cfg.num1;
+      num2 = cfg.num2;
+      answer = cfg.answer;
+      op = 'sub';
+      symbol = '−';
+    } else if (r < 0.8) {
+      // Etwas schwierigere Multiplikation (2-stellig × 2-stellig)
+      num1 = rand(12, 99);
+      num2 = rand(12, 25);
+      answer = num1 * num2;
+      op = 'mul';
+      symbol = '×';
     } else {
-      num2 = rand(2, 12);
-      answer = rand(2, 99);
-    }
-    num1 = num2 * answer;
-    op = 'div';
-    symbol = '÷';
-  }
-  
-  const options = [answer];
-  while (options.length < 4) {
-    let wrong;
-    if (op === 'add' || op === 'sub') {
-      wrong = answer + rand(-10, 10);
-    } else if (op === 'mul') {
-      wrong = answer + rand(-15, 15);
-    } else {
-      wrong = answer + rand(-5, 5);
-    }
-    
-    if (wrong > 0 && !options.includes(wrong)) {
-      options.push(wrong);
+      // Division mit 2-stelligem Ergebnis
+      num2 = rand(2, 25);
+      answer = rand(10, 50);
+      num1 = num2 * answer;
+      op = 'div';
+      symbol = '÷';
     }
   }
-  
-  options.sort(() => Math.random() - 0.5);
-  
+
+  // Mit kleiner Wahrscheinlichkeit Sachaufgaben bevorzugen (ab Klasse 2 häufiger)
+  const useWordTaskChance = grade >= 2 ? 0.25 : 0.1;
+  if (Math.random() < useWordTaskChance) {
+    return createWordTask(grade);
+  }
+
+  const { options, correctIndex } = buildOptions(answer, {
+    min: 0,
+    max: grade <= 2 ? 120 : 2500,
+    spread: grade === 1 ? 5 : grade === 2 ? 10 : 30
+  });
+
   return {
-    num1, num2, answer, op,
+    num1,
+    num2,
+    answer,
+    op,
     problem: `${num1} ${symbol} ${num2} = ?`,
     options,
-    correctIndex: options.indexOf(answer),
+    correctIndex,
     taskType: 'math'
   };
 }
 
+/**
+ * Sachaufgaben je nach Klassenstufe
+ * (nutzt weiterhin op/num1/num2/answer, damit deine Erklärung-Logik passt)
+ */
 function createWordTask(grade) {
   const templates = [
-    { text: "Anna hat {n1} Äpfel. Sie bekommt {n2} Äpfel dazu. Wie viele hat sie jetzt?", op: "add" },
-    { text: "Tom hat {n1} Bonbons. Er isst {n2} davon. Wie viele bleiben?", op: "sub" },
-    { text: "In einer Schachtel sind {n1} Stifte. Es gibt {n2} Schachteln. Wie viele Stifte sind es insgesamt?", op: "mul" },
-    { text: "Lisa hat {n1} Euro. Ein Spielzeug kostet {n2} Euro. Wie viele kann sie kaufen?", op: "div" }
-  ];
-  
-  const validTemplates = templates.filter(t => 
-    (t.op === 'add' || t.op === 'sub') ||
-    (grade >= 2 && t.op === 'mul') ||
-    (grade >= 3 && t.op === 'div')
-  );
-  
-  const template = validTemplates[rand(0, validTemplates.length - 1)];
-  
-  let num1, num2, answer;
-  
-  if (template.op === 'add') {
-    num1 = rand(3, 20);
-    num2 = rand(3, 20);
-    answer = num1 + num2;
-  } else if (template.op === 'sub') {
-    answer = rand(3, 20);
-    num2 = rand(1, answer - 1);
-    num1 = answer + num2;
-  } else if (template.op === 'mul') {
-    num1 = rand(2, 10);
-    num2 = rand(2, 10);
-    answer = num1 * num2;
-  } else {
-    num2 = rand(2, 8);
-    answer = rand(2, 12);
-    num1 = num2 * answer;
-  }
-  
-  const text = template.text.replace('{n1}', num1).replace('{n2}', num2);
-  
-  const options = [answer];
-  while (options.length < 4) {
-    const wrong = answer + rand(-8, 8);
-    if (wrong > 0 && !options.includes(wrong)) {
-      options.push(wrong);
+    // --- Klasse 1–2: sehr einfache Geschichten ---
+    {
+      minGrade: 1,
+      maxGrade: 2,
+      op: 'add',
+      min1: 1,
+      max1: 10,
+      min2: 1,
+      max2: 10,
+      text: 'Lina hat {n1} Murmeln. Sie findet {n2} Murmeln dazu. Wie viele Murmeln hat sie jetzt insgesamt?'
+    },
+    {
+      minGrade: 1,
+      maxGrade: 2,
+      op: 'sub',
+      min1: 5,
+      max1: 15,
+      min2: 1,
+      max2: 8,
+      text: 'Ben hat {n1} Bauklötze. Er gibt {n2} Bauklötze an seine Freundin ab. Wie viele Bauklötze bleiben Ben?'
+    },
+    {
+      minGrade: 2,
+      maxGrade: 3,
+      op: 'add',
+      min1: 10,
+      max1: 60,
+      min2: 5,
+      max2: 40,
+      text: 'In einer Klasse sitzen {n1} Kinder. In der Parallelklasse sitzen {n2} Kinder. Wie viele Kinder sind das zusammen?'
+    },
+    // --- Klasse 2–3: Einmaleins / Gruppen ---
+    {
+      minGrade: 2,
+      maxGrade: 3,
+      op: 'mul',
+      min1: 2,
+      max1: 10,
+      min2: 2,
+      max2: 10,
+      text: 'Auf jedem Teller liegen {n1} Kekse. Es gibt {n2} Teller. Wie viele Kekse sind das insgesamt?'
+    },
+    {
+      minGrade: 3,
+      maxGrade: 4,
+      op: 'mul',
+      min1: 3,
+      max1: 12,
+      min2: 2,
+      max2: 9,
+      text: 'Ein Bus hat {n1} Sitzplätze pro Reihe. Es gibt {n2} Reihen. Wie viele Sitzplätze gibt es insgesamt im Bus?'
+    },
+    // --- Klasse 3–4: Division als faires Aufteilen ---
+    {
+      minGrade: 3,
+      maxGrade: 4,
+      op: 'div',
+      divMinFriends: 2,
+      divMaxFriends: 8,
+      divMinEach: 2,
+      divMaxEach: 12,
+      text: 'Es gibt {n1} Bonbons. Sie sollen gerecht auf {n2} Kinder verteilt werden. Wie viele Bonbons bekommt jedes Kind?'
+    },
+    // --- Klasse 4: Geld / größere Zahlen ---
+    {
+      minGrade: 4,
+      maxGrade: 4,
+      op: 'add',
+      min1: 120,
+      max1: 480,
+      min2: 50,
+      max2: 320,
+      text: 'Ein Ausflug kostet für die Busfahrt {n1} Euro und für den Eintritt {n2} Euro. Wie viel kostet der Ausflug insgesamt?'
+    },
+    {
+      minGrade: 4,
+      maxGrade: 4,
+      op: 'sub',
+      min1: 150,
+      max1: 500,
+      min2: 20,
+      max2: 140,
+      text: 'Mara hat {n1} Euro gespart. Sie kauft sich ein Spiel für {n2} Euro. Wie viel Geld hat sie danach noch übrig?'
     }
+  ];
+
+  const usable = templates.filter(t => grade >= t.minGrade && grade <= t.maxGrade);
+  const t = choice(usable.length ? usable : templates);
+
+  let num1, num2, answer, op = t.op;
+
+  if (t.op === 'div') {
+    // Spezialfall: wir steuern über „Kinder“ (divisor) + „Bonbons pro Kind“ (quotient)
+    const friends = rand(t.divMinFriends, t.divMaxFriends);
+    const each = rand(t.divMinEach, t.divMaxEach);
+    num2 = friends;        // Teiler
+    answer = each;         // Ergebnis
+    num1 = friends * each; // Dividend
+  } else if (t.op === 'mul') {
+    num1 = rand(t.min1, t.max1);
+    num2 = rand(t.min2, t.max2);
+    answer = num1 * num2;
+  } else if (t.op === 'add') {
+    num1 = rand(t.min1, t.max1);
+    num2 = rand(t.min2, t.max2);
+    answer = num1 + num2;
+  } else {
+    // sub
+    const cfg = makeSubtraction({
+      minResult: t.min1,
+      maxResult: t.max1,
+      minSub: t.min2,
+      maxSub: t.max2,
+      requireBorrow: grade >= 3
+    });
+    num1 = cfg.num1;
+    num2 = cfg.num2;
+    answer = cfg.answer;
   }
-  
-  options.sort(() => Math.random() - 0.5);
-  
+
+  let text = t.text
+    .replace('{n1}', num1)
+    .replace('{n2}', num2);
+
+  const { options, correctIndex } = buildOptions(answer, {
+    min: 0,
+    max: grade <= 2 ? 120 : 1000,
+    spread: grade === 1 ? 5 : grade === 2 ? 10 : 25
+  });
+
   return {
-    num1, num2, answer, op: template.op,
+    num1,
+    num2,
+    answer,
+    op,
     problem: text,
     options,
-    correctIndex: options.indexOf(answer),
+    correctIndex,
     taskType: 'word'
   };
 }
-
 // Schriftliche Addition
 function generateWrittenAddition(num1, num2, sum) {
   const str1 = String(num1);
