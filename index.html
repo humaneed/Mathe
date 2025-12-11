@@ -45,7 +45,7 @@
     
     body { 
       font-family: var(--font-body);
-      background: var(--color-bg);
+      background: radial-gradient(circle at top, #e7f0ea 0, #f9f7f4 45%, #f3eee6 100%);
       height: 100vh;
       height: 100dvh; /* Dynamic viewport height für Mobile */
       overflow: hidden;
@@ -84,7 +84,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      background: var(--color-surface);
+      background: rgba(255, 255, 255, 0.96);
       padding: 16px;
       padding-top: calc(16px + env(safe-area-inset-top));
       box-shadow: var(--shadow-sm);
@@ -93,6 +93,7 @@
       z-index: 100;
       flex-shrink: 0;
       border-bottom: 1px solid var(--color-border);
+      backdrop-filter: blur(12px);
     }
     
     .logo { 
@@ -102,6 +103,13 @@
       white-space: nowrap;
       letter-spacing: -0.02em;
       font-family: var(--font-display);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .logo span {
+      font-size: 1.4rem;
     }
     
     .stats {
@@ -128,14 +136,22 @@
       border: 1px solid var(--color-primary);
       white-space: nowrap;
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
     
     .stat-value { 
       font-weight: 600; 
-      margin-left: 4px; 
+      margin-left: 2px; 
       color: var(--color-primary-dark);
       font-feature-settings: 'tnum';
       font-variant-numeric: tabular-nums;
+      transition: transform 0.15s ease-out;
+    }
+
+    .stat-value.bump {
+      transform: scale(1.1);
     }
     
     .card { 
@@ -167,7 +183,7 @@
       font-weight: 600;
       font-size: 0.95rem;
       color: var(--color-text);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) cubic-bezier(0.4, 0, 0.2, 1);
+      transition: var(--transition);
     }
     
     .grades button:hover {
@@ -179,6 +195,7 @@
       background: var(--color-primary);
       border-color: var(--color-primary-dark);
       color: var(--color-surface);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);
     }
     
     .icon-btn {
@@ -190,11 +207,16 @@
       cursor: pointer;
       font-size: 1.2rem;
       color: var(--color-text);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .icon-btn:hover {
       background: var(--color-bg);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
     }
     
     .task-area {
@@ -239,7 +261,7 @@
       font-weight: 600;
       cursor: pointer;
       color: var(--color-text);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: var(--transition);
     }
     
     .answers button:hover {
@@ -300,7 +322,7 @@
       cursor: pointer;
       background: var(--color-surface);
       color: var(--color-text);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: var(--transition);
       letter-spacing: 0.01em;
     }
     
@@ -433,6 +455,11 @@
       justify-content: center;
       border-radius: var(--radius-md);
       margin-top: 12px;
+      transition: var(--transition);
+    }
+    
+    .modal-close:hover {
+      background: var(--color-surface);
     }
     
     .modal-body {
@@ -456,7 +483,7 @@
     .modal-footer button {
       padding: 14px 24px;
       background: var(--color-primary);
-      border: 2px solid #2c5282;
+      border: 2px solid var(--color-primary-dark);
       border-radius: var(--radius-lg);
       color: var(--color-surface);
       font-weight: 600;
@@ -464,10 +491,11 @@
       font-size: 1.05rem;
       width: 100%;
       min-height: 48px;
+      transition: var(--transition);
     }
     
     .modal-footer button:hover {
-      background: #2a4365;
+      background: var(--color-primary-dark);
     }
     
     .modal-footer button:active {
@@ -538,6 +566,7 @@
       top: 3px;
       left: 3px;
       transition: all 0.3s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
     }
     
     .toggle.on {
@@ -590,7 +619,7 @@
     }
     
     .tip-box {
-      background: var(--color-surface)3cd;
+      background: var(--color-surface);
       border: 2px solid #ffc107;
       border-radius: var(--radius-md);
       padding: 12px 16px;
@@ -640,10 +669,16 @@
     button {
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
       touch-action: manipulation;
+      outline: none;
     }
     
     button:active {
       transform: scale(0.985);
+    }
+
+    button:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
     }
     
     /* 9:16 Mobile Optimierungen */
@@ -751,7 +786,7 @@
 <body>
   <div class="app-wrapper">
     <div class="header">
-      <div class="logo">🧮 Mathe üben</div>
+      <div class="logo"><span>🧮</span>Mathe üben</div>
       <div class="stats">
         <div class="stat-box">Punkte: <span class="stat-value" id="score">0</span></div>
         <div class="stat-box">Gesamt: <span class="stat-value" id="total">0</span></div>
@@ -760,43 +795,41 @@
     </div>
     
     <div class="container">
-    <div class="card">
-      <div class="controls">
-        <div class="grades" id="grades">
-          <button data-g="1" class="on">1. Klasse</button>
-          <button data-g="2">2. Klasse</button>
-          <button data-g="3">3. Klasse</button>
-          <button data-g="4">4. Klasse</button>
+      <div class="card">
+        <div class="controls">
+          <div class="grades" id="grades">
+            <button data-g="1" class="on">1. Klasse</button>
+            <button data-g="2">2. Klasse</button>
+            <button data-g="3">3. Klasse</button>
+            <button data-g="4">4. Klasse</button>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="icon-btn" id="snd">🔊</button>
+            <button class="icon-btn" id="history-btn">📊</button>
+            <button class="icon-btn" id="settings">⚙️</button>
+          </div>
         </div>
-        <div style="display: flex; gap: 8px;">
-          <button class="icon-btn" id="snd">🔊</button>
-          <button class="icon-btn" id="history-btn">📊</button>
-          <button class="icon-btn" id="settings">⚙️</button>
+        
+        <div style="position: relative;">
+          <div class="timer" id="timer" style="display: none;">⏱️ <span id="time">30</span>s</div>
+          <div class="task-area">
+            <div class="task-text" id="task">Klicke auf "Neue Aufgabe"</div>
+          </div>
+        </div>
+        
+        <div class="answers" id="ans"></div>
+        
+        <div class="msg" id="msg">Wähle eine Klassenstufe und klicke auf "Neue Aufgabe"</div>
+        
+        <div class="history" id="history"></div>
+        
+        <div class="btns">
+          <button class="help" id="help" disabled>💡 Erklärung</button>
+          <button id="history-btn-2">📊 Verlauf</button>
+          <button class="main" id="start">Neue Aufgabe</button>
         </div>
       </div>
-      
-      <div style="position: relative;">
-        <div class="timer" id="timer" style="display: none;">⏱️ <span id="time">30</span>s</div>
-        <div class="task-area">
-          <div class="task-text" id="task">Klicke auf "Neue Aufgabe"</div>
-        </div>
-      </div>
-      
-      <div class="answers" id="ans"></div>
-      
-      <div class="msg" id="msg">Wähle eine Klassenstufe und klicke auf "Neue Aufgabe"</div>
-      
-      <div class="history" id="history"></div>
-      
-      <div class="btns">
-        <button class="help" id="help" disabled>💡 Erklärung</button>
-        <button id="history-btn-2">📊 Verlauf</button>
-        <button class="main" id="start">Neue Aufgabe</button>
-      </div>
-    </div>
-  </div><!-- .card -->
-  
-  </div><!-- .container -->
+    </div><!-- .container -->
   </div><!-- .app-wrapper -->
   
   <!-- Modals (außerhalb der App-Struktur) -->
@@ -871,6 +904,8 @@ const state = {
   timerValue: 30,
   timerInterval: null
 };
+
+const synth = 'speechSynthesis' in window ? window.speechSynthesis : null;
 
 // Aufgabengenerierung
 function rand(min, max) {
@@ -1709,7 +1744,7 @@ function generateExplanation(task) {
         for (let i = 0; i < num2; i++) {
           current--;
           const isLast = i === num2 - 1;
-          html += `<div style="padding: 12px; margin: 8px 0; background: ${isLast ? '#27ae60' : 'var(--color-surface)'}; border-radius: var(--radius-md); border: 2px solid ${isLast ? '#27ae60' : 'var(--color-error)'}; color: ${isLast ? 'var(--color-surface)' : '#2c3e50'};">`;
+          html += `<div style="padding: 12px; margin: 8px 0; background: ${isLast ? '#27ae60' : 'var(--color-surface)'}; border-radius: var(--radius-md); border: 2px solid ${isLast ? '#27ae60' : '#var(--color-error)'}; color: ${isLast ? 'var(--color-surface)' : '#2c3e50'};">`;
           html += `<strong>${i + 1}. Schritt:</strong> ${num1} − ${i + 1} = <strong style="font-size: 1.3rem;">${current}</strong>`;
           if (isLast) html += ' ✅';
           html += '</div>';
@@ -1976,12 +2011,16 @@ function generateExplanation(task) {
 
 // Speichern & Laden
 function saveState() {
-  localStorage.setItem('mathApp', JSON.stringify({
-    score: state.score,
-    total: state.total,
-    maxStreak: state.maxStreak,
-    settings: state.settings
-  }));
+  try {
+    localStorage.setItem('mathApp', JSON.stringify({
+      score: state.score,
+      total: state.total,
+      maxStreak: state.maxStreak,
+      settings: state.settings
+    }));
+  } catch (e) {
+    // Falls localStorage nicht verfügbar ist, einfach leise ignorieren
+  }
 }
 
 function loadState() {
@@ -1998,18 +2037,20 @@ function loadState() {
 
 // Sprachausgabe
 function speak(text) {
-  if (!state.settings.sound || !speechSynthesis) return;
-  speechSynthesis.cancel();
+  if (!state.settings.sound || !synth) return;
+  synth.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = 'de-DE';
   utterance.rate = 0.85;
   if (state.voice) utterance.voice = state.voice;
-  speechSynthesis.speak(utterance);
+  synth.speak(utterance);
 }
 
-speechSynthesis.onvoiceschanged = () => {
-  state.voice = speechSynthesis.getVoices().find(v => v.lang.startsWith('de')) || null;
-};
+if (synth) {
+  synth.onvoiceschanged = () => {
+    state.voice = synth.getVoices().find(v => v.lang.startsWith('de')) || null;
+  };
+}
 
 // Timer
 function startTimer() {
@@ -2043,16 +2084,29 @@ function stopTimer() {
     clearInterval(state.timerInterval);
     state.timerInterval = null;
   }
-  if (state.settings.timer) {
+  // Immer ausblenden, egal ob Timer in den Settings an/aus ist
+  if ($('timer')) {
     $('timer').style.display = 'none';
   }
 }
 
 // UI Updates
+function bumpStat(id) {
+  const el = $(id);
+  if (!el) return;
+  el.classList.remove('bump');
+  // Reflow-Trick, damit die Animation erneut abgespielt wird
+  void el.offsetWidth;
+  el.classList.add('bump');
+}
+
 function updateStats() {
   $('score').textContent = state.score;
   $('total').textContent = state.total;
   $('streak').textContent = state.streak;
+  bumpStat('score');
+  bumpStat('total');
+  bumpStat('streak');
 }
 
 function updateHistory() {
@@ -2228,21 +2282,21 @@ $('settings').onclick = () => {
 // Toggle controls
 $('toggle-timer').onclick = () => {
   state.settings.timer = !state.settings.timer;
-  $('toggle-timer').classList.toggle('on');
+  $('toggle-timer').classList.toggle('on', state.settings.timer);
   if (!state.settings.timer) stopTimer();
   saveState();
 };
 
 $('toggle-sound').onclick = () => {
   state.settings.sound = !state.settings.sound;
-  $('toggle-sound').classList.toggle('on');
+  $('toggle-sound').classList.toggle('on', state.settings.sound);
   $('snd').textContent = state.settings.sound ? '🔊' : '🔇';
   saveState();
 };
 
 $('toggle-keys').onclick = () => {
   state.settings.keyboard = !state.settings.keyboard;
-  $('toggle-keys').classList.toggle('on');
+  $('toggle-keys').classList.toggle('on', state.settings.keyboard);
   saveState();
 };
 
