@@ -1,0 +1,2282 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#1a5c3a">
+  <title>Mathe üben</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    /* Design-Award inspiriertes Farbschema */
+    :root {
+      --color-primary: #7BA591;        /* Salbeigrün - beruhigend */
+      --color-primary-dark: #5D8A75;
+      --color-primary-light: #A8C9B8;
+      --color-accent: #E8B86D;          /* Warmes Gold */
+      --color-accent-dark: #D4A055;
+      --color-success: #88B894;
+      --color-error: #D4816F;
+      --color-text: #3D4F42;
+      --color-text-light: #6B7C70;
+      --color-bg: #F9F7F4;              /* Warmes Weiß */
+      --color-surface: #FFFFFF;
+      --color-border: #E3DED7;
+      --shadow-sm: 0 2px 8px rgba(61, 79, 66, 0.08);
+      --shadow-md: 0 4px 16px rgba(61, 79, 66, 0.12);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'Roboto', sans-serif;
+      --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', 'Roboto', sans-serif;
+    }
+    
+    /* PWA-ähnliche Optimierungen */
+    html {
+      height: 100%;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    body { 
+      font-family: var(--font-body);
+      background: var(--color-bg);
+      height: 100vh;
+      height: 100dvh; /* Dynamic viewport height für Mobile */
+      overflow: hidden;
+      padding: 0;
+      color: var(--color-text);
+      position: fixed;
+      width: 100%;
+      -webkit-overflow-scrolling: touch;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      line-height: 1.6;
+    }
+    
+    /* Scrollbarer Container für den Inhalt */
+    .app-wrapper {
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    .container { 
+      max-width: 900px; 
+      margin: 0 auto;
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 16px;
+      padding-bottom: calc(16px + env(safe-area-inset-bottom));
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: var(--color-surface);
+      padding: 16px;
+      padding-top: calc(16px + env(safe-area-inset-top));
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    
+    .logo { 
+      font-size: 1.35rem; 
+      font-weight: 600;
+      color: var(--color-primary-dark);
+      white-space: nowrap;
+      letter-spacing: -0.02em;
+      font-family: var(--font-display);
+    }
+    
+    .stats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    
+    .stats::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .stat-box {
+      background: var(--color-primary-light);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--color-primary-dark);
+      border: 1px solid var(--color-primary);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    
+    .stat-value { 
+      font-weight: 600; 
+      margin-left: 4px; 
+      color: var(--color-primary-dark);
+      font-feature-settings: 'tnum';
+      font-variant-numeric: tabular-nums;
+    }
+    
+    .card { 
+      background: var(--color-surface);
+      border-radius: var(--radius-lg); 
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-border);
+      margin-bottom: 16px;
+    }
+    
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .grades { display: flex; gap: 8px; flex-wrap: wrap; }
+    
+    .grades button { 
+      padding: 10px 16px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--color-text);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .grades button:hover {
+      background: var(--color-bg);
+      border-color: var(--color-primary);
+    }
+    
+    .grades button.on { 
+      background: var(--color-primary);
+      border-color: var(--color-primary-dark);
+      color: var(--color-surface);
+    }
+    
+    .icon-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--color-border);
+      background: var(--color-surface);
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: var(--color-text);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .icon-btn:hover {
+      background: var(--color-bg);
+    }
+    
+    .task-area {
+      background: var(--color-bg);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      text-align: center;
+      margin-bottom: 20px;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--color-border);
+    }
+    
+    .task-text { 
+      font-size: clamp(2rem, 10vw, 3.2rem);
+      font-weight: 600;
+      color: var(--color-text);
+      text-align: center;
+      margin: 36px 0;
+      line-height: 1.2;
+      font-family: var(--font-display);
+      letter-spacing: -0.03em;
+      font-feature-settings: 'tnum';
+      font-variant-numeric: tabular-nums;
+    }
+    
+    .answers { 
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .answers button { 
+      padding: 24px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      background: var(--color-surface);
+      font-size: 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--color-text);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .answers button:hover {
+      background: var(--color-bg);
+      border-color: var(--color-primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .answers button.ok { 
+      background: var(--color-success);
+      border-color: var(--color-success);
+      color: var(--color-surface);
+    }
+    
+    .answers button.no { 
+      background: var(--color-error);
+      border-color: var(--color-error);
+      color: var(--color-surface);
+    }
+    
+    .msg { 
+      text-align: center;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      margin-bottom: 20px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      background: var(--color-bg);
+      border: 2px solid var(--color-border);
+      color: var(--color-text);
+    }
+    
+    .msg.ok { 
+      background: var(--color-success);
+      border-color: var(--color-success);
+      color: #22543d;
+    }
+    
+    .msg.no { 
+      background: #fed7d7;
+      border-color: #fc8181;
+      color: #742a2a;
+    }
+    
+    .btns { 
+      display: grid;
+      grid-template-columns: auto auto 1fr;
+      gap: 12px;
+    }
+    
+    .btns button { 
+      padding: 18px 28px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      background: var(--color-surface);
+      color: var(--color-text);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      letter-spacing: 0.01em;
+    }
+    
+    .btns button:hover {
+      background: var(--color-bg);
+      border-color: var(--color-primary);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .btns .main { 
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: var(--color-surface);
+      font-weight: 600;
+    }
+    
+    .btns .main:hover {
+      background: var(--color-primary-dark);
+      border-color: var(--color-primary-dark);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .btns .help:disabled { 
+      opacity: 0.4; 
+      cursor: not-allowed; 
+    }
+    
+    .timer {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--color-surface);
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      color: var(--color-primary-dark);
+      font-size: 1.1rem;
+      border: 1px solid var(--color-primary);
+    }
+    
+    .timer.warning { 
+      background: #fed7d7; 
+      color: #742a2a; 
+      border-color: #fc8181;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(61, 79, 66, 0.6);
+      backdrop-filter: blur(4px);
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 1000;
+      padding: 0;
+    }
+    
+    .modal.show { display: flex; }
+    
+    .modal-content {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      max-width: 700px;
+      width: 100%;
+      max-height: 92vh;
+      max-height: 92dvh;
+      overflow: hidden;
+      box-shadow: 0 -10px 40px rgba(61, 79, 66, 0.15);
+      display: flex;
+      flex-direction: column;
+      animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    .modal-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      position: relative;
+      background: var(--color-bg);
+    }
+    
+    .modal-header::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 36px;
+      height: 4px;
+      background: var(--color-border);
+      border-radius: var(--radius-sm);
+    }
+    
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-top: 12px;
+      font-family: var(--font-display);
+      letter-spacing: -0.01em;
+    }
+    
+    .modal-close {
+      background: var(--color-bg);
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--color-text-light);
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      margin-top: 12px;
+    }
+    
+    .modal-body {
+      padding: 16px;
+      color: var(--color-text);
+      overflow-y: auto;
+      flex: 1;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .modal-footer {
+      padding: 16px;
+      padding-bottom: calc(16px + env(safe-area-inset-bottom));
+      border-top: 2px solid var(--color-border);
+      display: flex;
+      justify-content: stretch;
+      flex-shrink: 0;
+      background: var(--color-surface);
+    }
+    
+    .modal-footer button {
+      padding: 14px 24px;
+      background: var(--color-primary);
+      border: 2px solid #2c5282;
+      border-radius: var(--radius-lg);
+      color: var(--color-surface);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1.05rem;
+      width: 100%;
+      min-height: 48px;
+    }
+    
+    .modal-footer button:hover {
+      background: #2a4365;
+    }
+    
+    .modal-footer button:active {
+      transform: scale(0.985);
+    }
+    
+    .history { margin-top: 12px; }
+    
+    .history-item {
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      border: 2px solid;
+    }
+    
+    .history-item.ok {
+      background: var(--color-success);
+      border-color: var(--color-success);
+      color: #22543d;
+    }
+    
+    .history-item.no {
+      background: #fed7d7;
+      border-color: #fc8181;
+      color: #742a2a;
+    }
+    
+    .settings-panel {
+      background: var(--color-bg);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+    
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    
+    .setting-row:last-child { border-bottom: none; }
+    
+    .setting-label {
+      font-weight: 600;
+      color: #4a5568;
+    }
+    
+    .toggle {
+      width: 56px;
+      height: 28px;
+      background: var(--color-border);
+      border-radius: 14px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      top: 3px;
+      left: 3px;
+      transition: all 0.3s;
+    }
+    
+    .toggle.on {
+      background: var(--color-success);
+    }
+    
+    .toggle.on::after {
+      left: 31px;
+    }
+    
+    .calculation {
+      background: var(--color-bg);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin: 16px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+    
+    .step {
+      background: var(--color-surface);
+      border-left: 4px solid #2c5282;
+      padding: 12px 16px;
+      margin: 12px 0;
+      border-radius: 4px;
+    }
+    
+    .step-number {
+      font-weight: 600;
+      color: var(--color-primary-dark);
+      margin-bottom: 6px;
+    }
+    
+    .step-content {
+      color: var(--color-text);
+      line-height: 1.6;
+    }
+    
+    .result-highlight {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: var(--color-surface);
+      padding: 16px;
+      border-radius: var(--radius-md);
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin: 16px 0;
+    }
+    
+    .tip-box {
+      background: var(--color-surface)3cd;
+      border: 2px solid #ffc107;
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      margin-top: 16px;
+      color: #856404;
+      font-weight: 600;
+    }
+    
+    .written-calc {
+      font-family: 'Courier New', monospace;
+      font-size: 1.3rem;
+      line-height: 1.8;
+      background: var(--color-surface);
+      border: 2px solid #2c5282;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin: 16px 0;
+      display: inline-block;
+      min-width: 200px;
+    }
+    
+    .written-calc-row {
+      text-align: right;
+      padding: 4px 0;
+    }
+    
+    .written-calc-line {
+      border-top: 2px solid var(--color-text);
+      margin: 8px 0;
+      padding-top: 8px;
+    }
+    
+    .carry {
+      color: var(--color-primary-dark);
+      font-size: 0.85em;
+      vertical-align: super;
+    }
+    
+    .highlight-step {
+      background: #fef3c7;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    
+    /* Touch-Optimierungen für alle Buttons */
+    button {
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+      touch-action: manipulation;
+    }
+    
+    button:active {
+      transform: scale(0.985);
+    }
+    
+    /* 9:16 Mobile Optimierungen */
+    @media (max-width: 640px) {
+      .container {
+        padding: 8px;
+      }
+      
+      .card {
+        padding: 12px;
+        margin-bottom: 8px;
+        border-radius: 16px;
+      }
+      
+      .logo {
+        font-size: 1.1rem;
+      }
+      
+      .stat-box {
+        font-size: 0.8rem;
+        padding: 4px 10px;
+      }
+      
+      .task-text { 
+        font-size: clamp(1.5rem, 8vw, 2.2rem);
+        margin: 16px 0;
+      }
+      
+      .answers { 
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      
+      .answers button {
+        min-height: 52px;
+        font-size: 1.1rem;
+      }
+      
+      .btns { 
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      
+      .btns button {
+        min-height: 48px;
+        font-size: 1rem;
+      }
+      
+      .controls { 
+        flex-direction: column; 
+        align-items: stretch;
+        gap: 12px;
+      }
+      
+      .grades { 
+        justify-content: stretch;
+        gap: 6px;
+      }
+      
+      .grades button {
+        flex: 1;
+        font-size: 0.9rem;
+        padding: 10px 8px;
+      }
+      
+      /* Modal spezifisch für Mobile */
+      .modal-content {
+        max-height: 95vh;
+        max-height: 95dvh;
+      }
+      
+      .modal-body {
+        padding: 12px;
+      }
+      
+      .modal-title {
+        font-size: 1.1rem;
+      }
+    }
+    
+    /* Extra optimiert für sehr schmale Geräte (typisch 9:16) */
+    @media (max-width: 380px) {
+      .logo {
+        font-size: 1rem;
+      }
+      
+      .stat-box {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+      }
+      
+      .grades button {
+        font-size: 0.85rem;
+        padding: 8px 6px;
+      }
+      
+      .icon-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-wrapper">
+    <div class="header">
+      <div class="logo">🧮 Mathe üben</div>
+      <div class="stats">
+        <div class="stat-box">Punkte: <span class="stat-value" id="score">0</span></div>
+        <div class="stat-box">Gesamt: <span class="stat-value" id="total">0</span></div>
+        <div class="stat-box">🔥 Serie: <span class="stat-value" id="streak">0</span></div>
+      </div>
+    </div>
+    
+    <div class="container">
+    <div class="card">
+      <div class="controls">
+        <div class="grades" id="grades">
+          <button data-g="1" class="on">1. Klasse</button>
+          <button data-g="2">2. Klasse</button>
+          <button data-g="3">3. Klasse</button>
+          <button data-g="4">4. Klasse</button>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="icon-btn" id="snd">🔊</button>
+          <button class="icon-btn" id="history-btn">📊</button>
+          <button class="icon-btn" id="settings">⚙️</button>
+        </div>
+      </div>
+      
+      <div style="position: relative;">
+        <div class="timer" id="timer" style="display: none;">⏱️ <span id="time">30</span>s</div>
+        <div class="task-area">
+          <div class="task-text" id="task">Klicke auf "Neue Aufgabe"</div>
+        </div>
+      </div>
+      
+      <div class="answers" id="ans"></div>
+      
+      <div class="msg" id="msg">Wähle eine Klassenstufe und klicke auf "Neue Aufgabe"</div>
+      
+      <div class="history" id="history"></div>
+      
+      <div class="btns">
+        <button class="help" id="help" disabled>💡 Erklärung</button>
+        <button id="history-btn-2">📊 Verlauf</button>
+        <button class="main" id="start">Neue Aufgabe</button>
+      </div>
+    </div>
+  </div><!-- .card -->
+  
+  </div><!-- .container -->
+  </div><!-- .app-wrapper -->
+  
+  <!-- Modals (außerhalb der App-Struktur) -->
+  <div class="modal" id="ov-help">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">💡 Erklärung</div>
+        <button class="modal-close" id="cls-help">×</button>
+      </div>
+      <div class="modal-body" id="mbody-help"></div>
+      <div class="modal-footer">
+        <button id="mok-help">Verstanden</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal" id="ov-settings">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">⚙️ Einstellungen</div>
+        <button class="modal-close" id="cls-settings">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-panel">
+          <div class="setting-row">
+            <div class="setting-label">Timer (30s)</div>
+            <div class="toggle" id="toggle-timer"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">Sprachausgabe</div>
+            <div class="toggle on" id="toggle-sound"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">Tastatur (1-4, Enter, E)</div>
+            <div class="toggle on" id="toggle-keys"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="mok-settings">Schließen</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal" id="ov-history">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">📊 Deine Statistiken</div>
+        <button class="modal-close" id="cls-history">×</button>
+      </div>
+      <div class="modal-body" id="mbody-history"></div>
+      <div class="modal-footer">
+        <button id="mok-history">Schließen</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const state = {
+  grade: 1,
+  score: 0,
+  total: 0,
+  streak: 0,
+  maxStreak: 0,
+  currentTask: null,
+  answered: false,
+  history: [],
+  settings: { timer: false, sound: true, keyboard: true },
+  voice: null,
+  timerValue: 30,
+  timerInterval: null
+};
+
+// Aufgabengenerierung
+function rand(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function createTask(grade) {
+  const types = grade === 1 ? ['add', 'sub'] : 
+                grade === 2 ? ['add', 'sub', 'mul'] :
+                grade === 3 ? ['add', 'sub', 'mul', 'div'] :
+                ['add', 'sub', 'mul', 'div', 'word'];
+  
+  const type = types[rand(0, types.length - 1)];
+  
+  if (type === 'word') {
+    return createWordTask(grade);
+  }
+  
+  let num1, num2, answer, op, symbol;
+  
+  if (type === 'add') {
+    if (grade === 1) {
+      num1 = rand(1, 10);
+      num2 = rand(1, 10);
+    } else if (grade === 2) {
+      num1 = rand(10, 50);
+      num2 = rand(10, 50);
+    } else {
+      num1 = rand(10, 999);
+      num2 = rand(10, 999);
+    }
+    answer = num1 + num2;
+    op = 'add';
+    symbol = '+';
+  } else if (type === 'sub') {
+    if (grade === 1) {
+      answer = rand(1, 10);
+      num2 = rand(1, answer);
+      num1 = answer + num2;
+    } else if (grade === 2) {
+      answer = rand(10, 50);
+      num2 = rand(10, answer);
+      num1 = answer + num2;
+    } else {
+      answer = rand(10, 999);
+      num2 = rand(10, answer);
+      num1 = answer + num2;
+    }
+    op = 'sub';
+    symbol = '−';
+  } else if (type === 'mul') {
+    if (grade === 2) {
+      num1 = rand(2, 10);
+      num2 = rand(2, 10);
+    } else if (grade === 3) {
+      num1 = rand(2, 12);
+      num2 = rand(2, 12);
+    } else {
+      num1 = rand(2, 99);
+      num2 = rand(2, 12);
+    }
+    answer = num1 * num2;
+    op = 'mul';
+    symbol = '×';
+  } else {
+    if (grade === 3) {
+      num2 = rand(2, 10);
+      answer = rand(2, 10);
+    } else {
+      num2 = rand(2, 12);
+      answer = rand(2, 99);
+    }
+    num1 = num2 * answer;
+    op = 'div';
+    symbol = '÷';
+  }
+  
+  const options = [answer];
+  while (options.length < 4) {
+    let wrong;
+    if (op === 'add' || op === 'sub') {
+      wrong = answer + rand(-10, 10);
+    } else if (op === 'mul') {
+      wrong = answer + rand(-15, 15);
+    } else {
+      wrong = answer + rand(-5, 5);
+    }
+    
+    if (wrong > 0 && !options.includes(wrong)) {
+      options.push(wrong);
+    }
+  }
+  
+  options.sort(() => Math.random() - 0.5);
+  
+  return {
+    num1, num2, answer, op,
+    problem: `${num1} ${symbol} ${num2} = ?`,
+    options,
+    correctIndex: options.indexOf(answer),
+    taskType: 'math'
+  };
+}
+
+function createWordTask(grade) {
+  const templates = [
+    { text: "Anna hat {n1} Äpfel. Sie bekommt {n2} Äpfel dazu. Wie viele hat sie jetzt?", op: "add" },
+    { text: "Tom hat {n1} Bonbons. Er isst {n2} davon. Wie viele bleiben?", op: "sub" },
+    { text: "In einer Schachtel sind {n1} Stifte. Es gibt {n2} Schachteln. Wie viele Stifte sind es insgesamt?", op: "mul" },
+    { text: "Lisa hat {n1} Euro. Ein Spielzeug kostet {n2} Euro. Wie viele kann sie kaufen?", op: "div" }
+  ];
+  
+  const validTemplates = templates.filter(t => 
+    (t.op === 'add' || t.op === 'sub') ||
+    (grade >= 2 && t.op === 'mul') ||
+    (grade >= 3 && t.op === 'div')
+  );
+  
+  const template = validTemplates[rand(0, validTemplates.length - 1)];
+  
+  let num1, num2, answer;
+  
+  if (template.op === 'add') {
+    num1 = rand(3, 20);
+    num2 = rand(3, 20);
+    answer = num1 + num2;
+  } else if (template.op === 'sub') {
+    answer = rand(3, 20);
+    num2 = rand(1, answer - 1);
+    num1 = answer + num2;
+  } else if (template.op === 'mul') {
+    num1 = rand(2, 10);
+    num2 = rand(2, 10);
+    answer = num1 * num2;
+  } else {
+    num2 = rand(2, 8);
+    answer = rand(2, 12);
+    num1 = num2 * answer;
+  }
+  
+  const text = template.text.replace('{n1}', num1).replace('{n2}', num2);
+  
+  const options = [answer];
+  while (options.length < 4) {
+    const wrong = answer + rand(-8, 8);
+    if (wrong > 0 && !options.includes(wrong)) {
+      options.push(wrong);
+    }
+  }
+  
+  options.sort(() => Math.random() - 0.5);
+  
+  return {
+    num1, num2, answer, op: template.op,
+    problem: text,
+    options,
+    correctIndex: options.indexOf(answer),
+    taskType: 'word'
+  };
+}
+
+// Schriftliche Addition
+function generateWrittenAddition(num1, num2, sum) {
+  const str1 = String(num1);
+  const str2 = String(num2);
+  const maxLen = Math.max(str1.length, str2.length);
+  
+  const pad1 = str1.padStart(maxLen, ' ');
+  const pad2 = str2.padStart(maxLen, ' ');
+  
+  let html = '<div class="written-calc">';
+  html += '<div class="written-calc-row" style="text-align: right; padding-right: 30px;">';
+  
+  // Erste Zahl mit Überträgen
+  let carries = [];
+  let currentCarry = 0;
+  
+  for (let i = maxLen - 1; i >= 0; i--) {
+    const d1 = pad1[i] === ' ' ? 0 : parseInt(pad1[i]);
+    const d2 = pad2[i] === ' ' ? 0 : parseInt(pad2[i]);
+    const digitSum = d1 + d2 + currentCarry;
+    
+    if (digitSum >= 10) {
+      carries[i] = 1;
+      currentCarry = 1;
+    } else {
+      carries[i] = 0;
+      currentCarry = 0;
+    }
+  }
+  
+  // Zeige Überträge
+  for (let i = 0; i < maxLen; i++) {
+    if (carries[i] === 1) {
+      html += `<span class="carry">¹</span>`;
+    } else {
+      html += '<span style="visibility: hidden;">¹</span>';
+    }
+  }
+  html += '</div>';
+  
+  html += `<div class="written-calc-row">  ${pad1}</div>`;
+  html += `<div class="written-calc-row">+ ${pad2}</div>`;
+  html += `<div class="written-calc-row written-calc-line">= ${sum}</div>`;
+  html += '</div>';
+  
+  // Schrittweise Erklärung
+  html += '<div style="margin-top: 20px;">';
+  html += '<strong>Schritt für Schritt:</strong>';
+  
+  currentCarry = 0;
+  let stepNum = 1;
+  
+  for (let i = maxLen - 1; i >= 0; i--) {
+    const d1 = pad1[i] === ' ' ? 0 : parseInt(pad1[i]);
+    const d2 = pad2[i] === ' ' ? 0 : parseInt(pad2[i]);
+    const position = ['Einer', 'Zehner', 'Hunderter', 'Tausender'][maxLen - 1 - i];
+    
+    html += '<div class="step">';
+    html += `<div class="step-number">Schritt ${stepNum}:</div>`;
+    html += '<div class="step-content">';
+    
+    if (currentCarry > 0) {
+      html += `${position}: ${d1} + ${d2} + <span class="carry">1</span> (Übertrag) = `;
+      const digitSum = d1 + d2 + currentCarry;
+      if (digitSum >= 10) {
+        html += `<span class="highlight-step">${digitSum}</span> → Schreibe ${digitSum % 10}, merke 1`;
+        currentCarry = 1;
+      } else {
+        html += `<span class="highlight-step">${digitSum}</span>`;
+        currentCarry = 0;
+      }
+    } else {
+      html += `${position}: ${d1} + ${d2} = `;
+      const digitSum = d1 + d2;
+      if (digitSum >= 10) {
+        html += `<span class="highlight-step">${digitSum}</span> → Schreibe ${digitSum % 10}, merke 1`;
+        currentCarry = 1;
+      } else {
+        html += `<span class="highlight-step">${digitSum}</span>`;
+      }
+    }
+    
+    html += '</div></div>';
+    stepNum++;
+  }
+  
+  html += '</div>';
+  
+  return html;
+}
+
+// Schriftliche Subtraktion
+function generateWrittenSubtraction(num1, num2, diff) {
+  const str1 = String(num1);
+  const str2 = String(num2);
+  const maxLen = Math.max(str1.length, str2.length);
+  
+  const pad1 = str1.padStart(maxLen, ' ');
+  const pad2 = str2.padStart(maxLen, ' ');
+  
+  let html = '<div class="written-calc">';
+  html += '<div class="written-calc-row" style="text-align: right; padding-right: 30px;">';
+  
+  // Berechne Borgen
+  let borrows = [];
+  let nums1 = pad1.split('').map(c => c === ' ' ? 0 : parseInt(c));
+  
+  for (let i = maxLen - 1; i >= 0; i--) {
+    const d1 = nums1[i];
+    const d2 = pad2[i] === ' ' ? 0 : parseInt(pad2[i]);
+    
+    if (d1 < d2) {
+      borrows[i] = 1;
+      nums1[i] += 10;
+      if (i > 0) nums1[i - 1] -= 1;
+    } else {
+      borrows[i] = 0;
+    }
+  }
+  
+  // Zeige Borgen
+  for (let i = 0; i < maxLen; i++) {
+    if (borrows[i] === 1) {
+      html += `<span class="carry" style="color: #e53e3e;">⁻¹</span>`;
+    } else {
+      html += '<span style="visibility: hidden;">⁻¹</span>';
+    }
+  }
+  html += '</div>';
+  
+  html += `<div class="written-calc-row">  ${pad1}</div>`;
+  html += `<div class="written-calc-row">− ${pad2}</div>`;
+  html += `<div class="written-calc-row written-calc-line">= ${diff}</div>`;
+  html += '</div>';
+  
+  // Schrittweise Erklärung
+  html += '<div style="margin-top: 20px;">';
+  html += '<strong>Schritt für Schritt:</strong>';
+  
+  nums1 = pad1.split('').map(c => c === ' ' ? 0 : parseInt(c));
+  let stepNum = 1;
+  
+  for (let i = maxLen - 1; i >= 0; i--) {
+    let d1 = nums1[i];
+    const d2 = pad2[i] === ' ' ? 0 : parseInt(pad2[i]);
+    const position = ['Einer', 'Zehner', 'Hunderter', 'Tausender'][maxLen - 1 - i];
+    
+    html += '<div class="step">';
+    html += `<div class="step-number">Schritt ${stepNum}:</div>`;
+    html += '<div class="step-content">';
+    
+    if (d1 < d2) {
+      html += `${position}: ${d1} ist kleiner als ${d2} → Borge 10 von der nächsten Stelle<br>`;
+      html += `${d1} + 10 = ${d1 + 10}, dann ${d1 + 10} − ${d2} = <span class="highlight-step">${d1 + 10 - d2}</span>`;
+      if (i > 0) {
+        nums1[i - 1] -= 1;
+        html += `<br><small>(Nächste Stelle wird um 1 verringert)</small>`;
+      }
+    } else {
+      html += `${position}: ${d1} − ${d2} = <span class="highlight-step">${d1 - d2}</span>`;
+    }
+    
+    html += '</div></div>';
+    stepNum++;
+  }
+  
+  html += '</div>';
+  
+  return html;
+}
+
+// Schriftliche Multiplikation (verbessert mit Gittermethode)
+function generateWrittenMultiplication(num1, num2, product) {
+  const str1 = String(num1);
+  const str2 = String(num2);
+  
+  // Für größere Zahlen: Zeige Gittermethode
+  if (str1.length >= 3 && str2.length >= 2) {
+    return generateGridMultiplication(num1, num2, product);
+  }
+  
+  if (str2.length === 1) {
+    // Einfache Multiplikation mit einstelligem Multiplikator
+    let html = '<div class="written-calc">';
+    html += `<div class="written-calc-row">  ${str1}</div>`;
+    html += `<div class="written-calc-row">× ${str2}</div>`;
+    html += `<div class="written-calc-row written-calc-line">= ${product}</div>`;
+    html += '</div>';
+    
+    html += '<div style="margin-top: 20px;">';
+    html += '<strong>Schritt für Schritt:</strong>';
+    
+    let carry = 0;
+    const multiplier = parseInt(str2);
+    
+    for (let i = str1.length - 1; i >= 0; i--) {
+      const digit = parseInt(str1[i]);
+      const position = ['Einer', 'Zehner', 'Hunderter'][str1.length - 1 - i];
+      
+      html += '<div class="step">';
+      html += `<div class="step-number">Schritt ${str1.length - i}:</div>`;
+      html += '<div class="step-content">';
+      
+      const prod = digit * multiplier + carry;
+      
+      if (carry > 0) {
+        html += `${position}: ${digit} × ${multiplier} + ${carry} (Übertrag) = <span class="highlight-step">${prod}</span>`;
+      } else {
+        html += `${position}: ${digit} × ${multiplier} = <span class="highlight-step">${prod}</span>`;
+      }
+      
+      if (prod >= 10 && i > 0) {
+        html += ` → Schreibe ${prod % 10}, merke ${Math.floor(prod / 10)}`;
+        carry = Math.floor(prod / 10);
+      } else {
+        carry = 0;
+      }
+      
+      html += '</div></div>';
+    }
+    
+    html += '</div>';
+    return html;
+  }
+  
+  // Mehrstufige Multiplikation
+  let html = '<div class="written-calc">';
+  html += `<div class="written-calc-row">    ${str1}</div>`;
+  html += `<div class="written-calc-row">  × ${str2}</div>`;
+  html += '<div class="written-calc-row" style="border-top: 2px solid var(--color-text); margin-top: 4px; padding-top: 4px;">Zwischenergebnisse:</div>';
+  
+  const partials = [];
+  for (let i = str2.length - 1; i >= 0; i--) {
+    const digit = parseInt(str2[i]);
+    const partial = num1 * digit * Math.pow(10, str2.length - 1 - i);
+    partials.push(partial);
+    const zeros = '0'.repeat(str2.length - 1 - i);
+    html += `<div class="written-calc-row">${partial}${zeros.length > partial.toString().length ? ' (×' + Math.pow(10, str2.length - 1 - i) + ')' : ''}</div>`;
+  }
+  
+  html += '<div class="written-calc-row" style="border-top: 2px solid var(--color-text); margin-top: 4px; padding-top: 4px;">Summe:</div>';
+  html += `<div class="written-calc-row">= ${product}</div>`;
+  html += '</div>';
+  
+  html += '<div style="margin-top: 20px;">';
+  html += '<strong>Schritt für Schritt:</strong>';
+  
+  for (let i = str2.length - 1, step = 1; i >= 0; i--, step++) {
+    const digit = parseInt(str2[i]);
+    const position = ['Einer', 'Zehner', 'Hunderter'][str2.length - 1 - i];
+    const partial = num1 * digit;
+    const multiplier = Math.pow(10, str2.length - 1 - i);
+    
+    html += '<div class="step">';
+    html += `<div class="step-number">Schritt ${step}:</div>`;
+    html += '<div class="step-content">';
+    html += `${position} von ${num2}: ${num1} × ${digit}`;
+    if (multiplier > 1) {
+      html += ` × ${multiplier}`;
+    }
+    html += ` = <span class="highlight-step">${partial * multiplier}</span>`;
+    html += '</div></div>';
+  }
+  
+  html += '<div class="step">';
+  html += `<div class="step-number">Letzter Schritt:</div>`;
+  html += '<div class="step-content">';
+  html += 'Addiere alle Zwischenergebnisse:<br>';
+  html += partials.join(' + ') + ` = <span class="highlight-step">${product}</span>`;
+  html += '</div></div>';
+  
+  html += '</div>';
+  
+  return html;
+}
+
+// Gittermethode für Multiplikation (Kästchen-Darstellung)
+function generateGridMultiplication(num1, num2, product) {
+  const str1 = String(num1);
+  const str2 = String(num2);
+  
+  let html = '<div style="margin: 20px 0;">';
+  html += '<strong>🔢 Gittermethode (Kästchen-Multiplikation):</strong>';
+  html += '</div>';
+  
+  // Erstelle das Gitter
+  html += '<div style="display: inline-block; border: 2px solid #2c5282; background: var(--color-surface);">';
+  html += '<table style="border-collapse: collapse; font-family: monospace; font-size: 1.1rem;">';
+  
+  // Kopfzeile mit den Ziffern von num1
+  html += '<tr><td style="padding: 8px; border: 1px solid var(--color-border);"></td>';
+  for (let i = 0; i < str1.length; i++) {
+    html += `<td style="padding: 8px; border: 1px solid var(--color-border); text-align: center; background: var(--color-primary-light); font-weight: 600;">${str1[i]}</td>`;
+  }
+  html += '</tr>';
+  
+  // Für jede Ziffer von num2
+  for (let j = 0; j < str2.length; j++) {
+    html += '<tr>';
+    html += `<td style="padding: 8px; border: 1px solid var(--color-border); text-align: center; background: var(--color-primary-light); font-weight: 600;">${str2[j]}</td>`;
+    
+    // Für jede Ziffer von num1
+    for (let i = 0; i < str1.length; i++) {
+      const digit1 = parseInt(str1[i]);
+      const digit2 = parseInt(str2[j]);
+      const prod = digit1 * digit2;
+      const tens = Math.floor(prod / 10);
+      const ones = prod % 10;
+      
+      html += '<td style="padding: 4px; border: 1px solid var(--color-border); width: 50px; height: 50px; position: relative;">';
+      html += '<div style="position: relative; width: 100%; height: 100%;">';
+      html += '<div style="position: absolute; top: 2px; left: 4px; font-size: 0.9rem; color: var(--color-primary-dark); font-weight: 600;">' + (tens > 0 ? tens : '') + '</div>';
+      html += '<div style="position: absolute; bottom: 2px; right: 4px; font-size: 0.9rem; color: var(--color-primary-dark); font-weight: 600;">' + ones + '</div>';
+      html += '<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-left: 1px solid #a0aec0; transform: rotate(45deg); transform-origin: top left;"></div>';
+      html += '</div>';
+      html += '</td>';
+    }
+    html += '</tr>';
+  }
+  
+  html += '</table>';
+  html += '</div>';
+  
+  // Erklärung der Diagonalen-Addition
+  html += '<div style="margin-top: 24px;">';
+  html += '<strong>So rechnest du das Ergebnis aus:</strong>';
+  html += '</div>';
+  
+  html += '<div class="step">';
+  html += '<div class="step-number">Schritt 1: Multiplizieren</div>';
+  html += '<div class="step-content">';
+  html += 'Jede Ziffer wird mit jeder anderen multipliziert. Das Ergebnis wird in das Kästchen eingetragen:<br>';
+  html += `<strong>Zehner</strong> oben links, <strong>Einer</strong> unten rechts`;
+  html += '</div></div>';
+  
+  html += '<div class="step">';
+  html += '<div class="step-number">Schritt 2: Diagonal addieren</div>';
+  html += '<div class="step-content">';
+  html += 'Addiere die Zahlen entlang der Diagonalen (von rechts unten nach links oben).<br>';
+  html += 'Bei Überträgen merke dir die Zehnerstelle für die nächste Diagonale.';
+  html += '</div></div>';
+  
+  html += '<div class="step">';
+  html += '<div class="step-number">Ergebnis:</div>';
+  html += '<div class="step-content">';
+  html += `${num1} × ${num2} = <span class="highlight-step">${product}</span>`;
+  html += '</div></div>';
+  
+  html += '<div class="tip-box">';
+  html += '💡 Die Gittermethode ist besonders praktisch bei großen Zahlen, weil man sich keine Überträge merken muss!';
+  html += '</div>';
+  
+  return html;
+}
+
+// Schriftliche Division (klassische deutsche Darstellung)
+function generateWrittenDivision(dividend, divisor, quotient) {
+  const dividendStr = String(dividend);
+  let html = '<div class="written-calc" style="text-align: left; font-size: 1.4rem; line-height: 2;">';
+  
+  // Kopfzeile: dividend : divisor = quotient
+  html += `<div style="border-bottom: 2px solid var(--color-text); padding-bottom: 8px; margin-bottom: 12px;">`;
+  html += `<strong>${dividend} : ${divisor} = ${quotient}</strong>`;
+  html += `</div>`;
+  
+  // Berechne die Schritte
+  let currentNumber = 0;
+  let steps = [];
+  
+  for (let i = 0; i < dividendStr.length; i++) {
+    currentNumber = currentNumber * 10 + parseInt(dividendStr[i]);
+    
+    if (currentNumber >= divisor) {
+      const digit = Math.floor(currentNumber / divisor);
+      const product = digit * divisor;
+      const remainder = currentNumber - product;
+      
+      steps.push({
+        currentNumber,
+        digit,
+        product,
+        remainder,
+        nextDigit: i < dividendStr.length - 1 ? dividendStr[i + 1] : null
+      });
+      
+      currentNumber = remainder;
+    }
+  }
+  
+  // Zeige die Rechnung
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i];
+    
+    html += `<div style="margin: 8px 0;">`;
+    if (i === 0) {
+      html += `<span style="color: #666;">−</span>${step.product.toString().padStart(String(step.currentNumber).length, ' ')}`;
+    } else {
+      html += `<span style="visibility: hidden;">−</span>${step.currentNumber}`;
+      html += `<br><span style="color: #666;">−</span>${step.product.toString().padStart(String(step.currentNumber).length, ' ')}`;
+    }
+    html += `<br><span style="border-top: 2px solid var(--color-text); display: inline-block; padding-top: 4px;">`;
+    if (step.nextDigit !== null) {
+      html += `<span style="visibility: hidden;">${' '.repeat(String(step.remainder).length)}</span>${step.remainder}${step.nextDigit}`;
+    } else if (step.remainder === 0) {
+      html += `<span style="visibility: hidden;">${' '.repeat(String(step.remainder).length)}</span>  0`;
+    } else {
+      html += `<span style="visibility: hidden;">${' '.repeat(String(step.remainder).length)}</span>${step.remainder}`;
+    }
+    html += `</span>`;
+    html += `</div>`;
+  }
+  
+  html += '</div>';
+  
+  // Schrittweise Erklärung
+  html += '<div style="margin-top: 24px;">';
+  html += '<strong>Schritt für Schritt:</strong>';
+  
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i];
+    
+    html += '<div class="step">';
+    html += `<div class="step-number">Schritt ${i + 1}:</div>`;
+    html += '<div class="step-content">';
+    
+    html += `${step.currentNumber} : ${divisor} = <span class="highlight-step">${step.digit}</span>`;
+    html += `<br>Rechnung: ${step.digit} × ${divisor} = ${step.product}`;
+    html += `<br>Subtraktion: ${step.currentNumber} − ${step.product} = ${step.remainder}`;
+    
+    if (step.nextDigit !== null) {
+      html += `<br><small style="color: var(--color-primary-dark);">→ Hole die nächste Ziffer (${step.nextDigit}) herunter</small>`;
+    }
+    
+    html += '</div></div>';
+  }
+  
+  if (steps[steps.length - 1].remainder > 0) {
+    html += '<div class="tip-box">';
+    html += `Es bleibt ein Rest von ${steps[steps.length - 1].remainder}`;
+    html += '</div>';
+  }
+  
+  html += '</div>';
+  
+  return html;
+}
+
+// Erklärung generieren
+function generateExplanation(task) {
+  if (!task) return '';
+  
+  let html = '<div style="line-height: 1.8;">';
+  
+  if (task.taskType === 'word') {
+    html += `<div class="calculation">${task.problem}</div>`;
+    html += `<div style="margin: 20px 0; padding: 16px; background: #e6fffa; border-radius: var(--radius-md); border-left: 4px solid #38b2ac;">`;
+    html += `<strong>🤔 Was ist gefragt?</strong><br>`;
+    html += `Wir müssen herausfinden: Wie lautet die Antwort?`;
+    html += `</div>`;
+  }
+  
+  const { num1, num2, answer, op } = task;
+  
+  if (op === 'add') {
+    html += `<div style="margin: 20px 0; padding: 16px; background: #F5F0E8; border-radius: var(--radius-lg); border: 2px solid #E8B86D;">`;
+    html += `<div style="font-size: 1.3rem; font-weight: 600; color: #C39759; margin-bottom: 12px;">📝 Die Aufgabe:</div>`;
+    html += `<div style="font-size: 2rem; font-weight: 600; text-align: center; color: #2c3e50;">${num1} + ${num2} = ?</div>`;
+    html += `</div>`;
+    
+    if (num1 >= 20 || num2 >= 20) {
+      // Schriftlich rechnen für große Zahlen
+      html += `<div style="margin: 20px 0;"><strong>✏️ Schriftlich rechnen:</strong></div>`;
+      html += generateWrittenAddition(num1, num2, answer);
+    } else if (num1 <= 10 && num2 <= 10) {
+      // === 1. KLASSE: Visuelle Erklärung ===
+      html += '<div style="margin: 20px 0;">';
+      
+      // Schritt 1: Mit Emojis zeigen
+      html += '<div style="padding: 20px; background: #E5F2ED; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #7BA591;">';
+      html += '<div style="font-weight: 600; color: #6B9085; margin-bottom: 12px; font-size: 1.2rem;">👀 Schau es dir an:</div>';
+      
+      html += `<div style="margin-bottom: 16px; padding: 12px; background: var(--color-surface); border-radius: var(--radius-md);">`;
+      html += `<div style="color: #6B9085; font-weight: 600; margin-bottom: 8px;">Du hast ${num1} Äpfel 🍎:</div>`;
+      html += '<div style="font-size: 2rem; line-height: 1.5;">';
+      for (let i = 0; i < num1; i++) {
+        html += '🍎 ';
+      }
+      html += '</div>';
+      html += `<div style="margin-top: 8px; color: #7f8c8d; font-size: 0.9rem;">Zähle: ${Array.from({length: num1}, (_, i) => i + 1).join(', ')}</div>`;
+      html += '</div>';
+      
+      html += `<div style="text-align: center; font-size: 2rem; color: #E8B86D; font-weight: 600; margin: 12px 0;">➕</div>`;
+      
+      html += `<div style="margin-bottom: 16px; padding: 12px; background: var(--color-surface); border-radius: var(--radius-md);">`;
+      html += `<div style="color: #6B9085; font-weight: 600; margin-bottom: 8px;">Du bekommst ${num2} Äpfel dazu 🍎:</div>`;
+      html += '<div style="font-size: 2rem; line-height: 1.5;">';
+      for (let i = 0; i < num2; i++) {
+        html += '🍏 ';
+      }
+      html += '</div>';
+      html += '</div>';
+      
+      html += `<div style="margin-top: 16px; padding: 16px; background: #E8B86D; border-radius: var(--radius-md);">`;
+      html += `<div style="color: var(--color-surface); font-weight: 600; margin-bottom: 8px;">✨ Zusammen hast du:</div>`;
+      html += '<div style="font-size: 2rem; line-height: 1.5;">';
+      for (let i = 0; i < num1; i++) {
+        html += '🍎 ';
+      }
+      for (let i = 0; i < num2; i++) {
+        html += '🍏 ';
+      }
+      html += '</div>';
+      html += `<div style="margin-top: 12px; padding: 12px; background: var(--color-surface); border-radius: var(--radius-sm); text-align: center;">`;
+      html += `<strong style="color: #E8B86D; font-size: 1.3rem;">Zähle alle: ${Array.from({length: answer}, (_, i) => i + 1).join(', ')}</strong>`;
+      html += '</div>';
+      html += '</div>';
+      html += '</div>';
+      
+      // Zahlenstrahl
+      html += '<div style="padding: 20px; background: #E8F2F4; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #88B5A5;">';
+      html += '<div style="font-weight: 600; color: #6B8A7E; margin-bottom: 12px; font-size: 1.2rem;">📏 Auf dem Zahlenstrahl:</div>';
+      html += '<div style="position: relative; padding: 20px 0;">';
+      html += '<div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">';
+      const start = Math.max(0, num1 - 2);
+      const end = answer + 2;
+      for (let i = start; i <= end; i++) {
+        const isStart = i === num1;
+        const isEnd = i === answer;
+        html += `<div style="text-align: center; flex: 1;">`;
+        html += `<div style="font-size: ${isStart || isEnd ? '1.5rem' : '1.2rem'}; font-weight: ${isStart || isEnd ? '700' : '400'}; color: ${isStart ? 'var(--color-error)' : (isEnd ? '#27ae60' : '#7f8c8d')};">${i}</div>`;
+        if (isStart) html += '<div style="font-size: 1.5rem; margin-top: 4px;">👆</div>';
+        if (isEnd) html += '<div style="font-size: 1.5rem; margin-top: 4px;">🎯</div>';
+        html += '</div>';
+      }
+      html += '</div>';
+      html += `<div style="background: var(--color-surface); padding: 12px; border-radius: var(--radius-md); margin-top: 16px;">`;
+      html += `<strong style="color: #6B8A7E;">So gehts:</strong><br>`;
+      html += `1️⃣ Starte bei <strong style="color: var(--color-error);">${num1}</strong> 👆<br>`;
+      html += `2️⃣ Hüpfe <strong style="color: #E8B86D;">${num2}-mal nach rechts</strong> ➡️<br>`;
+      html += `3️⃣ Du landest bei <strong style="color: #88B894;">${answer}</strong> 🎯`;
+      html += '</div>';
+      html += '</div>';
+      html += '</div>';
+      
+      // Weiterzählen
+      if (num2 <= 5) {
+        html += '<div style="padding: 20px; background: #F5F0E8; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #E8B86D;">';
+        html += '<div style="font-weight: 600; color: #C39759; margin-bottom: 12px; font-size: 1.2rem;">👆 Zähle weiter:</div>';
+        let current = num1;
+        html += `<div style="font-size: 1.1rem; margin-bottom: 16px; color: #7f8c8d;">Wir starten bei <strong style="color: var(--color-error); font-size: 1.3rem;">${num1}</strong> und zählen <strong style="color: #E8B86D;">${num2}</strong> weiter...</div>`;
+        for (let i = 0; i < num2; i++) {
+          current++;
+          const isLast = i === num2 - 1;
+          html += `<div style="padding: 12px; margin: 8px 0; background: ${isLast ? '#27ae60' : 'var(--color-surface)'}; border-radius: var(--radius-md); border: 2px solid ${isLast ? '#27ae60' : '#d68910'}; color: ${isLast ? 'var(--color-surface)' : '#2c3e50'};">`;
+          html += `<strong>${i + 1}. Schritt:</strong> ${num1} + ${i + 1} = <strong style="font-size: 1.3rem;">${current}</strong>`;
+          if (isLast) html += ' ✅';
+          html += '</div>';
+        }
+        html += '</div>';
+      }
+      
+      html += '</div>';
+    } else {
+      // === 2.-4. KLASSE: Kompakte Erklärung ===
+      html += '<div style="margin: 20px 0;">';
+      html += '<div class="step">';
+      html += '<div class="step-number">So rechnest du:</div>';
+      html += '<div class="step-content">';
+      html += `Beginne mit ${num1} und zähle ${num2} dazu:<br>`;
+      
+      if (num2 <= 5) {
+        let current = num1;
+        let steps = [];
+        for (let i = 0; i < num2; i++) {
+          current++;
+          steps.push(current);
+        }
+        html += steps.join(' → ');
+      } else {
+        html += `${num1} + ${num2} = <span class="highlight-step">${answer}</span>`;
+      }
+      
+      html += '</div></div>';
+      html += '</div>';
+    }
+    
+    html += `<div style="margin: 20px 0; padding: 20px; background: linear-gradient(135deg, #88B894 0%, #7BA591 100%); border-radius: var(--radius-lg); text-align: center; color: var(--color-surface);">`;
+    html += `<div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 8px;">🎉 Die Antwort ist ${answer}!</div>`;
+    html += `<div style="font-size: 1rem; opacity: 0.9;">Super gemacht!</div>`;
+    html += `</div>`;
+    html += `<div style="padding: 16px; background: #E5F2ED; border-radius: var(--radius-md); border-left: 4px solid #1abc9c;">💡 <strong>Tipp:</strong> Du kannst es auch umgekehrt rechnen: ${num2} + ${num1} = ${answer}</div>`;
+    
+  } else if (op === 'sub') {
+    html += `<div style="margin: 20px 0; padding: 16px; background: #F8EDE8; border-radius: var(--radius-lg); border: 3px solid var(--color-error);">`;
+    html += `<div style="font-size: 1.3rem; font-weight: 600; color: #B8675D; margin-bottom: 12px;">📝 Die Aufgabe:</div>`;
+    html += `<div style="font-size: 2rem; font-weight: 600; text-align: center; color: #2c3e50;">${num1} − ${num2} = ?</div>`;
+    html += `</div>`;
+    
+    if (num1 >= 20 || num2 >= 20) {
+      // Schriftlich rechnen
+      html += `<div style="margin: 20px 0;"><strong>✏️ Schriftlich rechnen:</strong></div>`;
+      html += generateWrittenSubtraction(num1, num2, answer);
+    } else if (num1 <= 10 && num2 <= 10) {
+      // === 1. KLASSE: Visuelle Erklärung ===
+      html += '<div style="margin: 20px 0;">';
+      
+      html += '<div style="padding: 20px; background: #F8F5EA; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #E8B86D;">';
+      html += '<div style="font-weight: 600; color: #C39759; margin-bottom: 12px; font-size: 1.2rem;">👀 Schau es dir an:</div>';
+      
+      html += `<div style="margin-bottom: 16px; padding: 12px; background: var(--color-surface); border-radius: var(--radius-md);">`;
+      html += `<div style="color: #C39759; font-weight: 600; margin-bottom: 8px;">Du hast ${num1} Äpfel 🍎:</div>`;
+      html += '<div style="font-size: 2rem; line-height: 1.5;">';
+      for (let i = 0; i < num1; i++) {
+        html += '🍎 ';
+      }
+      html += '</div>';
+      html += `<div style="margin-top: 8px; color: #7f8c8d; font-size: 0.9rem;">Zähle: ${Array.from({length: num1}, (_, i) => i + 1).join(', ')}</div>`;
+      html += '</div>';
+      
+      html += `<div style="text-align: center; font-size: 2rem; color: var(--color-error); font-weight: 600; margin: 12px 0;">➖</div>`;
+      
+      html += `<div style="margin-bottom: 16px; padding: 12px; background: var(--color-surface); border-radius: var(--radius-md);">`;
+      html += `<div style="color: var(--color-error); font-weight: 600; margin-bottom: 8px;">Du isst ${num2} Äpfel 🍎:</div>`;
+      html += '<div style="font-size: 2rem; line-height: 1.5;">';
+      for (let i = 0; i < num2; i++) {
+        html += '<span style="opacity: 0.3; text-decoration: line-through;">🍎</span> ';
+      }
+      html += '</div>';
+      html += `<div style="margin-top: 8px; color: var(--color-error); font-weight: 600;">Diese ${num2} sind weg!</div>`;
+      html += '</div>';
+      
+      html += `<div style="margin-top: 16px; padding: 16px; background: #88B894; border-radius: var(--radius-md);">`;
+      html += `<div style="color: var(--color-surface); font-weight: 600; margin-bottom: 8px;">✨ Es bleiben übrig:</div>`;
+      html += '<div style="font-size: 2rem; line-height: 1.5;">';
+      for (let i = 0; i < answer; i++) {
+        html += '🍎 ';
+      }
+      html += '</div>';
+      html += `<div style="margin-top: 12px; padding: 12px; background: var(--color-surface); border-radius: var(--radius-sm); text-align: center;">`;
+      html += `<strong style="color: #88B894; font-size: 1.3rem;">Zähle: ${answer > 0 ? Array.from({length: answer}, (_, i) => i + 1).join(', ') : '0 (keine mehr übrig)'}</strong>`;
+      html += '</div>';
+      html += '</div>';
+      html += '</div>';
+      
+      html += '<div style="padding: 20px; background: #E8F2F4; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #88B5A5;">';
+      html += '<div style="font-weight: 600; color: #6B8A7E; margin-bottom: 12px; font-size: 1.2rem;">📏 Auf dem Zahlenstrahl:</div>';
+      html += '<div style="position: relative; padding: 20px 0;">';
+      html += '<div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">';
+      const subStart = Math.max(0, answer - 1);
+      const subEnd = num1 + 1;
+      for (let i = subStart; i <= subEnd; i++) {
+        const isStart = i === num1;
+        const isEnd = i === answer;
+        html += `<div style="text-align: center; flex: 1;">`;
+        html += `<div style="font-size: ${isStart || isEnd ? '1.5rem' : '1.2rem'}; font-weight: ${isStart || isEnd ? '700' : '400'}; color: ${isStart ? 'var(--color-error)' : (isEnd ? '#27ae60' : '#7f8c8d')};">${i}</div>`;
+        if (isStart) html += '<div style="font-size: 1.5rem; margin-top: 4px;">👆</div>';
+        if (isEnd) html += '<div style="font-size: 1.5rem; margin-top: 4px;">🎯</div>';
+        html += '</div>';
+      }
+      html += '</div>';
+      html += `<div style="background: var(--color-surface); padding: 12px; border-radius: var(--radius-md); margin-top: 16px;">`;
+      html += `<strong style="color: #6B8A7E;">So gehts:</strong><br>`;
+      html += `1️⃣ Starte bei <strong style="color: var(--color-error);">${num1}</strong> 👆<br>`;
+      html += `2️⃣ Hüpfe <strong style="color: var(--color-error);">${num2}-mal nach links</strong> ⬅️<br>`;
+      html += `3️⃣ Du landest bei <strong style="color: #88B894;">${answer}</strong> 🎯`;
+      html += '</div>';
+      html += '</div>';
+      html += '</div>';
+      
+      if (num2 <= 5) {
+        html += '<div style="padding: 20px; background: #F8EDE8; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid var(--color-error);">';
+        html += '<div style="font-weight: 600; color: #B8675D; margin-bottom: 12px; font-size: 1.2rem;">👆 Zähle rückwärts:</div>';
+        let current = num1;
+        html += `<div style="font-size: 1.1rem; margin-bottom: 16px; color: #7f8c8d;">Wir starten bei <strong style="color: var(--color-error); font-size: 1.3rem;">${num1}</strong> und zählen <strong style="color: var(--color-error);">${num2}</strong> zurück...</div>`;
+        for (let i = 0; i < num2; i++) {
+          current--;
+          const isLast = i === num2 - 1;
+          html += `<div style="padding: 12px; margin: 8px 0; background: ${isLast ? '#27ae60' : 'var(--color-surface)'}; border-radius: var(--radius-md); border: 2px solid ${isLast ? '#27ae60' : 'var(--color-error)'}; color: ${isLast ? 'var(--color-surface)' : '#2c3e50'};">`;
+          html += `<strong>${i + 1}. Schritt:</strong> ${num1} − ${i + 1} = <strong style="font-size: 1.3rem;">${current}</strong>`;
+          if (isLast) html += ' ✅';
+          html += '</div>';
+        }
+        html += '</div>';
+      }
+      
+      html += '</div>';
+    } else {
+      // === 2.-4. KLASSE: Kompakte Erklärung ===
+      html += '<div style="margin: 20px 0;">';
+      html += '<div class="step">';
+      html += '<div class="step-number">So rechnest du:</div>';
+      html += '<div class="step-content">';
+      html += `Beginne mit ${num1} und ziehe ${num2} ab:<br>`;
+      html += `${num1} − ${num2} = <span class="highlight-step">${answer}</span>`;
+      html += '</div></div>';
+      html += '</div>';
+    }
+    
+    html += `<div style="margin: 20px 0; padding: 20px; background: linear-gradient(135deg, #88B894 0%, #7BA591 100%); border-radius: var(--radius-lg); text-align: center; color: var(--color-surface);">`;
+    html += `<div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 8px;">🎉 Die Antwort ist ${answer}!</div>`;
+    html += `<div style="font-size: 1rem; opacity: 0.9;">Super gemacht!</div>`;
+    html += `</div>`;
+    html += `<div style="padding: 16px; background: #E5F2ED; border-radius: var(--radius-md); border-left: 4px solid #1abc9c;">💡 <strong>Tipp:</strong> Zum Überprüfen: ${answer} + ${num2} = ${num1} ✓</div>`;
+    
+  } else if (op === 'mul') {
+    html += `<div style="margin: 20px 0; padding: 16px; background: #EEE9F0; border-radius: var(--radius-lg); border: 2px solid #A77BA5;">`;
+    html += `<div style="font-size: 1.3rem; font-weight: 600; color: #8B6B8A; margin-bottom: 12px;">📝 Die Aufgabe:</div>`;
+    html += `<div style="font-size: 2rem; font-weight: 600; text-align: center; color: #2c3e50;">${num1} × ${num2} = ?</div>`;
+    html += `</div>`;
+    
+    if (num1 >= 20 || num2 >= 11) {
+      // Schriftlich rechnen
+      html += `<div style="margin: 20px 0;"><strong>✏️ Schriftlich rechnen:</strong></div>`;
+      html += generateWrittenMultiplication(num1, num2, answer);
+    } else if (num1 <= 10 && num2 <= 5) {
+      // === 1. KLASSE: Visuelle Erklärung ===
+      html += '<div style="margin: 20px 0;">';
+      
+      html += '<div style="padding: 20px; background: #E8F2F4; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #88B5A5;">';
+      html += '<div style="font-weight: 600; color: #6B8A7E; margin-bottom: 12px; font-size: 1.2rem;">👀 Schau es dir an:</div>';
+      html += `<div style="margin-bottom: 16px; color: #7f8c8d; font-size: 1.1rem;">${num1} × ${num2} bedeutet: <strong style="color: #A77BA5;">${num2} Gruppen</strong> mit je <strong style="color: #7BA591;">${num1} Süßigkeiten</strong></div>`;
+      
+      for (let group = 0; group < num2; group++) {
+        html += `<div style="margin: 12px 0; padding: 12px; background: var(--color-surface); border-radius: var(--radius-md); border: 2px solid #88B5A5;">`;
+        html += `<div style="color: #6B8A7E; font-weight: 600; margin-bottom: 8px;">${group + 1}. Gruppe (${num1} Stück):</div>`;
+        html += '<div style="font-size: 2rem; line-height: 1.5;">';
+        for (let i = 0; i < num1; i++) {
+          html += '🍬 ';
+        }
+        html += '</div>';
+        html += '</div>';
+      }
+      
+      html += `<div style="margin-top: 16px; padding: 16px; background: #A77BA5; border-radius: var(--radius-md);">`;
+      html += `<div style="color: var(--color-surface); font-weight: 600; margin-bottom: 8px;">✨ Alle zusammen:</div>`;
+      html += '<div style="font-size: 2rem; line-height: 1.5;">';
+      for (let i = 0; i < answer && i < 50; i++) {
+        html += '🍬 ';
+      }
+      if (answer > 50) html += '...';
+      html += '</div>';
+      html += `<div style="margin-top: 12px; padding: 12px; background: var(--color-surface); border-radius: var(--radius-sm); text-align: center;">`;
+      html += `<strong style="color: #A77BA5; font-size: 1.3rem;">Das sind ${answer} Süßigkeiten!</strong>`;
+      html += '</div>';
+      html += '</div>';
+      html += '</div>';
+      
+      if (num2 <= 4) {
+        html += '<div style="padding: 20px; background: #F8F5EA; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #E8B86D;">';
+        html += '<div style="font-weight: 600; color: #C39759; margin-bottom: 12px; font-size: 1.2rem;">➕ Als Plus-Aufgabe:</div>';
+        const parts = [];
+        for (let i = 0; i < num2; i++) {
+          parts.push(num1);
+        }
+        html += `<div style="padding: 16px; background: var(--color-surface); border-radius: var(--radius-md); margin-bottom: 12px;">`;
+        html += `<div style="font-size: 1.2rem; margin-bottom: 12px; color: #7f8c8d;">Mal-Rechnen ist mehrfaches Plus-Rechnen!</div>`;
+        html += `<div style="font-size: 1.5rem; font-weight: 600; text-align: center; color: #E8B86D; padding: 12px; background: #F8F5EA; border-radius: var(--radius-sm);">`;
+        html += parts.join(' + ') + ` = <strong style="color: #88B894;">${answer}</strong>`;
+        html += '</div>';
+        html += '</div>';
+        let current = 0;
+        for (let i = 0; i < num2; i++) {
+          current += num1;
+          const isLast = i === num2 - 1;
+          html += `<div style="padding: 12px; margin: 8px 0; background: ${isLast ? '#27ae60' : 'var(--color-surface)'}; border-radius: var(--radius-md); border: 2px solid ${isLast ? '#27ae60' : '#f39c12'}; color: ${isLast ? 'var(--color-surface)' : '#2c3e50'};">`;
+          html += `<strong>${i + 1}. Gruppe:</strong> ${i > 0 ? current - num1 + ' + ' : ''}${num1} = <strong style="font-size: 1.3rem;">${current}</strong>`;
+          if (isLast) html += ' ✅';
+          html += '</div>';
+        }
+        html += '</div>';
+      }
+      
+      html += '<div style="padding: 20px; background: #E5F2ED; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #7BA591;">';
+      html += '<div style="font-weight: 600; color: #6B9085; margin-bottom: 12px; font-size: 1.2rem;">📚 Das Kleine Einmaleins:</div>';
+      html += `<div style="padding: 16px; background: var(--color-surface); border-radius: var(--radius-md);">`;
+      html += `<div style="margin-bottom: 12px; color: #7f8c8d;">Die <strong style="color: #7BA591;">${num1}er-Reihe</strong>:</div>`;
+      html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px;">';
+      for (let i = 1; i <= 10; i++) {
+        const result = num1 * i;
+        const isAnswer = i === num2;
+        html += `<div style="padding: 10px; background: ${isAnswer ? '#1abc9c' : '#f8f9fa'}; border-radius: var(--radius-sm); text-align: center; border: 2px solid ${isAnswer ? '#1abc9c' : '#e0e0e0'}; color: ${isAnswer ? 'var(--color-surface)' : '#2c3e50'}; font-weight: ${isAnswer ? '700' : '600'};">`;
+        html += `${num1} × ${i} = ${result}`;
+        if (isAnswer) html += ' 🎯';
+        html += '</div>';
+      }
+      html += '</div>';
+      html += '</div>';
+      html += '</div>';
+      
+      html += '</div>';
+    } else {
+      // === 2.-4. KLASSE: Kompakte Erklärung ===
+      html += '<div style="margin: 20px 0;">';
+      html += '<div class="step">';
+      html += '<div class="step-number">Das Kleine Einmaleins:</div>';
+      html += '<div class="step-content">';
+      html += `${num1} × ${num2} bedeutet: ${num1} wird ${num2}-mal addiert<br>`;
+      
+      if (num2 <= 4) {
+        const parts = [];
+        for (let i = 0; i < num2; i++) {
+          parts.push(num1);
+        }
+        html += parts.join(' + ') + ` = <span class="highlight-step">${answer}</span>`;
+      } else {
+        html += `${num1} × ${num2} = <span class="highlight-step">${answer}</span>`;
+      }
+      
+      html += '</div></div>';
+      html += '</div>';
+    }
+    
+    html += `<div style="margin: 20px 0; padding: 20px; background: linear-gradient(135deg, #88B894 0%, #7BA591 100%); border-radius: var(--radius-lg); text-align: center; color: var(--color-surface);">`;
+    html += `<div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 8px;">🎉 Die Antwort ist ${answer}!</div>`;
+    html += `<div style="font-size: 1rem; opacity: 0.9;">Super gemacht!</div>`;
+    html += `</div>`;
+    html += `<div style="padding: 16px; background: #E5F2ED; border-radius: var(--radius-md); border-left: 4px solid #1abc9c;">💡 <strong>Tipp:</strong> Zum Überprüfen durch Division: ${answer} ÷ ${num2} = ${num1} ✓</div>`;
+    
+  } else if (op === 'div') {
+    html += `<div style="margin: 20px 0; padding: 16px; background: #E8F2F4; border-radius: var(--radius-lg); border: 2px solid #7BA591;">`;
+    html += `<div style="font-size: 1.3rem; font-weight: 600; color: #6B8A7E; margin-bottom: 12px;">📝 Die Aufgabe:</div>`;
+    html += `<div style="font-size: 2rem; font-weight: 600; text-align: center; color: #2c3e50;">${num1} ÷ ${num2} = ?</div>`;
+    html += `</div>`;
+    
+    if (num1 >= 100 || (num1 >= 20 && num2 >= 3)) {
+      // Schriftlich rechnen
+      html += `<div style="margin: 20px 0;"><strong>✏️ Schriftlich rechnen:</strong></div>`;
+      html += generateWrittenDivision(num1, num2, answer);
+    } else if (num1 <= 15 && num2 <= 5) {
+      // === 1. KLASSE: Visuelle Erklärung ===
+      html += '<div style="margin: 20px 0;">';
+      
+      html += '<div style="padding: 20px; background: #F8F5EA; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #E8B86D;">';
+      html += '<div style="font-weight: 600; color: #C39759; margin-bottom: 12px; font-size: 1.2rem;">🤔 Was bedeutet das?</div>';
+      html += `<div style="padding: 16px; background: var(--color-surface); border-radius: var(--radius-md); margin-bottom: 12px;">`;
+      html += `<div style="font-size: 1.1rem; color: #7f8c8d; margin-bottom: 8px;">Wir haben <strong style="color: #E8B86D;">${num1} Kekse</strong> 🍪</div>`;
+      html += `<div style="font-size: 1.1rem; color: #7f8c8d;">Wir möchten sie <strong style="color: #7BA591;">fair an ${num2} Freunde</strong> verteilen 👥</div>`;
+      html += `<div style="font-size: 1.2rem; font-weight: 600; color: #6B8A7E; margin-top: 12px;">❓ Wie viele bekommt jeder?</div>`;
+      html += '</div>';
+      html += '</div>';
+      
+      html += '<div style="padding: 20px; background: #E5F2ED; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #7BA591;">';
+      html += '<div style="font-weight: 600; color: #6B9085; margin-bottom: 12px; font-size: 1.2rem;">👀 Teile die Kekse auf:</div>';
+      html += `<div style="margin-bottom: 16px; padding: 12px; background: var(--color-surface); border-radius: var(--radius-md);">`;
+      html += `<div style="color: #6B9085; font-weight: 600; margin-bottom: 8px;">So viele Kekse haben wir (${num1}):</div>`;
+      html += '<div style="font-size: 2rem; line-height: 1.5;">';
+      for (let i = 0; i < num1; i++) {
+        html += '🍪 ';
+      }
+      html += '</div>';
+      html += '</div>';
+      html += `<div style="text-align: center; font-size: 1.5rem; color: #7BA591; font-weight: 600; margin: 12px 0;">➗ Teile fair auf ${num2} Freunde auf:</div>`;
+      for (let friend = 0; friend < num2; friend++) {
+        html += `<div style="margin: 12px 0; padding: 12px; background: var(--color-surface); border-radius: var(--radius-md); border: 2px solid #7BA591;">`;
+        html += `<div style="color: #6B9085; font-weight: 600; margin-bottom: 8px;">👤 ${friend + 1}. Freund bekommt:</div>`;
+        html += '<div style="font-size: 2rem; line-height: 1.5;">';
+        for (let i = 0; i < answer; i++) {
+          html += '🍪 ';
+        }
+        html += '</div>';
+        html += `<div style="margin-top: 8px; color: #7f8c8d; font-size: 0.9rem;">Das sind ${answer} Kekse</div>`;
+        html += '</div>';
+      }
+      html += `<div style="margin-top: 16px; padding: 16px; background: #7BA591; border-radius: var(--radius-md); text-align: center;">`;
+      html += `<div style="color: var(--color-surface); font-weight: 600; font-size: 1.2rem;">✨ Jeder Freund bekommt ${answer} Kekse!</div>`;
+      html += `<div style="color: var(--color-surface); margin-top: 8px; opacity: 0.9;">Alle bekommen gleich viel - das ist fair! ✅</div>`;
+      html += '</div>';
+      html += '</div>';
+      
+      html += '<div style="padding: 20px; background: #EEE9F0; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #A77BA5;">';
+      html += '<div style="font-weight: 600; color: #8B6B8A; margin-bottom: 12px; font-size: 1.2rem;">🔄 Der Trick: Geteilt ↔ Mal</div>';
+      html += `<div style="padding: 16px; background: var(--color-surface); border-radius: var(--radius-md); margin-bottom: 12px;">`;
+      html += `<div style="font-size: 1.1rem; color: #7f8c8d; margin-bottom: 12px;">Geteilt und Mal sind <strong style="color: #A77BA5;">Gegensätze</strong>!</div>`;
+      html += '<div style="display: grid; gap: 12px; margin-top: 12px;">';
+      html += `<div style="padding: 12px; background: #EEE9F0; border-radius: var(--radius-sm); border-left: 4px solid #8e44ad;">`;
+      html += `<strong style="color: #A77BA5;">Mal-Rechnung:</strong> ${num2} Freunde × ${answer} Kekse = ${num1} Kekse`;
+      html += '</div>';
+      html += `<div style="padding: 12px; background: #E8F2F4; border-radius: var(--radius-sm); border-left: 4px solid #3498db;">`;
+      html += `<strong style="color: #7BA591;">Geteilt-Rechnung:</strong> ${num1} Kekse ÷ ${num2} Freunde = ${answer} Kekse`;
+      html += '</div>';
+      html += '</div>';
+      html += '</div>';
+      html += `<div style="padding: 12px; background: #E5F2ED; border-radius: var(--radius-sm); border-left: 4px solid #1abc9c;">`;
+      html += `💡 <strong>Merke dir:</strong> Wenn du das Einmaleins kennst, kannst du auch teilen!`;
+      html += '</div>';
+      html += '</div>';
+      
+      html += '<div style="padding: 20px; background: #E5F2ED; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #7BA591;">';
+      html += '<div style="font-weight: 600; color: #6B9085; margin-bottom: 12px; font-size: 1.2rem;">📚 Finde es im Einmaleins:</div>';
+      html += `<div style="padding: 16px; background: var(--color-surface); border-radius: var(--radius-md); margin-bottom: 12px;">`;
+      html += `<div style="margin-bottom: 12px; color: #7f8c8d;">Suche in der <strong style="color: #7BA591;">${num2}er-Reihe</strong>: Welche Zahl × ${num2} = ${num1}?</div>`;
+      html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px;">';
+      for (let i = 1; i <= 10; i++) {
+        const result = num2 * i;
+        const isAnswer = i === answer;
+        html += `<div style="padding: 10px; background: ${isAnswer ? '#1abc9c' : '#f8f9fa'}; border-radius: var(--radius-sm); text-align: center; border: 2px solid ${isAnswer ? '#1abc9c' : '#e0e0e0'}; color: ${isAnswer ? 'var(--color-surface)' : '#2c3e50'}; font-weight: ${isAnswer ? '700' : '600'};">`;
+        html += `${num2} × ${i} = ${result}`;
+        if (isAnswer) html += ' 🎯';
+        html += '</div>';
+      }
+      html += '</div>';
+      if (answer <= 10) {
+        html += `<div style="margin-top: 12px; padding: 12px; background: #7BA591; color: var(--color-surface); border-radius: var(--radius-sm); text-align: center; font-weight: 600;">`;
+        html += `Gefunden! ${num2} × ${answer} = ${num1} ➡️ Also ist ${num1} ÷ ${num2} = ${answer}`;
+        html += '</div>';
+      }
+      html += '</div>';
+      html += '</div>';
+      
+      html += '</div>';
+    } else {
+      // === 2.-4. KLASSE: Kompakte Erklärung ===
+      html += '<div style="margin: 20px 0;">';
+      html += '<div class="step">';
+      html += '<div class="step-number">Was bedeutet das?</div>';
+      html += '<div class="step-content">';
+      html += `Wir teilen ${num1} in ${num2} gleiche Teile.<br>`;
+      html += `Oder: Wie oft passt ${num2} in ${num1}?`;
+      html += '</div></div>';
+      html += '</div>';
+      html += '<div style="margin: 20px 0;">';
+      html += '<div class="step">';
+      html += '<div class="step-number">So rechnest du:</div>';
+      html += '<div class="step-content">';
+      html += `${num2} × ${answer} = ${num1}<br>`;
+      html += `Also: ${num1} ÷ ${num2} = <span class="highlight-step">${answer}</span>`;
+      html += '</div></div>';
+      html += '</div>';
+    }
+    
+    html += `<div style="margin: 20px 0; padding: 20px; background: linear-gradient(135deg, #88B894 0%, #7BA591 100%); border-radius: var(--radius-lg); text-align: center; color: var(--color-surface);">`;
+    html += `<div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 8px;">🎉 Die Antwort ist ${answer}!</div>`;
+    html += `<div style="font-size: 1rem; opacity: 0.9;">Super gemacht!</div>`;
+    html += `</div>`;
+    html += `<div style="padding: 16px; background: #E5F2ED; border-radius: var(--radius-md); border-left: 4px solid #1abc9c;">💡 <strong>Tipp:</strong> Zum Überprüfen: ${answer} × ${num2} = ${num1} ✓</div>`;
+  }
+  
+  html += '</div>';
+  
+  return html;
+}
+
+// Speichern & Laden
+function saveState() {
+  localStorage.setItem('mathApp', JSON.stringify({
+    score: state.score,
+    total: state.total,
+    maxStreak: state.maxStreak,
+    settings: state.settings
+  }));
+}
+
+function loadState() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('mathApp'));
+    if (saved) {
+      state.score = saved.score || 0;
+      state.total = saved.total || 0;
+      state.maxStreak = saved.maxStreak || 0;
+      state.settings = {...state.settings, ...saved.settings};
+    }
+  } catch (e) {}
+}
+
+// Sprachausgabe
+function speak(text) {
+  if (!state.settings.sound || !speechSynthesis) return;
+  speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'de-DE';
+  utterance.rate = 0.85;
+  if (state.voice) utterance.voice = state.voice;
+  speechSynthesis.speak(utterance);
+}
+
+speechSynthesis.onvoiceschanged = () => {
+  state.voice = speechSynthesis.getVoices().find(v => v.lang.startsWith('de')) || null;
+};
+
+// Timer
+function startTimer() {
+  if (!state.settings.timer) return;
+  stopTimer();
+  state.timerValue = 30;
+  $('timer').style.display = 'block';
+  $('time').textContent = state.timerValue;
+  $('timer').classList.remove('warning');
+  
+  state.timerInterval = setInterval(() => {
+    state.timerValue--;
+    $('time').textContent = state.timerValue;
+    
+    if (state.timerValue <= 10) {
+      $('timer').classList.add('warning');
+    }
+    
+    if (state.timerValue <= 0) {
+      stopTimer();
+      if (!state.answered) {
+        answerQuestion(-1);
+        $('msg').textContent = '⏱️ Zeit abgelaufen!';
+      }
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  if (state.timerInterval) {
+    clearInterval(state.timerInterval);
+    state.timerInterval = null;
+  }
+  if (state.settings.timer) {
+    $('timer').style.display = 'none';
+  }
+}
+
+// UI Updates
+function updateStats() {
+  $('score').textContent = state.score;
+  $('total').textContent = state.total;
+  $('streak').textContent = state.streak;
+}
+
+function updateHistory() {
+  const html = state.history.slice(-5).reverse().map(item => 
+    `<div class="history-item ${item.correct ? 'ok' : 'no'}">${item.problem}</div>`
+  ).join('');
+  $('history').innerHTML = html || '<div style="text-align:center;opacity:0.6;padding:10px;">Noch keine Aufgaben</div>';
+}
+
+function showHistoryModal() {
+  const accuracy = state.total > 0 ? Math.round((state.score / state.total) * 100) : 0;
+  const html = `
+    <div class="settings-panel">
+      <div class="setting-row">
+        <div class="setting-label">Gesamt beantwortet</div>
+        <div style="font-weight: 600; font-size: 1.2rem;">${state.total}</div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-label">Richtig</div>
+        <div style="font-weight: 600; font-size: 1.2rem;">${state.score}</div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-label">Genauigkeit</div>
+        <div style="font-weight: 600; font-size: 1.2rem;">${accuracy}%</div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-label">Längste Serie</div>
+        <div style="font-weight: 600; font-size: 1.2rem;">${state.maxStreak}</div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-label">Aktuelle Serie</div>
+        <div style="font-weight: 600; font-size: 1.2rem;">${state.streak}</div>
+      </div>
+    </div>
+    <div style="margin-top: 20px;">
+      <strong style="margin-bottom: 12px; display: block;">Letzte Aufgaben:</strong>
+      <div class="history">
+        ${state.history.slice(-8).reverse().map(item => 
+          `<div class="history-item ${item.correct ? 'ok' : 'no'}">${item.problem}</div>`
+        ).join('') || '<div style="text-align:center;opacity:0.6;">Noch keine Aufgaben</div>'}
+      </div>
+    </div>
+  `;
+  $('mbody-history').innerHTML = html;
+  $('ov-history').classList.add('show');
+}
+
+// Aufgabe starten
+function startNewTask() {
+  state.currentTask = createTask(state.grade);
+  state.answered = false;
+  
+  $('task').textContent = state.currentTask.problem;
+  $('msg').className = 'msg';
+  $('msg').textContent = 'Wähle die richtige Antwort';
+  $('help').disabled = false;
+  
+  $('ans').innerHTML = '';
+  state.currentTask.options.forEach((option, index) => {
+    const btn = document.createElement('button');
+    btn.textContent = option;
+    btn.onclick = () => answerQuestion(index);
+    $('ans').appendChild(btn);
+  });
+  
+  let spokenText;
+  if (state.currentTask.taskType === 'word') {
+    spokenText = state.currentTask.problem;
+  } else {
+    spokenText = state.currentTask.problem
+      .replace(/\+/g, ' plus ')
+      .replace(/−/g, ' minus ')
+      .replace(/×/g, ' mal ')
+      .replace(/÷/g, ' geteilt durch ')
+      .replace(/\?/g, '')
+      .replace(/=/g, ' gleich ');
+  }
+  speak(spokenText);
+  
+  startTimer();
+}
+
+// Antwort prüfen
+function answerQuestion(selectedIndex) {
+  if (state.answered) return;
+  
+  state.answered = true;
+  stopTimer();
+  
+  const buttons = $('ans').querySelectorAll('button');
+  const correctIndex = state.currentTask.correctIndex;
+  
+  buttons[correctIndex].classList.add('ok');
+  
+  const isCorrect = selectedIndex === correctIndex;
+  state.total++;
+  
+  if (isCorrect) {
+    state.score++;
+    state.streak++;
+    if (state.streak > state.maxStreak) {
+      state.maxStreak = state.streak;
+    }
+    $('msg').className = 'msg ok';
+    $('msg').textContent = '✅ Richtig! Super gemacht!';
+    speak('Richtig! Super gemacht!');
+  } else {
+    state.streak = 0;
+    if (selectedIndex >= 0) {
+      buttons[selectedIndex].classList.add('no');
+    }
+    $('msg').className = 'msg no';
+    $('msg').textContent = `Leider falsch. Die richtige Antwort ist: ${state.currentTask.options[correctIndex]}`;
+    speak('Leider falsch. Versuch es beim nächsten Mal noch einmal.');
+  }
+  
+  state.history.push({
+    problem: state.currentTask.problem.replace('?', state.currentTask.options[correctIndex]),
+    correct: isCorrect
+  });
+  
+  updateStats();
+  updateHistory();
+  saveState();
+}
+
+// Event Listeners
+$('grades').onclick = e => {
+  const btn = e.target.closest('button[data-g]');
+  if (!btn) return;
+  
+  state.grade = +btn.dataset.g;
+  $('grades').querySelectorAll('button').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+};
+
+$('start').onclick = startNewTask;
+
+$('help').onclick = () => {
+  if (!state.currentTask) return;
+  $('mbody-help').innerHTML = generateExplanation(state.currentTask);
+  $('ov-help').classList.add('show');
+};
+
+$('history-btn').onclick = showHistoryModal;
+$('history-btn-2').onclick = showHistoryModal;
+
+$('snd').onclick = () => {
+  state.settings.sound = !state.settings.sound;
+  $('snd').textContent = state.settings.sound ? '🔊' : '🔇';
+  $('toggle-sound').classList.toggle('on', state.settings.sound);
+  saveState();
+};
+
+$('settings').onclick = () => {
+  $('toggle-timer').classList.toggle('on', state.settings.timer);
+  $('toggle-sound').classList.toggle('on', state.settings.sound);
+  $('toggle-keys').classList.toggle('on', state.settings.keyboard);
+  $('ov-settings').classList.add('show');
+};
+
+// Modal controls
+['help', 'settings', 'history'].forEach(name => {
+  $(`cls-${name}`).onclick = () => $(`ov-${name}`).classList.remove('show');
+  $(`mok-${name}`).onclick = () => $(`ov-${name}`).classList.remove('show');
+  $(`ov-${name}`).onclick = e => {
+    if (e.target === $(`ov-${name}`)) {
+      $(`ov-${name}`).classList.remove('show');
+    }
+  };
+});
+
+// Toggle controls
+$('toggle-timer').onclick = () => {
+  state.settings.timer = !state.settings.timer;
+  $('toggle-timer').classList.toggle('on');
+  if (!state.settings.timer) stopTimer();
+  saveState();
+};
+
+$('toggle-sound').onclick = () => {
+  state.settings.sound = !state.settings.sound;
+  $('toggle-sound').classList.toggle('on');
+  $('snd').textContent = state.settings.sound ? '🔊' : '🔇';
+  saveState();
+};
+
+$('toggle-keys').onclick = () => {
+  state.settings.keyboard = !state.settings.keyboard;
+  $('toggle-keys').classList.toggle('on');
+  saveState();
+};
+
+// Keyboard shortcuts
+document.onkeydown = e => {
+  if (!state.settings.keyboard) return;
+  
+  if (e.key === 'Escape') {
+    ['help', 'settings', 'history'].forEach(name => {
+      $(`ov-${name}`).classList.remove('show');
+    });
+    return;
+  }
+  
+  if ($('ov-help').classList.contains('show') || 
+      $('ov-settings').classList.contains('show') ||
+      $('ov-history').classList.contains('show')) {
+    return;
+  }
+  
+  if (e.key === 'Enter') {
+    $('start').click();
+  } else if (e.key.toLowerCase() === 'e' && state.currentTask) {
+    $('help').click();
+  } else if ('1234'.includes(e.key)) {
+    const btn = $('ans').querySelectorAll('button')[+e.key - 1];
+    if (btn) btn.click();
+  }
+};
+
+// Initialize
+loadState();
+updateStats();
+updateHistory();
+</script>
+</body>
+</html>
