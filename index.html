@@ -3097,28 +3097,135 @@ function loadState() {
   }
 }
 
-// ==================== SPRACHAUSGABE ====================
+// // ==================== SPRACHAUSGABE (kinderfreundlich, bevorzugt weiblich) ====================
 
+state.voicesDE = [];
+state.voiceIndex = 0;
+state.preferFemaleVoice = true;
 
-function speak(text) {
-  if (!state.settings.sound || !speechSynthesis) return;
-  speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'de-DE';
-  utterance.rate = 0.85;
-  if (state.voice) utterance.voice = state.voice;
-  speechSynthesis.speak(utterance);
+// Wörter/Zeichen kindgerecht vorlesen
+function normalizeSpeechText(raw) {
+  return String(raw)
+    .replace(/\n+/g, '. ')
+    .replace(/\s+/g, ' ')
+    .replace(/\+/g, ' plus ')
+    .replace(/−/g, ' minus ')
+    .replace(/×/g, ' mal ')
+    .replace(/÷/g, ' geteilt durch ')
+    .replace(/=/g, ' gleich ')
+    .replace(/\?/g, '')
+    .replace(/€/g, ' Euro ')
+    .replace(/(\d),(\d)/g, '$1 Komma $2')  // 3,50 -> 3 Komma 50
+    .trim();
 }
 
-speechSynthesis.onvoiceschanged = () => {
-  state.voice = speechSynthesis.getVoices().find(v => v.lang.startsWith('de')) || null;
-};
+// Scoring: wir wählen "wahrscheinlich weiblich & kindlich"
+function scoreVoice(v) {
+  const name = (v.name || '').toLowerCase();
+  const lang = (v.lang || '').toLowerCase();
 
+  let s = 0;
+  if (lang.startsWith('de-de')) s += 40;
+  else if (lang.startsWith('de')) s += 25;
 
-speechSynthesis.onvoiceschanged = () => {
-  state.voice = speechSynthesis.getVoices().find(v => v.lang.startsWith('de')) || null;
-};
+  // häufige weibliche Namen/Marker (je nach OS)
+  const prefer = [
+    /female|frau|weib/i,
+    /anna|sandra|helena|katrin|katja|hedda|anja|marlene|vicki|clara|lea/i,
+    /google.*deutsch/i,
+    /microsoft.*(katja|hedda|anja|marlene|sandra)/i
+  ];
 
+  for (const r of prefer) {
+    if (r.test(v.name || '')) s += 35;
+  }
+
+  // male-hints leicht abwerten
+  if (/male|mann|markus|stefan|bernd|hans/i.test(name)) s -= 15;
+
+  // lokale Stimmen sind oft stabiler offline
+  if (v.localService) s += 6;
+
+  return s;
+}
+
+function loadVoicePreference() {
+  try {
+    const saved = localStorage.getItem('matheVoiceName');
+    return saved || '';
+  } catch { return ''; }
+}
+
+function saveVoicePreference(name) {
+  try { localStorage.setItem('matheVoiceName', name || ''); } catch {}
+}
+
+function setupVoices() {
+  if (!('speechSynthesis' in window)) return;
+
+  const voices = speechSynthesis.getVoices() || [];
+  state.voicesDE = voices.filter(v => (v.lang || '').toLowerCase().startsWith('de'));
+
+  if (!state.voicesDE.length) {
+    state.voice = null;
+    return;
+  }
+
+  // 1) Wenn Nutzer schon eine Stimme hatte → wiederverwenden
+  const preferredName = loadVoicePreference();
+  if (preferredName) {
+    const found = state.voicesDE.find(v => v.name === preferredName);
+    if (found) {
+      state.voice = found;
+      state.voiceIndex = Math.max(0, state.voicesDE.indexOf(found));
+      return;
+    }
+  }
+
+  // 2) Sonst: bestes Match (weiblich/kinderfreundlich)
+  const sorted = [...state.voicesDE].sort((a, b) => scoreVoice(b) - scoreVoice(a));
+  state.voice = sorted[0];
+  state.voiceIndex = Math.max(0, state.voicesDE.indexOf(state.voice));
+  saveVoicePreference(state.voice?.name);
+}
+
+// optional: Stimme wechseln (falls du später UI willst)
+function nextGermanVoice() {
+  if (!state.voicesDE?.length) return;
+  state.voiceIndex = (state.voiceIndex + 1) % state.voicesDE.length;
+  state.voice = state.voicesDE[state.voiceIndex];
+  saveVoicePreference(state.voice?.name);
+  speak('Hallo! Ich bin deine neue Stimme.');
+}
+
+function speak(text) {
+  if (!state.settings.sound) return;
+  if (!('speechSynthesis' in window)) return;
+
+  const t = normalizeSpeechText(text);
+  if (!t) return;
+
+  // iOS/Safari: cancel + kurze Verzögerung ist oft stabiler
+  speechSynthesis.cancel();
+
+  const u = new SpeechSynthesisUtterance(t);
+  u.lang = 'de-DE';
+
+  // kinderfreundlicher: etwas höher + etwas ruhiger
+  u.rate = 0.92;   // 0.85 war sehr “erwachsen/langsam”
+  u.pitch = 1.25;  // höher (weiblicher/kindlicher Eindruck)
+  u.volume = 1.0;
+
+  if (state.voice) u.voice = state.voice;
+
+  setTimeout(() => speechSynthesis.speak(u), 30);
+}
+
+// einmalig + bei Änderungen neu setzen
+if ('speechSynthesis' in window) {
+  setupVoices();
+  speechSynthesis.onvoiceschanged = setupVoices;
+}
 // ==================== TIMER ====================
 
 function startTimer() {
