@@ -596,76 +596,9 @@
       color: #991b1b;
     }
     
-    /* Step-Boxen für Erklärungen */
-    .step {
-      padding: 12px;
-      margin: 8px 0;
-      background: var(--color-bg);
-      border-left: 4px solid var(--color-primary);
-      border-radius: var(--radius-sm);
-      line-height: 1.6;
-    }
-    
-    .step-number {
-      font-weight: 600;
-      color: var(--color-primary-dark);
-      margin-bottom: 8px;
-      font-size: 1rem;
-    }
-    
-    .step-content {
-      font-size: 0.95rem;
-      line-height: 1.7;
-    }
-    
-    /* Mobile-spezifische Styles für schriftliche Rechenverfahren */
-    @media (max-width: 640px) {
-      .written-calc {
-        font-size: 1.1rem !important;
-        padding: 12px !important;
-        min-width: auto !important;
-        max-width: 100%;
-        overflow-x: auto;
-      }
-      
-      .step {
-        padding: 10px !important;
-        margin: 10px 0 !important;
-        font-size: 0.9rem;
-      }
-      
-      .step-number {
-        font-size: 0.95rem !important;
-      }
-      
-      .step-content {
-        font-size: 0.9rem;
-        line-height: 1.5;
-      }
-      
-      /* Touch-Optimierung: Mindestgröße für Touch-Targets */
-      button {
-        min-height: 44px;
-        touch-action: manipulation;
-      }
-      
-      /* Modal auf Mobile */
-      .modal {
-        padding: 8px;
-      }
-      
-      .modal-content {
-        max-height: 90vh;
-        max-height: 90dvh;
-        margin: auto;
-        border-radius: var(--radius-lg);
-      }
-    }
-    
     @media (max-width: 640px) {
       .container {
         padding: 8px;
-        padding-bottom: calc(16px + env(safe-area-inset-bottom));
       }
       
       .card {
@@ -682,21 +615,9 @@
         padding: 4px 10px;
       }
       
-      .task-area {
-        padding: 16px;
-        min-height: 120px;
-      }
-      
       .task-text { 
         font-size: clamp(1.3rem, 8vw, 2rem);
         margin: 16px 0;
-        word-wrap: break-word;
-        hyphens: auto;
-      }
-      
-      .task-context {
-        font-size: 0.9rem;
-        margin-bottom: 12px;
       }
       
       .answers { 
@@ -708,17 +629,11 @@
         min-height: 60px;
         font-size: 1.1rem;
         padding: 16px;
-        word-wrap: break-word;
       }
       
       .btns { 
         grid-template-columns: 1fr;
         gap: 10px;
-      }
-      
-      .btns button {
-        padding: 14px;
-        font-size: 0.95rem;
       }
       
       .controls { 
@@ -740,65 +655,10 @@
       
       .modal-body {
         padding: 16px;
-        font-size: 0.95rem;
-        max-height: calc(80vh - 120px);
-        max-height: calc(80dvh - 120px);
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-      
-      .modal-title {
-        font-size: 1.1rem;
-      }
-      
-      /* Schriftliche Rechenverfahren auf Mobile */
-      .modal-body > div[style*="background: var(--color-bg)"] {
-        padding: 12px !important;
-        margin: 12px 0 !important;
-      }
-      
-      /* Tabellen für Gittermethode */
-      table {
-        font-size: 1rem !important;
-      }
-      
-      table td {
-        padding: 8px !important;
-        width: 50px !important;
-        height: 50px !important;
-      }
-      
-      /* Difficulty Badge */
-      .difficulty-badge {
-        font-size: 0.8rem;
-        padding: 4px 10px;
-      }
-      
-      /* Message Box */
-      .msg {
-        padding: 12px;
-        font-size: 1rem;
-      }
-      
-      /* History Items */
-      .history-item {
-        padding: 8px 12px;
-        font-size: 0.85rem;
       }
     }
     
-    /* Extra optimiert für sehr schmale Geräte (typisch 9:16) */
     @media (max-width: 380px) {
-      .container {
-        padding: 6px;
-        padding-bottom: calc(12px + env(safe-area-inset-bottom));
-      }
-      
-      .header {
-        padding: 10px 12px;
-        padding-top: calc(10px + env(safe-area-inset-top));
-      }
-      
       .logo {
         font-size: 1rem;
       }
@@ -816,201 +676,7 @@
       .icon-btn {
         width: 40px;
         height: 40px;
-        font-size: 1.2rem;
       }
-      
-      .card {
-        padding: 12px;
-        margin-bottom: 6px;
-      }
-      
-      .task-area {
-        padding: 12px;
-        min-height: 100px;
-      }
-      
-      .task-text {
-        font-size: clamp(1.2rem, 7vw, 1.8rem);
-        margin: 12px 0;
-      }
-      
-      .task-context {
-        font-size: 0.85rem;
-      }
-      
-      .answers button {
-        font-size: 1rem;
-        padding: 14px;
-        min-height: 56px;
-      }
-      
-      .btns button {
-        padding: 12px;
-        font-size: 0.9rem;
-      }
-      
-      .modal-body {
-        padding: 12px;
-        font-size: 0.9rem;
-        max-height: calc(75vh - 100px);
-        max-height: calc(75dvh - 100px);
-      }
-      
-      .modal-title {
-        font-size: 1rem;
-      }
-      
-      /* Noch kleinere Schrift für Rechenwege */
-      .written-calc {
-        font-size: 1rem !important;
-        padding: 10px !important;
-      }
-      
-      table {
-        font-size: 0.9rem !important;
-      }
-      
-      table td {
-        padding: 6px !important;
-        width: 45px !important;
-        height: 45px !important;
-      }
-      
-      .step {
-        padding: 8px !important;
-        margin: 8px 0 !important;
-        font-size: 0.85rem;
-      }
-      
-      .step-number {
-        font-size: 0.9rem !important;
-      }
-      
-      .step-content {
-        font-size: 0.85rem;
-      }
-    }
-    
-    /* Landscape Modus auf Mobile - optimiert für 9:16 gedreht */
-    @media (max-width: 896px) and (max-height: 414px) and (orientation: landscape) {
-      .header {
-        padding: 6px 12px;
-        padding-top: calc(6px + env(safe-area-inset-top));
-      }
-      
-      .logo {
-        font-size: 0.95rem;
-      }
-      
-      .stat-box {
-        font-size: 0.7rem;
-        padding: 3px 8px;
-      }
-      
-      .container {
-        padding: 6px;
-      }
-      
-      .card {
-        padding: 10px;
-        margin-bottom: 6px;
-      }
-      
-      .task-area {
-        min-height: 60px;
-        padding: 12px;
-      }
-      
-      .task-text {
-        font-size: clamp(1.1rem, 4vw, 1.4rem);
-        margin: 8px 0;
-      }
-      
-      .task-context {
-        font-size: 0.8rem;
-        margin-bottom: 8px;
-      }
-      
-      .answers {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-      }
-      
-      .answers button {
-        padding: 10px;
-        min-height: 48px;
-        font-size: 0.95rem;
-      }
-      
-      .btns {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-      }
-      
-      .btns button {
-        padding: 10px;
-        font-size: 0.9rem;
-      }
-      
-      .grades {
-        gap: 4px;
-      }
-      
-      .grades button {
-        font-size: 0.8rem;
-        padding: 6px 8px;
-      }
-      
-      .modal-body {
-        max-height: calc(70vh - 80px);
-        max-height: calc(70dvh - 80px);
-        font-size: 0.85rem;
-        padding: 12px;
-      }
-      
-      .written-calc {
-        font-size: 0.95rem !important;
-        padding: 8px !important;
-      }
-      
-      .step {
-        padding: 6px !important;
-        margin: 6px 0 !important;
-        font-size: 0.8rem;
-      }
-      
-      /* Level-Selector im Landscape-Modus kompakter */
-      #level-selector {
-        margin: 8px 0 0 0 !important;
-        padding: 10px !important;
-      }
-      
-      .level-btn {
-        padding: 8px !important;
-        font-size: 0.8rem !important;
-      }
-      
-      .level-btn > div:first-child {
-        font-size: 1.2rem !important;
-      }
-    }
-    
-    /* Level-Button Styles */
-    .level-btn {
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .level-btn.active {
-      box-shadow: 0 0 0 3px var(--color-accent);
-    }
-    
-    .level-btn.locked {
-      filter: grayscale(80%);
-    }
-    
-    .level-btn:not(.locked):hover {
-      box-shadow: var(--shadow-md);
     }
   </style>
 </head>
@@ -1019,10 +685,9 @@
     <div class="header">
       <div class="logo">🧮 Mathe üben</div>
       <div class="stats">
-        <div class="stat-box">Richtig: <span class="stat-value" id="score">0</span></div>
+        <div class="stat-box">Punkte: <span class="stat-value" id="score">0</span></div>
         <div class="stat-box">Gesamt: <span class="stat-value" id="total">0</span></div>
         <div class="stat-box">🔥 Serie: <span class="stat-value" id="streak">0</span></div>
-        <div class="stat-box" style="background: var(--color-accent); color: var(--color-surface); font-weight: 600;">⭐ <span class="stat-value" id="points">0</span> P</div>
       </div>
     </div>
     
@@ -1039,17 +704,6 @@
           <button class="icon-btn" id="snd">🔊</button>
           <button class="icon-btn" id="history-btn">📊</button>
           <button class="icon-btn" id="settings">⚙️</button>
-        </div>
-      </div>
-      
-      <!-- Schwierigkeitsstufen-Auswahl -->
-      <div id="level-selector" style="margin: 16px 0 0 0; padding: 16px; background: var(--color-bg); border-radius: var(--radius-md); border: 2px solid var(--color-border);">
-        <div style="font-size: 0.9rem; font-weight: 600; color: var(--color-text-light); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
-          <span>Schwierigkeit wählen:</span>
-          <span id="level-progress" style="font-size: 0.85rem; color: var(--color-accent-dark);"></span>
-        </div>
-        <div id="levels" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px;">
-          <!-- Level-Buttons werden hier dynamisch eingefügt -->
         </div>
       </div>
       
@@ -1137,25 +791,11 @@
   </div>
 </div>
 
-<div class="modal" id="ov-level-unlock">
-  <div class="modal-content">
-    <div class="modal-header">
-      <div class="modal-title" id="level-unlock-title">🎉 Neue Stufe freigeschaltet!</div>
-      <button class="modal-close" id="cls-level-unlock">×</button>
-    </div>
-    <div class="modal-body" id="mbody-level-unlock"></div>
-    <div class="modal-footer">
-      <button id="mok-level-unlock">Weiter üben!</button>
-    </div>
-  </div>
-</div>
-
 <script>
 const $ = id => document.getElementById(id);
 
 const state = {
   grade: 1,
-  level: 1, // Aktuelle Schwierigkeitsstufe
   score: 0,
   total: 0,
   streak: 0,
@@ -1170,146 +810,8 @@ const state = {
   },
   timerInterval: null,
   timerValue: 30,
-  voice: null,
-  progress: {
-    1: { points: 0, maxLevel: 1 },
-    2: { points: 0, maxLevel: 1 },
-    3: { points: 0, maxLevel: 1 },
-    4: { points: 0, maxLevel: 1 }
-  }
+  voice: null
 };
-
-// ==================== SCHWIERIGKEITSSTUFEN-SYSTEM ====================
-
-const LEVELS = {
-  1: {
-    name: '🥉 Bronze',
-    color: '#CD7F32',
-    bgColor: '#FFF4E6',
-    pointsRequired: 0,
-    description: 'Einstieg - Grundlagen lernen',
-    pointsPerCorrect: 10,
-    icon: '🥉'
-  },
-  2: {
-    name: '🥈 Silber',
-    color: '#C0C0C0',
-    bgColor: '#F5F5F5',
-    pointsRequired: 100,
-    description: 'Fortgeschritten - Sicher im Rechnen',
-    pointsPerCorrect: 15,
-    icon: '🥈'
-  },
-  3: {
-    name: '🥇 Gold',
-    color: '#FFD700',
-    bgColor: '#FFFACD',
-    pointsRequired: 250,
-    description: 'Profi - Komplexe Aufgaben',
-    pointsPerCorrect: 20,
-    icon: '🥇'
-  },
-  4: {
-    name: '💎 Platin',
-    color: '#E5E4E2',
-    bgColor: '#F0F8FF',
-    pointsRequired: 500,
-    description: 'Experte - Meister der Mathematik',
-    pointsPerCorrect: 30,
-    icon: '💎'
-  }
-};
-
-// Prüfe ob eine Stufe freigeschaltet ist
-function isLevelUnlocked(grade, level) {
-  const gradeProgress = state.progress[grade];
-  const requiredPoints = LEVELS[level].pointsRequired;
-  return gradeProgress.points >= requiredPoints;
-}
-
-// Hole die höchste freigeschaltete Stufe für eine Klasse
-function getMaxUnlockedLevel(grade) {
-  const gradeProgress = state.progress[grade];
-  let maxLevel = 1;
-  
-  for (let level = 1; level <= 4; level++) {
-    if (gradeProgress.points >= LEVELS[level].pointsRequired) {
-      maxLevel = level;
-    }
-  }
-  
-  return maxLevel;
-}
-
-// Speichere Fortschritt
-function saveProgress() {
-  try {
-    localStorage.setItem('matheProgress', JSON.stringify(state.progress));
-    localStorage.setItem('matheSettings', JSON.stringify(state.settings));
-  } catch (e) {
-    console.error('Fehler beim Speichern:', e);
-  }
-}
-
-// Lade Fortschritt
-function loadProgress() {
-  try {
-    const savedProgress = localStorage.getItem('matheProgress');
-    const savedSettings = localStorage.getItem('matheSettings');
-    
-    if (savedProgress) {
-      state.progress = JSON.parse(savedProgress);
-    }
-    
-    if (savedSettings) {
-      state.settings = JSON.parse(savedSettings);
-    }
-    
-    // Setze die höchste freigeschaltete Stufe für die aktuelle Klasse
-    state.progress[state.grade].maxLevel = getMaxUnlockedLevel(state.grade);
-    state.level = state.progress[state.grade].maxLevel;
-  } catch (e) {
-    console.error('Fehler beim Laden:', e);
-  }
-}
-
-// Punkte hinzufügen und Stufe aktualisieren
-function addPoints(points) {
-  state.score += points;
-  state.progress[state.grade].points += points;
-  
-  // Prüfe ob neue Stufe freigeschaltet wurde
-  const oldMaxLevel = state.progress[state.grade].maxLevel;
-  const newMaxLevel = getMaxUnlockedLevel(state.grade);
-  
-  if (newMaxLevel > oldMaxLevel) {
-    state.progress[state.grade].maxLevel = newMaxLevel;
-    showLevelUnlocked(newMaxLevel);
-  }
-  
-  saveProgress();
-  updateUI();
-}
-
-// Zeige Freischaltungs-Animation
-function showLevelUnlocked(level) {
-  const levelInfo = LEVELS[level];
-  $('mbody-level-unlock').innerHTML = `
-    <div style="text-align: center; padding: 20px;">
-      <div style="font-size: 4rem; margin-bottom: 16px;">${levelInfo.icon}</div>
-      <div style="font-size: 1.5rem; font-weight: 700; color: ${levelInfo.color}; margin-bottom: 12px;">
-        ${levelInfo.name}
-      </div>
-      <div style="font-size: 1.1rem; color: var(--color-text-light); margin-bottom: 20px;">
-        ${levelInfo.description}
-      </div>
-      <div style="padding: 16px; background: ${levelInfo.bgColor}; border-radius: var(--radius-md); border: 2px solid ${levelInfo.color};">
-        <strong>${levelInfo.pointsPerCorrect} Punkte</strong> pro richtiger Antwort!
-      </div>
-    </div>
-  `;
-  $('ov-level-unlock').classList.add('show');
-}
 
 // ==================== HILFSFUNKTIONEN ====================
 
@@ -1473,99 +975,6 @@ function createComparisonTask1() {
     correctAnswer: correct,
     options: shuffle([correct, correct === larger ? smaller : larger, correct + 1, correct - 1]),
     explanation: `${larger} ist größer als ${smaller}. ${larger} > ${smaller}`
-  };
-}
-
-// ==================== LEVEL-VARIANTEN FÜR KLASSE 1 ====================
-
-// Easy: Zahlen bis 10
-function createAdditionTask1Easy() {
-  const a = rnd(1, 6);
-  const b = rnd(1, 6);
-  const sum = a + b;
-  
-  if (sum > 10) return createAdditionTask1Easy();
-  
-  const correct = sum;
-  const wrong1 = sum + 1;
-  const wrong2 = sum - 1;
-  const wrong3 = a + b + 1;
-  
-  return {
-    problem: `${a} + ${b} = ?`,
-    context: "Addition bis 10",
-    taskType: 'addition',
-    difficulty: 'easy',
-    correctAnswer: correct,
-    options: shuffle([correct, wrong1, wrong2, wrong3]),
-    explanation: `${a} + ${b} = ${sum}`
-  };
-}
-
-function createSubtractionTask1Easy() {
-  const a = rnd(5, 10);
-  const b = rnd(1, a - 1);
-  const diff = a - b;
-  
-  const correct = diff;
-  const wrong1 = diff + 1;
-  const wrong2 = diff - 1;
-  const wrong3 = a + b;
-  
-  return {
-    problem: `${a} − ${b} = ?`,
-    context: "Subtraktion bis 10",
-    taskType: 'subtraction',
-    difficulty: 'easy',
-    correctAnswer: correct,
-    options: shuffle([correct, wrong1, wrong2, wrong3]),
-    explanation: `${a} − ${b} = ${diff}. Zur Probe: ${diff} + ${b} = ${a} ✓`
-  };
-}
-
-// Hard: Immer mit Zehnerübergang
-function createAdditionTask1Hard() {
-  const a = rnd(7, 9);
-  const b = rnd(4, 9);
-  let sum = a + b;
-  
-  if (sum <= 10) sum = a + rnd(5, 9);
-  if (sum > 20) sum = a + rnd(3, 6);
-  
-  const correct = sum;
-  const wrong1 = sum + 1;
-  const wrong2 = sum - 1;
-  const wrong3 = a + b - 10;
-  
-  return {
-    problem: `${a} + ${b} = ?`,
-    context: "Addition mit Zehnerübergang",
-    taskType: 'addition',
-    difficulty: 'hard',
-    correctAnswer: correct,
-    options: shuffle([correct, wrong1, wrong2, wrong3]),
-    explanation: `${a} + ${b} = ${sum}. Tipp: Erst bis zur 10 rechnen: ${a} + ${10-a} = 10, dann noch ${b-(10-a)} dazu = ${sum}`
-  };
-}
-
-function createSubtractionTask1Hard() {
-  const a = rnd(11, 18);
-  const b = rnd(4, 9);
-  const diff = a - b;
-  
-  const correct = diff;
-  const wrong1 = diff + 1;
-  const wrong2 = diff - 1;
-  const wrong3 = a - (b - 5);
-  
-  return {
-    problem: `${a} − ${b} = ?`,
-    context: "Subtraktion über 10",
-    taskType: 'subtraction',
-    difficulty: 'hard',
-    correctAnswer: correct,
-    options: shuffle([correct, wrong1, wrong2, wrong3]),
-    explanation: `${a} − ${b} = ${diff}. Tipp: Erst bis zur 10 rechnen, dann weiter subtrahieren.`
   };
 }
 
@@ -2173,367 +1582,66 @@ function createComplexWordProblem4() {
   };
 }
 
-// ==================== LEVEL-VARIANTEN FÜR ALLE KLASSEN ====================
-
-// KLASSE 2 Easy
-function createAdditionTask2Easy() {
-  const a = rnd(10, 35);
-  const b = rnd(5, 20);
-  const sum = a + b;
-  if (sum > 50) return createAdditionTask2Easy();
-  return {
-    problem: `${a} + ${b} = ?`,
-    context: "Addition bis 50",
-    taskType: 'addition',
-    difficulty: 'easy',
-    correctAnswer: sum,
-    options: shuffle([sum, sum + 10, sum - 10, a - b]),
-    explanation: `${a} + ${b} = ${sum}`
-  };
-}
-
-function createSubtractionTask2Easy() {
-  const a = rnd(20, 50);
-  const b = rnd(5, a - 5);
-  const diff = a - b;
-  return {
-    problem: `${a} − ${b} = ?`,
-    context: "Subtraktion bis 50",
-    taskType: 'subtraction',
-    difficulty: 'easy',
-    correctAnswer: diff,
-    options: shuffle([diff, diff + 10, diff - 5, a + b]),
-    explanation: `${a} − ${b} = ${diff}`
-  };
-}
-
-function createMultiplicationTask2Easy() {
-  const factor1 = pick([2, 5, 10]);
-  const factor2 = rnd(2, 5);
-  const product = factor1 * factor2;
-  return {
-    problem: `${factor1} × ${factor2} = ?`,
-    context: `Einmaleins: ${factor1}er-Reihe`,
-    taskType: 'multiplication',
-    difficulty: 'easy',
-    correctAnswer: product,
-    options: shuffle([product, product + factor1, product - factor1, factor1 + factor2]),
-    explanation: `${factor1} × ${factor2} = ${product}`
-  };
-}
-
-// KLASSE 3 Easy
-function createAdditionTask3Easy() {
-  const a = rnd(100, 400);
-  const b = rnd(50, 200);
-  const sum = a + b;
-  if (sum > 600) return createAdditionTask3Easy();
-  return {
-    problem: `${a} + ${b} = ?`,
-    context: "Addition bis 600",
-    taskType: 'addition',
-    difficulty: 'easy',
-    correctAnswer: sum,
-    options: shuffle([sum, sum + 100, sum - 100, a - b]),
-    explanation: `${a} + ${b} = ${sum}`
-  };
-}
-
-function createSubtractionTask3Easy() {
-  const a = rnd(150, 600);
-  const b = rnd(50, a - 50);
-  const diff = a - b;
-  return {
-    problem: `${a} − ${b} = ?`,
-    context: "Subtraktion bis 600",
-    taskType: 'subtraction',
-    difficulty: 'easy',
-    correctAnswer: diff,
-    options: shuffle([diff, diff + 100, diff - 100, a + b]),
-    explanation: `${a} − ${b} = ${diff}`
-  };
-}
-
-// KLASSE 4 Easy
-function createMultiplicationTask4Easy() {
-  const factor1 = rnd(11, 50);
-  const factor2 = rnd(2, 5);
-  const product = factor1 * factor2;
-  return {
-    problem: `${factor1} × ${factor2} = ?`,
-    context: "Multiplizieren",
-    taskType: 'multiplication',
-    difficulty: 'easy',
-    correctAnswer: product,
-    options: shuffle([product, factor1 + factor2, product + factor1, product - factor2]),
-    explanation: `${factor1} × ${factor2} = ${product}`
-  };
-}
-
-function createDivisionTask4Easy() {
-  const divisor = pick([2, 3, 4, 5]);
-  const quotient = rnd(10, 30);
-  const dividend = divisor * quotient;
-  return {
-    problem: `${dividend} ÷ ${divisor} = ?`,
-    context: "Dividieren",
-    taskType: 'division',
-    difficulty: 'easy',
-    correctAnswer: quotient,
-    options: shuffle([quotient, quotient + 10, quotient - 10, dividend - divisor]),
-    explanation: `${dividend} ÷ ${divisor} = ${quotient}`
-  };
-}
-
-// KLASSE 1 Easy
-function createAdditionTask1Easy() {
-  const a = rnd(1, 6);
-  const b = rnd(1, 6);
-  const sum = a + b;
-  if (sum > 10) return createAdditionTask1Easy();
-  return {
-    problem: `${a} + ${b} = ?`,
-    context: "Addition bis 10",
-    taskType: 'addition',
-    difficulty: 'easy',
-    correctAnswer: sum,
-    options: shuffle([sum, sum + 1, sum - 1, a + b + 1]),
-    explanation: `${a} + ${b} = ${sum}`
-  };
-}
-
-function createSubtractionTask1Easy() {
-  const a = rnd(5, 10);
-  const b = rnd(1, a - 1);
-  const diff = a - b;
-  return {
-    problem: `${a} − ${b} = ?`,
-    context: "Subtraktion bis 10",
-    taskType: 'subtraction',
-    difficulty: 'easy',
-    correctAnswer: diff,
-    options: shuffle([diff, diff + 1, diff - 1, a + b]),
-    explanation: `${a} − ${b} = ${diff}`
-  };
-}
-
-// KLASSE 1 Hard
-function createAdditionTask1Hard() {
-  const a = rnd(7, 9);
-  let b = rnd(4, 9);
-  let sum = a + b;
-  if (sum <= 10 || sum > 20) b = rnd(5, 11 - a + 10);
-  sum = a + b;
-  return {
-    problem: `${a} + ${b} = ?`,
-    context: "Addition mit Zehnerübergang",
-    taskType: 'addition',
-    difficulty: 'hard',
-    correctAnswer: sum,
-    options: shuffle([sum, sum + 1, sum - 1, a + b - 10]),
-    explanation: `${a} + ${b} = ${sum}. Tipp: Erst bis zur 10 rechnen.`
-  };
-}
-
-function createSubtractionTask1Hard() {
-  const a = rnd(11, 18);
-  const b = rnd(4, 9);
-  const diff = a - b;
-  return {
-    problem: `${a} − ${b} = ?`,
-    context: "Subtraktion über 10",
-    taskType: 'subtraction',
-    difficulty: 'hard',
-    correctAnswer: diff,
-    options: shuffle([diff, diff + 1, diff - 1, a - (b - 5)]),
-    explanation: `${a} − ${b} = ${diff}`
-  };
-}
-
 // ==================== HAUPTGENERATOR ====================
 
-function createTask(grade, level = 1) {
+function createTask(grade) {
   let taskGenerators = [];
   
   switch(grade) {
     case 1:
-      // Zahlenraum bis 20: Level-basierte Schwierigkeit
-      if (level === 1) {
-        // Bronze: Einfache Addition/Subtraktion bis 10
-        taskGenerators = [
-          createAdditionTask1Easy,
-          createAdditionTask1Easy,
-          createSubtractionTask1Easy,
-          createSubtractionTask1Easy,
-          createDoublingTask1,
-          createComparisonTask1
-        ];
-      } else if (level === 2) {
-        // Silber: Addition/Subtraktion bis 20 ohne Zehnerübergang
-        taskGenerators = [
-          createAdditionTask1,
-          createSubtractionTask1,
-          createDoublingTask1,
-          createDecompositionTask1,
-          createComparisonTask1
-        ];
-      } else if (level === 3) {
-        // Gold: Mit Zehnerübergang
-        taskGenerators = [
-          createAdditionTask1Hard,
-          createSubtractionTask1,
-          createDoublingTask1,
-          createDecompositionTask1
-        ];
-      } else {
-        // Platin: Gemischte schwere Aufgaben
-        taskGenerators = [
-          createAdditionTask1Hard,
-          createSubtractionTask1Hard,
-          createDoublingTask1,
-          createDecompositionTask1,
-          createComparisonTask1
-        ];
-      }
+      // Zahlenraum bis 20: Addition, Subtraktion, Verdoppeln/Halbieren, Zerlegen, Vergleichen
+      taskGenerators = [
+        createAdditionTask1,
+        createAdditionTask1,  // Häufiger
+        createSubtractionTask1,
+        createSubtractionTask1,  // Häufiger
+        createDoublingTask1,
+        createDecompositionTask1,
+        createComparisonTask1
+      ];
       break;
       
     case 2:
-      // Zahlenraum bis 100
-      if (level === 1) {
-        // Bronze: Einfache Aufgaben bis 50
-        taskGenerators = [
-          createAdditionTask2Easy,
-          createSubtractionTask2Easy,
-          createMultiplicationTask2Easy,
-          createTimeTask2,
-          createComparisonTask2
-        ];
-      } else if (level === 2) {
-        // Silber: Standard bis 100
-        taskGenerators = [
-          createAdditionTask2,
-          createSubtractionTask2,
-          createMultiplicationTask2,
-          createDivisionTask2,
-          createMoneyTask2,
-          createTimeTask2
-        ];
-      } else if (level === 3) {
-        // Gold: Komplexere Aufgaben
-        taskGenerators = [
-          createAdditionTask2,
-          createSubtractionTask2,
-          createMultiplicationTask2,
-          createMultiplicationTask2,
-          createDivisionTask2,
-          createMoneyTask2
-        ];
-      } else {
-        // Platin: Alle Aufgaben gemischt
-        taskGenerators = [
-          createAdditionTask2,
-          createSubtractionTask2,
-          createMultiplicationTask2,
-          createMultiplicationTask2,
-          createDivisionTask2,
-          createMoneyTask2,
-          createTimeTask2,
-          createComparisonTask2
-        ];
-      }
+      // Zahlenraum bis 100: Addition, Subtraktion, Einmaleins (2,5,10 Reihen), Geld, Uhrzeit
+      taskGenerators = [
+        createAdditionTask2,
+        createSubtractionTask2,
+        createMultiplicationTask2,
+        createMultiplicationTask2,  // Häufiger (Einmaleins üben!)
+        createDivisionTask2,
+        createMoneyTask2,
+        createTimeTask2,
+        createComparisonTask2
+      ];
       break;
       
     case 3:
-      // Zahlenraum bis 1000
-      if (level === 1) {
-        // Bronze: Kleinere Zahlen
-        taskGenerators = [
-          createAdditionTask3Easy,
-          createSubtractionTask3Easy,
-          createMultiplicationTask3,
-          createLengthTask3,
-          createPerimeterTask3
-        ];
-      } else if (level === 2) {
-        // Silber: Standard
-        taskGenerators = [
-          createAdditionTask3,
-          createSubtractionTask3,
-          createMultiplicationTask3,
-          createDivisionWithRestTask3,
-          createLengthTask3,
-          createWeightTask3
-        ];
-      } else if (level === 3) {
-        // Gold: Mit Sachaufgaben
-        taskGenerators = [
-          createAdditionTask3,
-          createSubtractionTask3,
-          createMultiplicationTask3,
-          createDivisionWithRestTask3,
-          createPerimeterTask3,
-          createTwoStepTask3
-        ];
-      } else {
-        // Platin: Alle gemischt
-        taskGenerators = [
-          createAdditionTask3,
-          createSubtractionTask3,
-          createMultiplicationTask3,
-          createMultiplicationTask3,
-          createDivisionWithRestTask3,
-          createLengthTask3,
-          createWeightTask3,
-          createPerimeterTask3,
-          createTwoStepTask3
-        ];
-      }
+      // Zahlenraum bis 1000: Alle 4 Grundrechenarten, Einmaleins festigen, Größen
+      taskGenerators = [
+        createAdditionTask3,
+        createSubtractionTask3,
+        createMultiplicationTask3,
+        createMultiplicationTask3,  // Häufiger (Einmaleins festigen!)
+        createDivisionWithRestTask3,
+        createLengthTask3,
+        createWeightTask3,
+        createPerimeterTask3,
+        createTwoStepTask3
+      ];
       break;
       
     case 4:
-      // Zahlenraum bis 1 Million
-      if (level === 1) {
-        // Bronze: Einfachere große Zahlen
-        taskGenerators = [
-          createLargeNumberTask4,
-          createMultiplicationTask4Easy,
-          createDivisionTask4Easy,
-          createFractionTask4,
-          createDecimalTask4
-        ];
-      } else if (level === 2) {
-        // Silber: Standard
-        taskGenerators = [
-          createLargeNumberTask4,
-          createMultiplicationTask4,
-          createDivisionTask4,
-          createFractionTask4,
-          createDecimalTask4,
-          createRoundingTask4
-        ];
-      } else if (level === 3) {
-        // Gold: Komplexere Berechnungen
-        taskGenerators = [
-          createMultiplicationTask4,
-          createDivisionTask4,
-          createFractionTask4,
-          createRoundingTask4,
-          createAreaTask4,
-          createComplexWordProblem4
-        ];
-      } else {
-        // Platin: Alle gemischt
-        taskGenerators = [
-          createLargeNumberTask4,
-          createMultiplicationTask4,
-          createDivisionTask4,
-          createFractionTask4,
-          createDecimalTask4,
-          createRoundingTask4,
-          createAreaTask4,
-          createComplexWordProblem4
-        ];
-      }
+      // Zahlenraum bis 1 Million: Schriftliche Verfahren, Brüche, Dezimalzahlen
+      taskGenerators = [
+        createLargeNumberTask4,
+        createMultiplicationTask4,
+        createDivisionTask4,
+        createFractionTask4,
+        createDecimalTask4,
+        createRoundingTask4,
+        createAreaTask4,
+        createComplexWordProblem4
+      ];
       break;
   }
   
@@ -2547,8 +1655,7 @@ function createTask(grade, level = 1) {
   return {
     ...task,
     correctIndex: correctIndex,
-    grade: grade,
-    level: level
+    grade: grade
   };
 }
 
@@ -2563,9 +1670,9 @@ function generateWrittenAddition(num1, num2, sum) {
   const pad1 = str1.padStart(maxLen, ' ');
   const pad2 = str2.padStart(maxLen, ' ');
   
-  let html = '<div style="background: var(--color-bg); padding: clamp(12px, 3vw, 20px); border-radius: var(--radius-md); margin: 20px 0;">';
-  html += '<div style="font-size: clamp(1rem, 2.5vw, 1.1rem); font-weight: 600; margin-bottom: 16px; color: var(--color-primary-dark);">📝 Schriftlich rechnen:</div>';
-  html += '<div class="written-calc" style="font-family: monospace; font-size: clamp(1.1rem, 3vw, 1.3rem); line-height: 1.8; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: var(--radius-sm); padding: clamp(12px, 3vw, 16px); display: inline-block; min-width: 150px; max-width: 100%; overflow-x: auto;">';
+  let html = '<div style="background: var(--color-bg); padding: 20px; border-radius: var(--radius-md); margin: 20px 0;">';
+  html += '<div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; color: var(--color-primary-dark);">📝 Schriftlich rechnen:</div>';
+  html += '<div style="font-family: monospace; font-size: 1.3rem; line-height: 1.8; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: var(--radius-sm); padding: 16px; display: inline-block; min-width: 150px;">';
   
   // Überträge berechnen
   let carries = [];
@@ -2586,7 +1693,7 @@ function generateWrittenAddition(num1, num2, sum) {
   }
   
   // Zeige Überträge
-  html += '<div style="text-align: right; padding-right: 30px; color: var(--color-accent-dark); font-size: 0.85em;">';
+  html += '<div style="text-align: right; padding-right: 30px; color: var(--color-accent-dark); font-size: 0.9rem;">';
   for (let i = 0; i < maxLen; i++) {
     if (carries[i] === 1) {
       html += '<span style="font-weight: 700;">¹</span>';
@@ -2603,7 +1710,7 @@ function generateWrittenAddition(num1, num2, sum) {
   
   // Schrittweise Erklärung
   html += '<div style="margin-top: 20px;">';
-  html += '<strong style="color: var(--color-primary-dark); font-size: clamp(1rem, 2.5vw, 1.1rem);">Schritt für Schritt:</strong>';
+  html += '<strong style="color: var(--color-primary-dark);">Schritt für Schritt:</strong>';
   
   currentCarry = 0;
   let stepNum = 1;
@@ -2613,9 +1720,9 @@ function generateWrittenAddition(num1, num2, sum) {
     const d2 = pad2[i] === ' ' ? 0 : parseInt(pad2[i]);
     const position = ['Einer', 'Zehner', 'Hunderter', 'Tausender'][maxLen - 1 - i];
     
-    html += '<div class="step">';
-    html += `<div class="step-number">Schritt ${stepNum}: ${position}</div>`;
-    html += '<div class="step-content">';
+    html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-bg); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm);">';
+    html += `<div style="font-weight: 600; color: var(--color-primary-dark); margin-bottom: 4px;">Schritt ${stepNum}: ${position}</div>`;
+    html += '<div>';
     
     const digitSum = d1 + d2 + currentCarry;
     if (currentCarry > 0) {
@@ -2650,9 +1757,9 @@ function generateWrittenSubtraction(num1, num2, diff) {
   const pad1 = str1.padStart(maxLen, ' ');
   const pad2 = str2.padStart(maxLen, ' ');
   
-  let html = '<div style="background: var(--color-bg); padding: clamp(12px, 3vw, 20px); border-radius: var(--radius-md); margin: 20px 0;">';
-  html += '<div style="font-size: clamp(1rem, 2.5vw, 1.1rem); font-weight: 600; margin-bottom: 16px; color: var(--color-primary-dark);">📝 Schriftlich rechnen:</div>';
-  html += '<div class="written-calc" style="font-family: monospace; font-size: clamp(1.1rem, 3vw, 1.3rem); line-height: 1.8; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: var(--radius-sm); padding: clamp(12px, 3vw, 16px); display: inline-block; min-width: 150px; max-width: 100%; overflow-x: auto;">';
+  let html = '<div style="background: var(--color-bg); padding: 20px; border-radius: var(--radius-md); margin: 20px 0;">';
+  html += '<div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; color: var(--color-primary-dark);">📝 Schriftlich rechnen:</div>';
+  html += '<div style="font-family: monospace; font-size: 1.3rem; line-height: 1.8; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: var(--radius-sm); padding: 16px; display: inline-block; min-width: 150px;">';
   
   // Berechne Borgen
   let borrows = [];
@@ -2672,7 +1779,7 @@ function generateWrittenSubtraction(num1, num2, diff) {
   }
   
   // Zeige Borgen
-  html += '<div style="text-align: right; padding-right: 30px; color: var(--color-error); font-size: 0.85em;">';
+  html += '<div style="text-align: right; padding-right: 30px; color: var(--color-error); font-size: 0.9rem;">';
   for (let i = 0; i < maxLen; i++) {
     if (borrows[i] === 1) {
       html += '<span style="font-weight: 700;">⁻¹</span>';
@@ -2689,7 +1796,7 @@ function generateWrittenSubtraction(num1, num2, diff) {
   
   // Schrittweise Erklärung
   html += '<div style="margin-top: 20px;">';
-  html += '<strong style="color: var(--color-primary-dark); font-size: clamp(1rem, 2.5vw, 1.1rem);">Schritt für Schritt:</strong>';
+  html += '<strong style="color: var(--color-primary-dark);">Schritt für Schritt:</strong>';
   
   nums1 = pad1.split('').map(c => c === ' ' ? 0 : parseInt(c));
   let stepNum = 1;
@@ -2699,9 +1806,9 @@ function generateWrittenSubtraction(num1, num2, diff) {
     const d2 = pad2[i] === ' ' ? 0 : parseInt(pad2[i]);
     const position = ['Einer', 'Zehner', 'Hunderter', 'Tausender'][maxLen - 1 - i];
     
-    html += '<div class="step">';
-    html += `<div class="step-number">Schritt ${stepNum}: ${position}</div>`;
-    html += '<div class="step-content">';
+    html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-bg); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm);">';
+    html += `<div style="font-weight: 600; color: var(--color-primary-dark); margin-bottom: 4px;">Schritt ${stepNum}: ${position}</div>`;
+    html += '<div>';
     
     if (d1 < d2) {
       html += `${d1} ist kleiner als ${d2} → <span style="color: var(--color-error); font-weight: 600;">Borge 10</span> von der nächsten Stelle<br>`;
@@ -2784,30 +1891,30 @@ function generateWrittenMultiplication(num1, num2, product) {
   return html;
 }
 
-// Gittermethode für Multiplikation (wie im Bild) - Mobile-optimiert
+// Gittermethode für Multiplikation (wie im Bild)
 function generateGridMultiplication(num1, num2, product) {
   const str1 = String(num1);
   const str2 = String(num2);
   
   let html = '<div style="margin: 20px 0;">';
-  html += '<strong style="color: var(--color-primary-dark); font-size: clamp(1rem, 2.5vw, 1.1rem);">🔢 Gittermethode (Kästchen-Rechnen):</strong>';
+  html += '<strong style="color: var(--color-primary-dark); font-size: 1.1rem;">🔢 Gittermethode (Kästchen-Rechnen):</strong>';
   html += '</div>';
   
-  // Erstelle das Gitter - responsive
-  html += '<div style="display: inline-block; background: var(--color-surface); border-radius: var(--radius-sm); padding: clamp(8px, 2vw, 10px); box-shadow: var(--shadow-sm); max-width: 100%; overflow-x: auto;">';
-  html += '<table style="border-collapse: collapse; font-family: monospace; font-size: clamp(0.95rem, 2.5vw, 1.2rem); margin: 0 auto;">';
+  // Erstelle das Gitter
+  html += '<div style="display: inline-block; background: var(--color-surface); border-radius: var(--radius-sm); padding: 10px; box-shadow: var(--shadow-sm);">';
+  html += '<table style="border-collapse: collapse; font-family: monospace; font-size: 1.2rem;">';
   
   // Kopfzeile mit den Ziffern von num1
-  html += '<tr><td style="padding: clamp(8px, 2vw, 12px); border: 2px solid var(--color-border); background: var(--color-bg);"></td>';
+  html += '<tr><td style="padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg);"></td>';
   for (let i = 0; i < str1.length; i++) {
-    html += `<td style="padding: clamp(8px, 2vw, 12px); border: 2px solid var(--color-border); text-align: center; background: var(--color-primary-light); font-weight: 700; color: var(--color-primary-dark);">${str1[i]}</td>`;
+    html += `<td style="padding: 12px; border: 2px solid var(--color-border); text-align: center; background: var(--color-primary-light); font-weight: 700; color: var(--color-primary-dark);">${str1[i]}</td>`;
   }
   html += '</tr>';
   
   // Für jede Ziffer von num2
   for (let j = 0; j < str2.length; j++) {
     html += '<tr>';
-    html += `<td style="padding: clamp(8px, 2vw, 12px); border: 2px solid var(--color-border); text-align: center; background: var(--color-primary-light); font-weight: 700; color: var(--color-primary-dark);">${str2[j]}</td>`;
+    html += `<td style="padding: 12px; border: 2px solid var(--color-border); text-align: center; background: var(--color-primary-light); font-weight: 700; color: var(--color-primary-dark);">${str2[j]}</td>`;
     
     // Für jede Ziffer von num1
     for (let i = 0; i < str1.length; i++) {
@@ -2817,8 +1924,7 @@ function generateGridMultiplication(num1, num2, product) {
       const tens = Math.floor(prod / 10);
       const ones = prod % 10;
       
-      // Responsive Zellengröße
-      html += '<td style="padding: 0; border: 2px solid var(--color-border); width: clamp(45px, 12vw, 60px); height: clamp(45px, 12vw, 60px); position: relative; background: white;">';
+      html += '<td style="padding: 0; border: 2px solid var(--color-border); width: 60px; height: 60px; position: relative; background: white;">';
       html += '<div style="position: relative; width: 100%; height: 100%;">';
       
       // Diagonale Linie
@@ -2826,9 +1932,9 @@ function generateGridMultiplication(num1, num2, product) {
       html += '<line x1="0" y1="0" x2="100" y2="100" stroke="var(--color-border)" stroke-width="2"/>';
       html += '</svg>';
       
-      // Zahlen - responsive positioniert
-      html += '<div style="position: absolute; top: clamp(2px, 1vw, 4px); left: clamp(4px, 2vw, 8px); font-size: clamp(0.85rem, 2.2vw, 1rem); color: var(--color-primary-dark); font-weight: 600;">' + (tens > 0 ? tens : '·') + '</div>';
-      html += '<div style="position: absolute; bottom: clamp(2px, 1vw, 4px); right: clamp(4px, 2vw, 8px); font-size: clamp(0.85rem, 2.2vw, 1rem); color: var(--color-primary-dark); font-weight: 600;">' + ones + '</div>';
+      // Zahlen
+      html += '<div style="position: absolute; top: 4px; left: 8px; font-size: 1rem; color: var(--color-primary-dark); font-weight: 600;">' + (tens > 0 ? tens : '·') + '</div>';
+      html += '<div style="position: absolute; bottom: 4px; right: 8px; font-size: 1rem; color: var(--color-primary-dark); font-weight: 600;">' + ones + '</div>';
       html += '</div>';
       html += '</td>';
     }
@@ -2838,26 +1944,26 @@ function generateGridMultiplication(num1, num2, product) {
   html += '</table>';
   html += '</div>';
   
-  // Erklärung - kompakter für Mobile
-  html += '<div style="margin-top: 20px;">';
-  html += '<strong style="color: var(--color-primary-dark); font-size: clamp(1rem, 2.5vw, 1.1rem);">So funktioniert\'s:</strong>';
+  // Erklärung
+  html += '<div style="margin-top: 24px;">';
+  html += '<strong style="color: var(--color-primary-dark);">So funktioniert\'s:</strong>';
   html += '</div>';
   
-  html += '<div class="step">';
-  html += '<div class="step-number">Schritt 1: Multiplizieren</div>';
-  html += '<div class="step-content">Jede Ziffer mit jeder multiplizieren. Die <strong>Zehner</strong> kommen oben links, die <strong>Einer</strong> unten rechts ins Kästchen.</div>';
+  html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-bg); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm);">';
+  html += '<div style="font-weight: 600; color: var(--color-primary-dark); margin-bottom: 8px;">Schritt 1: Multiplizieren</div>';
+  html += '<div>Jede Ziffer mit jeder multiplizieren. Die <strong>Zehner</strong> kommen oben links, die <strong>Einer</strong> unten rechts ins Kästchen.</div>';
   html += '</div>';
   
-  html += '<div class="step">';
-  html += '<div class="step-number">Schritt 2: Diagonal addieren</div>';
-  html += '<div class="step-content">Addiere die Zahlen entlang der Diagonalen (von rechts unten nach links oben). Bei Übertrag zur nächsten Diagonale dazuzählen.</div>';
+  html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-bg); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm);">';
+  html += '<div style="font-weight: 600; color: var(--color-primary-dark); margin-bottom: 8px;">Schritt 2: Diagonal addieren</div>';
+  html += '<div>Addiere die Zahlen entlang der Diagonalen (von rechts unten nach links oben). Bei Übertrag zur nächsten Diagonale dazuzählen.</div>';
   html += '</div>';
   
-  html += '<div style="padding: clamp(10px, 2.5vw, 12px); margin: 8px 0; background: var(--color-success); color: white; border-radius: var(--radius-sm);">';
-  html += `<div style="font-weight: 700; font-size: clamp(1rem, 2.5vw, 1.1rem);">✓ Ergebnis: ${num1} × ${num2} = ${product}</div>`;
+  html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-success); color: white; border-radius: var(--radius-sm);">';
+  html += `<div style="font-weight: 700; font-size: 1.1rem;">✓ Ergebnis: ${num1} × ${num2} = ${product}</div>`;
   html += '</div>';
   
-  html += '<div style="padding: clamp(10px, 2.5vw, 12px); margin-top: 12px; background: #e8f4f8; border-radius: var(--radius-sm); border-left: 4px solid #3498db; font-size: clamp(0.85rem, 2.2vw, 0.95rem);">';
+  html += '<div style="padding: 12px; margin-top: 12px; background: #e8f4f8; border-radius: var(--radius-sm); border-left: 4px solid #3498db;">';
   html += '💡 <strong>Tipp:</strong> Die Gittermethode ist super für große Zahlen, weil du dir keine Überträge merken musst!';
   html += '</div>';
   
@@ -2881,11 +1987,11 @@ function generateWrittenDivision(dividend, divisor, quotient, remainder = 0) {
   let html = '<div style="background: var(--color-bg); padding: 20px; border-radius: var(--radius-md); margin: 20px 0;">';
   html += '<div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; color: var(--color-primary-dark);">📝 Schriftlich dividieren:</div>';
   
-  // Hauptdarstellung - responsive
-  html += '<div class="written-calc" style="font-family: monospace; font-size: clamp(1.1rem, 3vw, 1.4rem); line-height: 2; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: var(--radius-sm); padding: 20px; display: inline-block; min-width: 250px; max-width: 100%; overflow-x: auto;">';
+  // Hauptdarstellung
+  html += '<div style="font-family: monospace; font-size: 1.4rem; line-height: 2; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: var(--radius-sm); padding: 20px; display: inline-block; min-width: 250px;">';
   
   // Kopfzeile
-  html += `<div style="border-bottom: 2px solid var(--color-text); padding-bottom: 8px; margin-bottom: 12px; font-weight: 700; white-space: nowrap;">`;
+  html += `<div style="border-bottom: 2px solid var(--color-text); padding-bottom: 8px; margin-bottom: 12px; font-weight: 700;">`;
   html += `${dividend} : ${divisor} = <span style="color: var(--color-success);">${actualQuotient}</span>`;
   if (actualRemainder > 0) {
     html += ` <span style="color: var(--color-accent-dark);">Rest ${actualRemainder}</span>`;
@@ -2920,7 +2026,7 @@ function generateWrittenDivision(dividend, divisor, quotient, remainder = 0) {
   for (let i = 0; i < steps.length; i++) {
     const step = steps[i];
     
-    html += `<div style="margin: 12px 0; padding-left: min(${i * 10}px, 20px);">`;
+    html += `<div style="margin: 12px 0; padding-left: ${i * 10}px;">`;
     
     if (i === 0) {
       html += `<div><span style="color: var(--color-text-light);">−</span>${String(step.product).padStart(String(step.currentNumber).length, ' ')}</div>`;
@@ -2932,6 +2038,7 @@ function generateWrittenDivision(dividend, divisor, quotient, remainder = 0) {
     html += `<div style="border-top: 2px solid var(--color-text); display: inline-block; padding-top: 4px; margin-top: 2px;">`;
     
     if (step.nextDigit !== null) {
+      // Zeige Rest und nächste Ziffer
       html += `<span style="font-weight: 700; color: var(--color-primary-dark);">${step.remainder}</span><span style="color: var(--color-accent);">${step.nextDigit}</span>`;
     } else if (step.remainder === 0) {
       html += `<span style="font-weight: 700; color: var(--color-success);">0</span>`;
@@ -2947,14 +2054,14 @@ function generateWrittenDivision(dividend, divisor, quotient, remainder = 0) {
   
   // Schrittweise Erklärung
   html += '<div style="margin-top: 24px;">';
-  html += '<strong style="color: var(--color-primary-dark); font-size: clamp(1rem, 2.5vw, 1.1rem);">Schritt für Schritt:</strong>';
+  html += '<strong style="color: var(--color-primary-dark); font-size: 1.1rem;">Schritt für Schritt:</strong>';
   
   for (let i = 0; i < steps.length; i++) {
     const step = steps[i];
     
-    html += '<div class="step">';
-    html += `<div class="step-number">Schritt ${i + 1}:</div>`;
-    html += '<div class="step-content">';
+    html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-bg); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm);">';
+    html += `<div style="font-weight: 600; color: var(--color-primary-dark); margin-bottom: 8px;">Schritt ${i + 1}:</div>`;
+    html += '<div style="line-height: 1.8;">';
     
     html += `<strong>${step.currentNumber} : ${divisor} = <span style="background: var(--color-accent); color: var(--color-surface); padding: 2px 8px; border-radius: 4px;">${step.digit}</span></strong><br>`;
     html += `Rechnung: ${step.digit} × ${divisor} = ${step.product}<br>`;
@@ -2970,14 +2077,14 @@ function generateWrittenDivision(dividend, divisor, quotient, remainder = 0) {
   // Rest-Behandlung
   if (actualRemainder > 0 || steps[steps.length - 1].remainder > 0) {
     const finalRemainder = actualRemainder > 0 ? actualRemainder : steps[steps.length - 1].remainder;
-    html += '<div style="padding: 12px; margin: 12px 0; background: #fff4e6; border-radius: var(--radius-sm); border-left: 4px solid var(--color-accent); font-size: clamp(0.9rem, 2.5vw, 1rem);">';
+    html += '<div style="padding: 12px; margin: 12px 0; background: #fff4e6; border-radius: var(--radius-sm); border-left: 4px solid var(--color-accent);">';
     html += `<strong style="color: var(--color-accent-dark);">📌 Es bleibt ein Rest von ${finalRemainder}</strong><br>`;
     html += `Das bedeutet: ${dividend} = ${actualQuotient} × ${divisor} + ${finalRemainder}`;
     html += '</div>';
   }
   
   // Probe
-  html += '<div style="padding: 12px; margin: 12px 0; background: var(--color-success); color: white; border-radius: var(--radius-sm); font-size: clamp(0.9rem, 2.5vw, 1rem);">';
+  html += '<div style="padding: 12px; margin: 12px 0; background: var(--color-success); color: white; border-radius: var(--radius-sm);">';
   html += '<div style="font-weight: 700; margin-bottom: 4px;">✓ Probe:</div>';
   html += `${actualQuotient} × ${divisor}`;
   if (actualRemainder > 0) {
@@ -3059,7 +2166,6 @@ function saveState() {
   try {
     localStorage.setItem('mathState', JSON.stringify({
       grade: state.grade,
-      level: state.level,
       score: state.score,
       total: state.total,
       streak: state.streak,
@@ -3078,7 +2184,6 @@ function loadState() {
     if (saved) {
       const data = JSON.parse(saved);
       state.grade = data.grade || 1;
-      state.level = data.level || 1;
       state.score = data.score || 0;
       state.total = data.total || 0;
       state.streak = data.streak || 0;
@@ -3097,83 +2202,22 @@ function loadState() {
   }
 }
 
-// // ==================== SPRACHAUSGABE (kinderfreundlich, bevorzugt weiblich) ====================
-
-state.voicesDE = [];
-state.voiceIndex = 0;
-state.preferFemaleVoice = true;
-
-// Wörter/Zeichen kindgerecht vorlesen
-function normalizeSpeechText(raw) {
-  return String(raw)
-    .replace(/\n+/g, '. ')
-    .replace(/\s+/g, ' ')
-    .replace(/\+/g, ' plus ')
-    .replace(/−/g, ' minus ')
-    .replace(/×/g, ' mal ')
-    .replace(/÷/g, ' geteilt durch ')
-    .replace(/=/g, ' gleich ')
-    .replace(/\?/g, '')
-    .replace(/€/g, ' Euro ')
-    .replace(/(\d),(\d)/g, '$1 Komma $2')  // 3,50 -> 3 Komma 50
-    .trim();
-}
-
-// Scoring: wir wählen "wahrscheinlich weiblich & kindlich"
-function scoreVoice(v) {
-  const name = (v.name || '').toLowerCase();
-  const lang = (v.lang || '').toLowerCase();
-  let s = 0;
-
-  if (lang.startsWith('de-de')) s += 50;
-  else if (lang.startsWith('de')) s += 30;
-
-  // GANZ WICHTIG: Natural/Neural/Online/Enhanced hart bevorzugen
-  if (/natural|neural|online|enhanced|premium|ai/i.test(name)) s += 120;
-
-  // Google/Apple Stimmen sind oft angenehmer
-  if (/google|apple|siri/i.test(name)) s += 60;
-
-  // weiblich / typische weibliche Namen (heuristisch)
-  if (/female|frau|weib/i.test(name)) s += 40;
-  if (/katja|hedda|anja|sandra|anna|helena|marlene|vicki/i.test(name)) s += 35;
-
-  // typische “roboter”-/standard-stimmen leicht abwerten
-  if (/microsoft\s*(sam|david|mark|stefan)/i.test(v.name || '')) s -= 40;
-  if (/default|standard/i.test(name)) s -= 10;
-
-  if (v.localService) s += 8;
-  return s;
-}
+// ==================== SPRACHAUSGABE ====================
 
 function speak(text) {
-  if (!state.settings.sound) return;
-  if (!('speechSynthesis' in window)) return;
-
-  const t = normalizeSpeechText(text);
-  if (!t) return;
-
-  // iOS/Safari: cancel + kurze Verzögerung ist oft stabiler
+  if (!state.settings.sound || !speechSynthesis) return;
   speechSynthesis.cancel();
-
-  const u = new SpeechSynthesisUtterance(t);
-  u.lang = 'de-DE';
-
-  // kinderfreundlicher: etwas höher + etwas ruhiger
-  u.rate = 0.92;   // 0.85 war sehr “erwachsen/langsam”
-  u.pitch = 1.25;  // höher (weiblicher/kindlicher Eindruck)
-  u.volume = 1.0;
-
-  if (state.voice) u.voice = state.voice;
-
-  setTimeout(() => speechSynthesis.speak(u), 30);
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'de-DE';
+  utterance.rate = 0.85;
+  if (state.voice) utterance.voice = state.voice;
+  speechSynthesis.speak(utterance);
 }
 
-// einmalig + bei Änderungen neu setzen
-if ('speechSynthesis' in window) {
-  setupVoices();
-  speechSynthesis.onvoiceschanged = setupVoices;
-}
+speechSynthesis.onvoiceschanged = () => {
+  state.voice = speechSynthesis.getVoices().find(v => v.lang.startsWith('de')) || null;
+};
+
 // ==================== TIMER ====================
 
 function startTimer() {
@@ -3218,90 +2262,6 @@ function updateStats() {
   $('score').textContent = state.score;
   $('total').textContent = state.total;
   $('streak').textContent = state.streak;
-  $('points').textContent = state.progress[state.grade].points;
-}
-
-function updateUI() {
-  updateStats();
-  renderLevelButtons();
-}
-
-function renderLevelButtons() {
-  const levelsContainer = $('levels');
-  if (!levelsContainer) return; // Sicherheitscheck
-  
-  const gradeProgress = state.progress[state.grade];
-  const maxLevel = gradeProgress.maxLevel || getMaxUnlockedLevel(state.grade);
-  
-  levelsContainer.innerHTML = '';
-  
-  for (let level = 1; level <= 4; level++) {
-    const levelInfo = LEVELS[level];
-    const isUnlocked = level <= maxLevel;
-    const isCurrent = level === state.level;
-    
-    const btn = document.createElement('button');
-    btn.className = 'level-btn';
-    if (isCurrent) btn.classList.add('active');
-    if (!isUnlocked) btn.classList.add('locked');
-    
-    btn.style.cssText = `
-      padding: 12px;
-      border-radius: var(--radius-md);
-      border: 2px solid ${isUnlocked ? levelInfo.color : 'var(--color-border)'};
-      background: ${isCurrent ? levelInfo.bgColor : (isUnlocked ? 'var(--color-surface)' : 'var(--color-bg)')};
-      color: ${isUnlocked ? levelInfo.color : 'var(--color-text-light)'};
-      font-weight: ${isCurrent ? '700' : '600'};
-      cursor: ${isUnlocked ? 'pointer' : 'not-allowed'};
-      opacity: ${isUnlocked ? '1' : '0.5'};
-      transition: var(--transition);
-      font-size: 0.9rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    `;
-    
-    btn.innerHTML = `
-      <div style="font-size: 1.4rem;">${levelInfo.icon}</div>
-      <div>${levelInfo.name.replace(/[🥉🥈🥇💎]/g, '').trim()}</div>
-      ${isUnlocked ? `<div style="font-size: 0.75rem; opacity: 0.8;">${levelInfo.pointsPerCorrect} P</div>` : `<div style="font-size: 0.75rem;">🔒 ${levelInfo.pointsRequired} P</div>`}
-    `;
-    
-    if (isUnlocked) {
-      btn.onclick = () => {
-        state.level = level;
-        updateUI();
-        saveState();
-      };
-      btn.onmouseenter = () => {
-        if (!isCurrent) {
-          btn.style.background = levelInfo.bgColor;
-          btn.style.transform = 'scale(1.05)';
-        }
-      };
-      btn.onmouseleave = () => {
-        if (!isCurrent) {
-          btn.style.background = 'var(--color-surface)';
-          btn.style.transform = 'scale(1)';
-        }
-      };
-    }
-    
-    levelsContainer.appendChild(btn);
-  }
-  
-  // Update Fortschrittsanzeige
-  const levelProgress = $('level-progress');
-  if (levelProgress) {
-    const nextLevel = maxLevel + 1;
-    if (nextLevel <= 4) {
-      const pointsNeeded = LEVELS[nextLevel].pointsRequired - gradeProgress.points;
-      levelProgress.textContent = `Noch ${pointsNeeded} Punkte bis ${LEVELS[nextLevel].icon}`;
-    } else {
-      levelProgress.textContent = '✨ Alle Stufen freigeschaltet!';
-    }
-  }
 }
 
 function updateHistory() {
@@ -3352,7 +2312,7 @@ function showHistoryModal() {
 // ==================== AUFGABE STARTEN ====================
 
 function startNewTask() {
-  state.currentTask = createTask(state.grade, state.level);
+  state.currentTask = createTask(state.grade);
   state.answered = false;
   
   let displayText = state.currentTask.problem;
@@ -3408,14 +2368,9 @@ function answerQuestion(selectedIndex) {
     if (state.streak > state.maxStreak) {
       state.maxStreak = state.streak;
     }
-    
-    // Punkte basierend auf Level vergeben
-    const pointsEarned = LEVELS[state.level].pointsPerCorrect;
-    addPoints(pointsEarned);
-    
     $('msg').className = 'msg ok';
     const encouragements = ['Super!', 'Richtig!', 'Toll gemacht!', 'Prima!', 'Klasse!'];
-    $('msg').textContent = `✅ ${pick(encouragements)} +${pointsEarned} Punkte`;
+    $('msg').textContent = `✅ ${pick(encouragements)}`;
     speak(`${pick(encouragements)} Das war richtig!`);
   } else {
     state.streak = 0;
@@ -3423,7 +2378,7 @@ function answerQuestion(selectedIndex) {
       buttons[selectedIndex].classList.add('no');
     }
     $('msg').className = 'msg no';
-    $('msg').textContent = `❌ Die richtige Antwort ist: ${state.currentTask.correctAnswer}`;
+    $('msg').textContent = `Die richtige Antwort ist: ${state.currentTask.correctAnswer}`;
     speak('Das war leider nicht richtig. Versuch es beim nächsten Mal noch einmal.');
   }
   
@@ -3448,10 +2403,8 @@ $('grades').onclick = e => {
   if (!btn) return;
   
   state.grade = +btn.dataset.g;
-  state.level = state.progress[state.grade].maxLevel || 1;
   $('grades').querySelectorAll('button').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
-  updateUI();
   saveState();
 };
 
@@ -3480,105 +2433,70 @@ $('settings').onclick = () => {
   $('ov-settings').classList.add('show');
 };
 
-['help', 'settings', 'history', 'level-unlock'].forEach(name => {
+// Modal controls
+['help', 'settings', 'history'].forEach(name => {
   $(`cls-${name}`).onclick = () => $(`ov-${name}`).classList.remove('show');
   $(`mok-${name}`).onclick = () => $(`ov-${name}`).classList.remove('show');
   $(`ov-${name}`).onclick = e => {
-    if (e.target.id === `ov-${name}`) {
+    if (e.target === $(`ov-${name}`)) {
       $(`ov-${name}`).classList.remove('show');
     }
   };
 });
 
+// Toggle controls
 $('toggle-timer').onclick = () => {
   state.settings.timer = !state.settings.timer;
-  $('toggle-timer').classList.toggle('on', state.settings.timer);
-  $('timer').style.display = state.settings.timer ? 'block' : 'none';
+  $('toggle-timer').classList.toggle('on');
   if (!state.settings.timer) stopTimer();
   saveState();
 };
 
 $('toggle-sound').onclick = () => {
   state.settings.sound = !state.settings.sound;
-  $('toggle-sound').classList.toggle('on', state.settings.sound);
+  $('toggle-sound').classList.toggle('on');
   $('snd').textContent = state.settings.sound ? '🔊' : '🔇';
   saveState();
 };
 
 $('toggle-keys').onclick = () => {
   state.settings.keyboard = !state.settings.keyboard;
-  $('toggle-keys').classList.toggle('on', state.settings.keyboard);
+  $('toggle-keys').classList.toggle('on');
   saveState();
 };
 
-document.addEventListener('keydown', e => {
+// Keyboard shortcuts
+document.onkeydown = e => {
   if (!state.settings.keyboard) return;
-  if (state.answered) return;
-  if (!state.currentTask) return;
   
-  const key = e.key;
-  if (key >= '1' && key <= '4') {
-    const index = parseInt(key) - 1;
-    if (index < state.currentTask.options.length) {
-      answerQuestion(index);
-    }
+  if (e.key === 'Escape') {
+    ['help', 'settings', 'history'].forEach(name => {
+      $(`ov-${name}`).classList.remove('show');
+    });
+    return;
   }
-});
+  
+  if ($('ov-help').classList.contains('show') || 
+      $('ov-settings').classList.contains('show') ||
+      $('ov-history').classList.contains('show')) {
+    return;
+  }
+  
+  if (e.key === 'Enter') {
+    $('start').click();
+  } else if (e.key.toLowerCase() === 'e' && state.currentTask) {
+    $('help').click();
+  } else if ('1234'.includes(e.key)) {
+    const btn = $('ans').querySelectorAll('button')[+e.key - 1];
+    if (btn) btn.click();
+  }
+};
 
 // ==================== INITIALISIERUNG ====================
 
-// Warte bis DOM geladen ist
-document.addEventListener('DOMContentLoaded', () => {
-  loadProgress();
-  loadState();
-  updateUI();
-  
-  // Voice setup
-  if ('speechSynthesis' in window) {
-    state.voice = speechSynthesis.getVoices().find(v => v.lang.startsWith('de')) || null;
-    speechSynthesis.onvoiceschanged = () => {
-      state.voice = speechSynthesis.getVoices().find(v => v.lang.startsWith('de')) || null;
-    };
-  }
-  
-  $('timer').style.display = state.settings.timer ? 'block' : 'none';
-  $('snd').textContent = state.settings.sound ? '🔊' : '🔇';
-  $('toggle-timer').classList.toggle('on', state.settings.timer);
-  $('toggle-sound').classList.toggle('on', state.settings.sound);
-  $('toggle-keys').classList.toggle('on', state.settings.keyboard);
-  
-  updateStats();
-  updateHistory();
-  
-  // Keyboard shortcuts
-  document.addEventListener('keydown', e => {
-    if (!state.settings.keyboard) return;
-    
-    if (e.key === 'Escape') {
-      ['help', 'settings', 'history', 'level-unlock'].forEach(name => {
-        $(`ov-${name}`).classList.remove('show');
-      });
-      return;
-    }
-    
-    if ($('ov-help').classList.contains('show') || 
-        $('ov-settings').classList.contains('show') ||
-        $('ov-history').classList.contains('show') ||
-        $('ov-level-unlock').classList.contains('show')) {
-      return;
-    }
-    
-    if (e.key === 'Enter') {
-      $('start').click();
-    } else if (e.key.toLowerCase() === 'e' && state.currentTask) {
-      $('help').click();
-    } else if ('1234'.includes(e.key)) {
-      const btn = $('ans').querySelectorAll('button')[+e.key - 1];
-      if (btn) btn.click();
-    }
-  });
-});
-
+loadState();
+updateStats();
+updateHistory();
 </script>
 </body>
 </html>
