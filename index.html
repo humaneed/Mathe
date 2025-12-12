@@ -596,9 +596,76 @@
       color: #991b1b;
     }
     
+    /* Step-Boxen für Erklärungen */
+    .step {
+      padding: 12px;
+      margin: 8px 0;
+      background: var(--color-bg);
+      border-left: 4px solid var(--color-primary);
+      border-radius: var(--radius-sm);
+      line-height: 1.6;
+    }
+    
+    .step-number {
+      font-weight: 600;
+      color: var(--color-primary-dark);
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+    
+    .step-content {
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    
+    /* Mobile-spezifische Styles für schriftliche Rechenverfahren */
+    @media (max-width: 640px) {
+      .written-calc {
+        font-size: 1.1rem !important;
+        padding: 12px !important;
+        min-width: auto !important;
+        max-width: 100%;
+        overflow-x: auto;
+      }
+      
+      .step {
+        padding: 10px !important;
+        margin: 10px 0 !important;
+        font-size: 0.9rem;
+      }
+      
+      .step-number {
+        font-size: 0.95rem !important;
+      }
+      
+      .step-content {
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+      
+      /* Touch-Optimierung: Mindestgröße für Touch-Targets */
+      button {
+        min-height: 44px;
+        touch-action: manipulation;
+      }
+      
+      /* Modal auf Mobile */
+      .modal {
+        padding: 8px;
+      }
+      
+      .modal-content {
+        max-height: 90vh;
+        max-height: 90dvh;
+        margin: auto;
+        border-radius: var(--radius-lg);
+      }
+    }
+    
     @media (max-width: 640px) {
       .container {
         padding: 8px;
+        padding-bottom: calc(16px + env(safe-area-inset-bottom));
       }
       
       .card {
@@ -615,9 +682,21 @@
         padding: 4px 10px;
       }
       
+      .task-area {
+        padding: 16px;
+        min-height: 120px;
+      }
+      
       .task-text { 
         font-size: clamp(1.3rem, 8vw, 2rem);
         margin: 16px 0;
+        word-wrap: break-word;
+        hyphens: auto;
+      }
+      
+      .task-context {
+        font-size: 0.9rem;
+        margin-bottom: 12px;
       }
       
       .answers { 
@@ -629,11 +708,17 @@
         min-height: 60px;
         font-size: 1.1rem;
         padding: 16px;
+        word-wrap: break-word;
       }
       
       .btns { 
         grid-template-columns: 1fr;
         gap: 10px;
+      }
+      
+      .btns button {
+        padding: 14px;
+        font-size: 0.95rem;
       }
       
       .controls { 
@@ -655,10 +740,65 @@
       
       .modal-body {
         padding: 16px;
+        font-size: 0.95rem;
+        max-height: calc(80vh - 120px);
+        max-height: calc(80dvh - 120px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      .modal-title {
+        font-size: 1.1rem;
+      }
+      
+      /* Schriftliche Rechenverfahren auf Mobile */
+      .modal-body > div[style*="background: var(--color-bg)"] {
+        padding: 12px !important;
+        margin: 12px 0 !important;
+      }
+      
+      /* Tabellen für Gittermethode */
+      table {
+        font-size: 1rem !important;
+      }
+      
+      table td {
+        padding: 8px !important;
+        width: 50px !important;
+        height: 50px !important;
+      }
+      
+      /* Difficulty Badge */
+      .difficulty-badge {
+        font-size: 0.8rem;
+        padding: 4px 10px;
+      }
+      
+      /* Message Box */
+      .msg {
+        padding: 12px;
+        font-size: 1rem;
+      }
+      
+      /* History Items */
+      .history-item {
+        padding: 8px 12px;
+        font-size: 0.85rem;
       }
     }
     
+    /* Extra optimiert für sehr schmale Geräte (typisch 9:16) */
     @media (max-width: 380px) {
+      .container {
+        padding: 6px;
+        padding-bottom: calc(12px + env(safe-area-inset-bottom));
+      }
+      
+      .header {
+        padding: 10px 12px;
+        padding-top: calc(10px + env(safe-area-inset-top));
+      }
+      
       .logo {
         font-size: 1rem;
       }
@@ -676,6 +816,167 @@
       .icon-btn {
         width: 40px;
         height: 40px;
+        font-size: 1.2rem;
+      }
+      
+      .card {
+        padding: 12px;
+        margin-bottom: 6px;
+      }
+      
+      .task-area {
+        padding: 12px;
+        min-height: 100px;
+      }
+      
+      .task-text {
+        font-size: clamp(1.2rem, 7vw, 1.8rem);
+        margin: 12px 0;
+      }
+      
+      .task-context {
+        font-size: 0.85rem;
+      }
+      
+      .answers button {
+        font-size: 1rem;
+        padding: 14px;
+        min-height: 56px;
+      }
+      
+      .btns button {
+        padding: 12px;
+        font-size: 0.9rem;
+      }
+      
+      .modal-body {
+        padding: 12px;
+        font-size: 0.9rem;
+        max-height: calc(75vh - 100px);
+        max-height: calc(75dvh - 100px);
+      }
+      
+      .modal-title {
+        font-size: 1rem;
+      }
+      
+      /* Noch kleinere Schrift für Rechenwege */
+      .written-calc {
+        font-size: 1rem !important;
+        padding: 10px !important;
+      }
+      
+      table {
+        font-size: 0.9rem !important;
+      }
+      
+      table td {
+        padding: 6px !important;
+        width: 45px !important;
+        height: 45px !important;
+      }
+      
+      .step {
+        padding: 8px !important;
+        margin: 8px 0 !important;
+        font-size: 0.85rem;
+      }
+      
+      .step-number {
+        font-size: 0.9rem !important;
+      }
+      
+      .step-content {
+        font-size: 0.85rem;
+      }
+    }
+    
+    /* Landscape Modus auf Mobile - optimiert für 9:16 gedreht */
+    @media (max-width: 896px) and (max-height: 414px) and (orientation: landscape) {
+      .header {
+        padding: 6px 12px;
+        padding-top: calc(6px + env(safe-area-inset-top));
+      }
+      
+      .logo {
+        font-size: 0.95rem;
+      }
+      
+      .stat-box {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+      }
+      
+      .container {
+        padding: 6px;
+      }
+      
+      .card {
+        padding: 10px;
+        margin-bottom: 6px;
+      }
+      
+      .task-area {
+        min-height: 60px;
+        padding: 12px;
+      }
+      
+      .task-text {
+        font-size: clamp(1.1rem, 4vw, 1.4rem);
+        margin: 8px 0;
+      }
+      
+      .task-context {
+        font-size: 0.8rem;
+        margin-bottom: 8px;
+      }
+      
+      .answers {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+      
+      .answers button {
+        padding: 10px;
+        min-height: 48px;
+        font-size: 0.95rem;
+      }
+      
+      .btns {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+      
+      .btns button {
+        padding: 10px;
+        font-size: 0.9rem;
+      }
+      
+      .grades {
+        gap: 4px;
+      }
+      
+      .grades button {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+      }
+      
+      .modal-body {
+        max-height: calc(70vh - 80px);
+        max-height: calc(70dvh - 80px);
+        font-size: 0.85rem;
+        padding: 12px;
+      }
+      
+      .written-calc {
+        font-size: 0.95rem !important;
+        padding: 8px !important;
+      }
+      
+      .step {
+        padding: 6px !important;
+        margin: 6px 0 !important;
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -1670,9 +1971,9 @@ function generateWrittenAddition(num1, num2, sum) {
   const pad1 = str1.padStart(maxLen, ' ');
   const pad2 = str2.padStart(maxLen, ' ');
   
-  let html = '<div style="background: var(--color-bg); padding: 20px; border-radius: var(--radius-md); margin: 20px 0;">';
-  html += '<div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; color: var(--color-primary-dark);">📝 Schriftlich rechnen:</div>';
-  html += '<div style="font-family: monospace; font-size: 1.3rem; line-height: 1.8; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: var(--radius-sm); padding: 16px; display: inline-block; min-width: 150px;">';
+  let html = '<div style="background: var(--color-bg); padding: clamp(12px, 3vw, 20px); border-radius: var(--radius-md); margin: 20px 0;">';
+  html += '<div style="font-size: clamp(1rem, 2.5vw, 1.1rem); font-weight: 600; margin-bottom: 16px; color: var(--color-primary-dark);">📝 Schriftlich rechnen:</div>';
+  html += '<div class="written-calc" style="font-family: monospace; font-size: clamp(1.1rem, 3vw, 1.3rem); line-height: 1.8; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: var(--radius-sm); padding: clamp(12px, 3vw, 16px); display: inline-block; min-width: 150px; max-width: 100%; overflow-x: auto;">';
   
   // Überträge berechnen
   let carries = [];
@@ -1693,7 +1994,7 @@ function generateWrittenAddition(num1, num2, sum) {
   }
   
   // Zeige Überträge
-  html += '<div style="text-align: right; padding-right: 30px; color: var(--color-accent-dark); font-size: 0.9rem;">';
+  html += '<div style="text-align: right; padding-right: 30px; color: var(--color-accent-dark); font-size: 0.85em;">';
   for (let i = 0; i < maxLen; i++) {
     if (carries[i] === 1) {
       html += '<span style="font-weight: 700;">¹</span>';
@@ -1710,7 +2011,7 @@ function generateWrittenAddition(num1, num2, sum) {
   
   // Schrittweise Erklärung
   html += '<div style="margin-top: 20px;">';
-  html += '<strong style="color: var(--color-primary-dark);">Schritt für Schritt:</strong>';
+  html += '<strong style="color: var(--color-primary-dark); font-size: clamp(1rem, 2.5vw, 1.1rem);">Schritt für Schritt:</strong>';
   
   currentCarry = 0;
   let stepNum = 1;
@@ -1720,9 +2021,9 @@ function generateWrittenAddition(num1, num2, sum) {
     const d2 = pad2[i] === ' ' ? 0 : parseInt(pad2[i]);
     const position = ['Einer', 'Zehner', 'Hunderter', 'Tausender'][maxLen - 1 - i];
     
-    html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-bg); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm);">';
-    html += `<div style="font-weight: 600; color: var(--color-primary-dark); margin-bottom: 4px;">Schritt ${stepNum}: ${position}</div>`;
-    html += '<div>';
+    html += '<div class="step">';
+    html += `<div class="step-number">Schritt ${stepNum}: ${position}</div>`;
+    html += '<div class="step-content">';
     
     const digitSum = d1 + d2 + currentCarry;
     if (currentCarry > 0) {
@@ -1757,9 +2058,9 @@ function generateWrittenSubtraction(num1, num2, diff) {
   const pad1 = str1.padStart(maxLen, ' ');
   const pad2 = str2.padStart(maxLen, ' ');
   
-  let html = '<div style="background: var(--color-bg); padding: 20px; border-radius: var(--radius-md); margin: 20px 0;">';
-  html += '<div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; color: var(--color-primary-dark);">📝 Schriftlich rechnen:</div>';
-  html += '<div style="font-family: monospace; font-size: 1.3rem; line-height: 1.8; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: var(--radius-sm); padding: 16px; display: inline-block; min-width: 150px;">';
+  let html = '<div style="background: var(--color-bg); padding: clamp(12px, 3vw, 20px); border-radius: var(--radius-md); margin: 20px 0;">';
+  html += '<div style="font-size: clamp(1rem, 2.5vw, 1.1rem); font-weight: 600; margin-bottom: 16px; color: var(--color-primary-dark);">📝 Schriftlich rechnen:</div>';
+  html += '<div class="written-calc" style="font-family: monospace; font-size: clamp(1.1rem, 3vw, 1.3rem); line-height: 1.8; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: var(--radius-sm); padding: clamp(12px, 3vw, 16px); display: inline-block; min-width: 150px; max-width: 100%; overflow-x: auto;">';
   
   // Berechne Borgen
   let borrows = [];
@@ -1779,7 +2080,7 @@ function generateWrittenSubtraction(num1, num2, diff) {
   }
   
   // Zeige Borgen
-  html += '<div style="text-align: right; padding-right: 30px; color: var(--color-error); font-size: 0.9rem;">';
+  html += '<div style="text-align: right; padding-right: 30px; color: var(--color-error); font-size: 0.85em;">';
   for (let i = 0; i < maxLen; i++) {
     if (borrows[i] === 1) {
       html += '<span style="font-weight: 700;">⁻¹</span>';
@@ -1796,7 +2097,7 @@ function generateWrittenSubtraction(num1, num2, diff) {
   
   // Schrittweise Erklärung
   html += '<div style="margin-top: 20px;">';
-  html += '<strong style="color: var(--color-primary-dark);">Schritt für Schritt:</strong>';
+  html += '<strong style="color: var(--color-primary-dark); font-size: clamp(1rem, 2.5vw, 1.1rem);">Schritt für Schritt:</strong>';
   
   nums1 = pad1.split('').map(c => c === ' ' ? 0 : parseInt(c));
   let stepNum = 1;
@@ -1806,9 +2107,9 @@ function generateWrittenSubtraction(num1, num2, diff) {
     const d2 = pad2[i] === ' ' ? 0 : parseInt(pad2[i]);
     const position = ['Einer', 'Zehner', 'Hunderter', 'Tausender'][maxLen - 1 - i];
     
-    html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-bg); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm);">';
-    html += `<div style="font-weight: 600; color: var(--color-primary-dark); margin-bottom: 4px;">Schritt ${stepNum}: ${position}</div>`;
-    html += '<div>';
+    html += '<div class="step">';
+    html += `<div class="step-number">Schritt ${stepNum}: ${position}</div>`;
+    html += '<div class="step-content">';
     
     if (d1 < d2) {
       html += `${d1} ist kleiner als ${d2} → <span style="color: var(--color-error); font-weight: 600;">Borge 10</span> von der nächsten Stelle<br>`;
@@ -1891,30 +2192,30 @@ function generateWrittenMultiplication(num1, num2, product) {
   return html;
 }
 
-// Gittermethode für Multiplikation (wie im Bild)
+// Gittermethode für Multiplikation (wie im Bild) - Mobile-optimiert
 function generateGridMultiplication(num1, num2, product) {
   const str1 = String(num1);
   const str2 = String(num2);
   
   let html = '<div style="margin: 20px 0;">';
-  html += '<strong style="color: var(--color-primary-dark); font-size: 1.1rem;">🔢 Gittermethode (Kästchen-Rechnen):</strong>';
+  html += '<strong style="color: var(--color-primary-dark); font-size: clamp(1rem, 2.5vw, 1.1rem);">🔢 Gittermethode (Kästchen-Rechnen):</strong>';
   html += '</div>';
   
-  // Erstelle das Gitter
-  html += '<div style="display: inline-block; background: var(--color-surface); border-radius: var(--radius-sm); padding: 10px; box-shadow: var(--shadow-sm);">';
-  html += '<table style="border-collapse: collapse; font-family: monospace; font-size: 1.2rem;">';
+  // Erstelle das Gitter - responsive
+  html += '<div style="display: inline-block; background: var(--color-surface); border-radius: var(--radius-sm); padding: clamp(8px, 2vw, 10px); box-shadow: var(--shadow-sm); max-width: 100%; overflow-x: auto;">';
+  html += '<table style="border-collapse: collapse; font-family: monospace; font-size: clamp(0.95rem, 2.5vw, 1.2rem); margin: 0 auto;">';
   
   // Kopfzeile mit den Ziffern von num1
-  html += '<tr><td style="padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg);"></td>';
+  html += '<tr><td style="padding: clamp(8px, 2vw, 12px); border: 2px solid var(--color-border); background: var(--color-bg);"></td>';
   for (let i = 0; i < str1.length; i++) {
-    html += `<td style="padding: 12px; border: 2px solid var(--color-border); text-align: center; background: var(--color-primary-light); font-weight: 700; color: var(--color-primary-dark);">${str1[i]}</td>`;
+    html += `<td style="padding: clamp(8px, 2vw, 12px); border: 2px solid var(--color-border); text-align: center; background: var(--color-primary-light); font-weight: 700; color: var(--color-primary-dark);">${str1[i]}</td>`;
   }
   html += '</tr>';
   
   // Für jede Ziffer von num2
   for (let j = 0; j < str2.length; j++) {
     html += '<tr>';
-    html += `<td style="padding: 12px; border: 2px solid var(--color-border); text-align: center; background: var(--color-primary-light); font-weight: 700; color: var(--color-primary-dark);">${str2[j]}</td>`;
+    html += `<td style="padding: clamp(8px, 2vw, 12px); border: 2px solid var(--color-border); text-align: center; background: var(--color-primary-light); font-weight: 700; color: var(--color-primary-dark);">${str2[j]}</td>`;
     
     // Für jede Ziffer von num1
     for (let i = 0; i < str1.length; i++) {
@@ -1924,7 +2225,8 @@ function generateGridMultiplication(num1, num2, product) {
       const tens = Math.floor(prod / 10);
       const ones = prod % 10;
       
-      html += '<td style="padding: 0; border: 2px solid var(--color-border); width: 60px; height: 60px; position: relative; background: white;">';
+      // Responsive Zellengröße
+      html += '<td style="padding: 0; border: 2px solid var(--color-border); width: clamp(45px, 12vw, 60px); height: clamp(45px, 12vw, 60px); position: relative; background: white;">';
       html += '<div style="position: relative; width: 100%; height: 100%;">';
       
       // Diagonale Linie
@@ -1932,9 +2234,9 @@ function generateGridMultiplication(num1, num2, product) {
       html += '<line x1="0" y1="0" x2="100" y2="100" stroke="var(--color-border)" stroke-width="2"/>';
       html += '</svg>';
       
-      // Zahlen
-      html += '<div style="position: absolute; top: 4px; left: 8px; font-size: 1rem; color: var(--color-primary-dark); font-weight: 600;">' + (tens > 0 ? tens : '·') + '</div>';
-      html += '<div style="position: absolute; bottom: 4px; right: 8px; font-size: 1rem; color: var(--color-primary-dark); font-weight: 600;">' + ones + '</div>';
+      // Zahlen - responsive positioniert
+      html += '<div style="position: absolute; top: clamp(2px, 1vw, 4px); left: clamp(4px, 2vw, 8px); font-size: clamp(0.85rem, 2.2vw, 1rem); color: var(--color-primary-dark); font-weight: 600;">' + (tens > 0 ? tens : '·') + '</div>';
+      html += '<div style="position: absolute; bottom: clamp(2px, 1vw, 4px); right: clamp(4px, 2vw, 8px); font-size: clamp(0.85rem, 2.2vw, 1rem); color: var(--color-primary-dark); font-weight: 600;">' + ones + '</div>';
       html += '</div>';
       html += '</td>';
     }
@@ -1944,26 +2246,26 @@ function generateGridMultiplication(num1, num2, product) {
   html += '</table>';
   html += '</div>';
   
-  // Erklärung
-  html += '<div style="margin-top: 24px;">';
-  html += '<strong style="color: var(--color-primary-dark);">So funktioniert\'s:</strong>';
+  // Erklärung - kompakter für Mobile
+  html += '<div style="margin-top: 20px;">';
+  html += '<strong style="color: var(--color-primary-dark); font-size: clamp(1rem, 2.5vw, 1.1rem);">So funktioniert\'s:</strong>';
   html += '</div>';
   
-  html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-bg); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm);">';
-  html += '<div style="font-weight: 600; color: var(--color-primary-dark); margin-bottom: 8px;">Schritt 1: Multiplizieren</div>';
-  html += '<div>Jede Ziffer mit jeder multiplizieren. Die <strong>Zehner</strong> kommen oben links, die <strong>Einer</strong> unten rechts ins Kästchen.</div>';
+  html += '<div class="step">';
+  html += '<div class="step-number">Schritt 1: Multiplizieren</div>';
+  html += '<div class="step-content">Jede Ziffer mit jeder multiplizieren. Die <strong>Zehner</strong> kommen oben links, die <strong>Einer</strong> unten rechts ins Kästchen.</div>';
   html += '</div>';
   
-  html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-bg); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm);">';
-  html += '<div style="font-weight: 600; color: var(--color-primary-dark); margin-bottom: 8px;">Schritt 2: Diagonal addieren</div>';
-  html += '<div>Addiere die Zahlen entlang der Diagonalen (von rechts unten nach links oben). Bei Übertrag zur nächsten Diagonale dazuzählen.</div>';
+  html += '<div class="step">';
+  html += '<div class="step-number">Schritt 2: Diagonal addieren</div>';
+  html += '<div class="step-content">Addiere die Zahlen entlang der Diagonalen (von rechts unten nach links oben). Bei Übertrag zur nächsten Diagonale dazuzählen.</div>';
   html += '</div>';
   
-  html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-success); color: white; border-radius: var(--radius-sm);">';
-  html += `<div style="font-weight: 700; font-size: 1.1rem;">✓ Ergebnis: ${num1} × ${num2} = ${product}</div>`;
+  html += '<div style="padding: clamp(10px, 2.5vw, 12px); margin: 8px 0; background: var(--color-success); color: white; border-radius: var(--radius-sm);">';
+  html += `<div style="font-weight: 700; font-size: clamp(1rem, 2.5vw, 1.1rem);">✓ Ergebnis: ${num1} × ${num2} = ${product}</div>`;
   html += '</div>';
   
-  html += '<div style="padding: 12px; margin-top: 12px; background: #e8f4f8; border-radius: var(--radius-sm); border-left: 4px solid #3498db;">';
+  html += '<div style="padding: clamp(10px, 2.5vw, 12px); margin-top: 12px; background: #e8f4f8; border-radius: var(--radius-sm); border-left: 4px solid #3498db; font-size: clamp(0.85rem, 2.2vw, 0.95rem);">';
   html += '💡 <strong>Tipp:</strong> Die Gittermethode ist super für große Zahlen, weil du dir keine Überträge merken musst!';
   html += '</div>';
   
@@ -1987,11 +2289,11 @@ function generateWrittenDivision(dividend, divisor, quotient, remainder = 0) {
   let html = '<div style="background: var(--color-bg); padding: 20px; border-radius: var(--radius-md); margin: 20px 0;">';
   html += '<div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; color: var(--color-primary-dark);">📝 Schriftlich dividieren:</div>';
   
-  // Hauptdarstellung
-  html += '<div style="font-family: monospace; font-size: 1.4rem; line-height: 2; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: var(--radius-sm); padding: 20px; display: inline-block; min-width: 250px;">';
+  // Hauptdarstellung - responsive
+  html += '<div class="written-calc" style="font-family: monospace; font-size: clamp(1.1rem, 3vw, 1.4rem); line-height: 2; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: var(--radius-sm); padding: 20px; display: inline-block; min-width: 250px; max-width: 100%; overflow-x: auto;">';
   
   // Kopfzeile
-  html += `<div style="border-bottom: 2px solid var(--color-text); padding-bottom: 8px; margin-bottom: 12px; font-weight: 700;">`;
+  html += `<div style="border-bottom: 2px solid var(--color-text); padding-bottom: 8px; margin-bottom: 12px; font-weight: 700; white-space: nowrap;">`;
   html += `${dividend} : ${divisor} = <span style="color: var(--color-success);">${actualQuotient}</span>`;
   if (actualRemainder > 0) {
     html += ` <span style="color: var(--color-accent-dark);">Rest ${actualRemainder}</span>`;
@@ -2026,7 +2328,7 @@ function generateWrittenDivision(dividend, divisor, quotient, remainder = 0) {
   for (let i = 0; i < steps.length; i++) {
     const step = steps[i];
     
-    html += `<div style="margin: 12px 0; padding-left: ${i * 10}px;">`;
+    html += `<div style="margin: 12px 0; padding-left: min(${i * 10}px, 20px);">`;
     
     if (i === 0) {
       html += `<div><span style="color: var(--color-text-light);">−</span>${String(step.product).padStart(String(step.currentNumber).length, ' ')}</div>`;
@@ -2038,7 +2340,6 @@ function generateWrittenDivision(dividend, divisor, quotient, remainder = 0) {
     html += `<div style="border-top: 2px solid var(--color-text); display: inline-block; padding-top: 4px; margin-top: 2px;">`;
     
     if (step.nextDigit !== null) {
-      // Zeige Rest und nächste Ziffer
       html += `<span style="font-weight: 700; color: var(--color-primary-dark);">${step.remainder}</span><span style="color: var(--color-accent);">${step.nextDigit}</span>`;
     } else if (step.remainder === 0) {
       html += `<span style="font-weight: 700; color: var(--color-success);">0</span>`;
@@ -2054,14 +2355,14 @@ function generateWrittenDivision(dividend, divisor, quotient, remainder = 0) {
   
   // Schrittweise Erklärung
   html += '<div style="margin-top: 24px;">';
-  html += '<strong style="color: var(--color-primary-dark); font-size: 1.1rem;">Schritt für Schritt:</strong>';
+  html += '<strong style="color: var(--color-primary-dark); font-size: clamp(1rem, 2.5vw, 1.1rem);">Schritt für Schritt:</strong>';
   
   for (let i = 0; i < steps.length; i++) {
     const step = steps[i];
     
-    html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-bg); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm);">';
-    html += `<div style="font-weight: 600; color: var(--color-primary-dark); margin-bottom: 8px;">Schritt ${i + 1}:</div>`;
-    html += '<div style="line-height: 1.8;">';
+    html += '<div class="step">';
+    html += `<div class="step-number">Schritt ${i + 1}:</div>`;
+    html += '<div class="step-content">';
     
     html += `<strong>${step.currentNumber} : ${divisor} = <span style="background: var(--color-accent); color: var(--color-surface); padding: 2px 8px; border-radius: 4px;">${step.digit}</span></strong><br>`;
     html += `Rechnung: ${step.digit} × ${divisor} = ${step.product}<br>`;
@@ -2077,14 +2378,14 @@ function generateWrittenDivision(dividend, divisor, quotient, remainder = 0) {
   // Rest-Behandlung
   if (actualRemainder > 0 || steps[steps.length - 1].remainder > 0) {
     const finalRemainder = actualRemainder > 0 ? actualRemainder : steps[steps.length - 1].remainder;
-    html += '<div style="padding: 12px; margin: 12px 0; background: #fff4e6; border-radius: var(--radius-sm); border-left: 4px solid var(--color-accent);">';
+    html += '<div style="padding: 12px; margin: 12px 0; background: #fff4e6; border-radius: var(--radius-sm); border-left: 4px solid var(--color-accent); font-size: clamp(0.9rem, 2.5vw, 1rem);">';
     html += `<strong style="color: var(--color-accent-dark);">📌 Es bleibt ein Rest von ${finalRemainder}</strong><br>`;
     html += `Das bedeutet: ${dividend} = ${actualQuotient} × ${divisor} + ${finalRemainder}`;
     html += '</div>';
   }
   
   // Probe
-  html += '<div style="padding: 12px; margin: 12px 0; background: var(--color-success); color: white; border-radius: var(--radius-sm);">';
+  html += '<div style="padding: 12px; margin: 12px 0; background: var(--color-success); color: white; border-radius: var(--radius-sm); font-size: clamp(0.9rem, 2.5vw, 1rem);">';
   html += '<div style="font-weight: 700; margin-bottom: 4px;">✓ Probe:</div>';
   html += `${actualQuotient} × ${divisor}`;
   if (actualRemainder > 0) {
