@@ -3099,6 +3099,7 @@ function loadState() {
 
 // ==================== SPRACHAUSGABE ====================
 
+
 function speak(text) {
   if (!state.settings.sound || !speechSynthesis) return;
   speechSynthesis.cancel();
@@ -3108,6 +3109,11 @@ function speak(text) {
   if (state.voice) utterance.voice = state.voice;
   speechSynthesis.speak(utterance);
 }
+
+speechSynthesis.onvoiceschanged = () => {
+  state.voice = speechSynthesis.getVoices().find(v => v.lang.startsWith('de')) || null;
+};
+
 
 speechSynthesis.onvoiceschanged = () => {
   state.voice = speechSynthesis.getVoices().find(v => v.lang.startsWith('de')) || null;
