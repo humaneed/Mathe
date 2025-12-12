@@ -13,16 +13,16 @@
     
     /* Design-Award inspiriertes Farbschema */
     :root {
-      --color-primary: #7BA591;        /* Salbeigrün - beruhigend */
+      --color-primary: #7BA591;
       --color-primary-dark: #5D8A75;
       --color-primary-light: #A8C9B8;
-      --color-accent: #E8B86D;          /* Warmes Gold */
+      --color-accent: #E8B86D;
       --color-accent-dark: #D4A055;
       --color-success: #88B894;
       --color-error: #D4816F;
       --color-text: #3D4F42;
       --color-text-light: #6B7C70;
-      --color-bg: #F9F7F4;              /* Warmes Weiß */
+      --color-bg: #F9F7F4;
       --color-surface: #FFFFFF;
       --color-border: #E3DED7;
       --shadow-sm: 0 2px 8px rgba(61, 79, 66, 0.08);
@@ -35,7 +35,6 @@
       --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', 'Roboto', sans-serif;
     }
     
-    /* PWA-ähnliche Optimierungen */
     html {
       height: 100%;
       overflow: hidden;
@@ -45,9 +44,9 @@
     
     body { 
       font-family: var(--font-body);
-      background: radial-gradient(circle at top, #e7f0ea 0, #f9f7f4 45%, #f3eee6 100%);
+      background: var(--color-bg);
       height: 100vh;
-      height: 100dvh; /* Dynamic viewport height für Mobile */
+      height: 100dvh;
       overflow: hidden;
       padding: 0;
       color: var(--color-text);
@@ -59,7 +58,6 @@
       line-height: 1.6;
     }
     
-    /* Scrollbarer Container für den Inhalt */
     .app-wrapper {
       height: 100vh;
       height: 100dvh;
@@ -84,7 +82,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      background: rgba(255, 255, 255, 0.96);
+      background: var(--color-surface);
       padding: 16px;
       padding-top: calc(16px + env(safe-area-inset-top));
       box-shadow: var(--shadow-sm);
@@ -93,7 +91,6 @@
       z-index: 100;
       flex-shrink: 0;
       border-bottom: 1px solid var(--color-border);
-      backdrop-filter: blur(12px);
     }
     
     .logo { 
@@ -103,13 +100,6 @@
       white-space: nowrap;
       letter-spacing: -0.02em;
       font-family: var(--font-display);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    
-    .logo span {
-      font-size: 1.4rem;
     }
     
     .stats {
@@ -136,22 +126,14 @@
       border: 1px solid var(--color-primary);
       white-space: nowrap;
       flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      gap: 4px;
     }
     
     .stat-value { 
       font-weight: 600; 
-      margin-left: 2px; 
+      margin-left: 4px; 
       color: var(--color-primary-dark);
       font-feature-settings: 'tnum';
       font-variant-numeric: tabular-nums;
-      transition: transform 0.15s ease-out;
-    }
-
-    .stat-value.bump {
-      transform: scale(1.1);
     }
     
     .card { 
@@ -195,7 +177,6 @@
       background: var(--color-primary);
       border-color: var(--color-primary-dark);
       color: var(--color-surface);
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);
     }
     
     .icon-btn {
@@ -208,15 +189,11 @@
       font-size: 1.2rem;
       color: var(--color-text);
       transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
     }
     
     .icon-btn:hover {
       background: var(--color-bg);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-sm);
+      transform: scale(1.05);
     }
     
     .task-area {
@@ -225,24 +202,30 @@
       padding: 32px;
       text-align: center;
       margin-bottom: 20px;
-      min-height: 120px;
+      min-height: 140px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       border: 2px solid var(--color-border);
     }
     
     .task-text { 
-      font-size: clamp(2rem, 10vw, 3.2rem);
+      font-size: clamp(1.5rem, 8vw, 2.5rem);
       font-weight: 600;
       color: var(--color-text);
       text-align: center;
-      margin: 36px 0;
-      line-height: 1.2;
+      margin: 24px 0;
+      line-height: 1.4;
       font-family: var(--font-display);
-      letter-spacing: -0.03em;
-      font-feature-settings: 'tnum';
-      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+    }
+    
+    .task-context {
+      font-size: 1rem;
+      color: var(--color-text-light);
+      margin-bottom: 16px;
+      font-style: italic;
     }
     
     .answers { 
@@ -257,11 +240,15 @@
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
       background: var(--color-surface);
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       font-weight: 600;
       cursor: pointer;
       color: var(--color-text);
       transition: var(--transition);
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .answers button:hover {
@@ -307,107 +294,118 @@
       color: #742a2a;
     }
     
-    .btns { 
+    .history {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+    
+    .history-item {
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      border-left: 3px solid;
+    }
+    
+    .history-item.ok {
+      background: #f0fdf4;
+      border-color: var(--color-success);
+      color: #15803d;
+    }
+    
+    .history-item.no {
+      background: #fef2f2;
+      border-color: var(--color-error);
+      color: #991b1b;
+    }
+    
+    .btns {
       display: grid;
-      grid-template-columns: auto auto 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
     
-    .btns button { 
-      padding: 18px 28px;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
+    .btns button {
+      padding: 16px;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--color-border);
+      background: var(--color-surface);
+      cursor: pointer;
       font-weight: 600;
       font-size: 1rem;
-      cursor: pointer;
-      background: var(--color-surface);
-      color: var(--color-text);
       transition: var(--transition);
-      letter-spacing: 0.01em;
+      color: var(--color-text);
     }
     
     .btns button:hover {
       background: var(--color-bg);
       border-color: var(--color-primary);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-sm);
+      transform: translateY(-2px);
     }
     
-    .btns .main { 
+    .btns button.main {
+      grid-column: 1 / -1;
       background: var(--color-primary);
-      border-color: var(--color-primary);
+      border-color: var(--color-primary-dark);
       color: var(--color-surface);
-      font-weight: 600;
+      font-size: 1.1rem;
     }
     
-    .btns .main:hover {
+    .btns button.main:hover {
       background: var(--color-primary-dark);
       border-color: var(--color-primary-dark);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
       box-shadow: var(--shadow-md);
     }
     
-    .btns .help:disabled { 
-      opacity: 0.4; 
-      cursor: not-allowed; 
+    .btns button.help {
+      background: var(--color-accent);
+      border-color: var(--color-accent-dark);
+      color: var(--color-surface);
     }
     
-    .timer {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      background: var(--color-surface);
-      padding: 8px 16px;
-      border-radius: var(--radius-md);
-      font-weight: 600;
-      color: var(--color-primary-dark);
-      font-size: 1.1rem;
-      border: 1px solid var(--color-primary);
+    .btns button.help:hover {
+      background: var(--color-accent-dark);
+      border-color: var(--color-accent-dark);
     }
     
-    .timer.warning { 
-      background: #fed7d7; 
-      color: #742a2a; 
-      border-color: #fc8181;
+    .btns button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
     }
     
     .modal {
       display: none;
       position: fixed;
-      inset: 0;
-      background: rgba(61, 79, 66, 0.6);
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(4px);
-      align-items: flex-end;
-      justify-content: center;
       z-index: 1000;
-      padding: 0;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
     
-    .modal.show { display: flex; }
+    .modal.show {
+      display: flex;
+    }
     
     .modal-content {
       background: var(--color-surface);
-      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-      max-width: 700px;
+      border-radius: var(--radius-lg);
+      max-width: 600px;
       width: 100%;
-      max-height: 92vh;
-      max-height: 92dvh;
-      overflow: hidden;
-      box-shadow: 0 -10px 40px rgba(61, 79, 66, 0.15);
-      display: flex;
-      flex-direction: column;
-      animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    @keyframes slideUp {
-      from {
-        transform: translateY(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
+      max-height: 90vh;
+      max-height: 90dvh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     }
     
     .modal-header {
@@ -416,81 +414,58 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-shrink: 0;
-      position: relative;
       background: var(--color-bg);
-    }
-    
-    .modal-header::before {
-      content: '';
-      position: absolute;
-      top: 8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 36px;
-      height: 4px;
-      background: var(--color-border);
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     }
     
     .modal-title {
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       font-weight: 600;
       color: var(--color-text);
-      margin-top: 12px;
       font-family: var(--font-display);
-      letter-spacing: -0.01em;
     }
     
     .modal-close {
-      background: var(--color-bg);
+      width: 36px;
+      height: 36px;
       border: none;
-      font-size: 1.5rem;
+      background: transparent;
+      font-size: 1.8rem;
       cursor: pointer;
-      color: var(--color-text-light);
-      width: 32px;
-      height: 32px;
+      color: var(--color-text);
+      border-radius: 50%;
+      transition: var(--transition);
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: var(--radius-md);
-      margin-top: 12px;
-      transition: var(--transition);
+      line-height: 1;
     }
     
     .modal-close:hover {
-      background: var(--color-surface);
+      background: var(--color-border);
     }
     
     .modal-body {
-      padding: 16px;
+      padding: 24px;
       color: var(--color-text);
-      overflow-y: auto;
-      flex: 1;
-      -webkit-overflow-scrolling: touch;
     }
     
     .modal-footer {
-      padding: 16px;
-      padding-bottom: calc(16px + env(safe-area-inset-bottom));
-      border-top: 2px solid var(--color-border);
+      padding: 16px 24px;
+      border-top: 1px solid var(--color-border);
       display: flex;
-      justify-content: stretch;
-      flex-shrink: 0;
-      background: var(--color-surface);
+      justify-content: flex-end;
+      gap: 12px;
     }
     
     .modal-footer button {
-      padding: 14px 24px;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      border: none;
       background: var(--color-primary);
-      border: 2px solid var(--color-primary-dark);
-      border-radius: var(--radius-lg);
       color: var(--color-surface);
       font-weight: 600;
       cursor: pointer;
-      font-size: 1.05rem;
-      width: 100%;
-      min-height: 48px;
       transition: var(--transition);
     }
     
@@ -498,62 +473,34 @@
       background: var(--color-primary-dark);
     }
     
-    .modal-footer button:active {
-      transform: scale(0.985);
-    }
-    
-    .history { margin-top: 12px; }
-    
-    .history-item {
-      padding: 10px 14px;
-      margin-bottom: 8px;
-      border-radius: var(--radius-sm);
-      font-weight: 600;
-      border: 2px solid;
-    }
-    
-    .history-item.ok {
-      background: var(--color-success);
-      border-color: var(--color-success);
-      color: #22543d;
-    }
-    
-    .history-item.no {
-      background: #fed7d7;
-      border-color: #fc8181;
-      color: #742a2a;
-    }
-    
     .settings-panel {
-      background: var(--color-bg);
-      border-radius: var(--radius-md);
-      padding: 16px;
-      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
     
     .setting-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--color-border);
+      padding: 16px;
+      background: var(--color-bg);
+      border-radius: var(--radius-md);
     }
-    
-    .setting-row:last-child { border-bottom: none; }
     
     .setting-label {
       font-weight: 600;
-      color: #4a5568;
+      color: var(--color-text);
     }
     
     .toggle {
-      width: 56px;
+      width: 50px;
       height: 28px;
       background: var(--color-border);
       border-radius: 14px;
       position: relative;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: var(--transition);
     }
     
     .toggle::after {
@@ -562,44 +509,62 @@
       width: 22px;
       height: 22px;
       background: var(--color-surface);
-      border-radius: var(--radius-md);
+      border-radius: 50%;
       top: 3px;
       left: 3px;
-      transition: all 0.3s;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+      transition: var(--transition);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
     
     .toggle.on {
-      background: var(--color-success);
+      background: var(--color-primary);
     }
     
     .toggle.on::after {
-      left: 31px;
+      transform: translateX(22px);
     }
     
-    .calculation {
-      background: var(--color-bg);
+    .timer {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--color-surface);
       border: 2px solid var(--color-border);
       border-radius: var(--radius-md);
-      padding: 20px;
-      margin: 16px 0;
-      font-family: 'Courier New', monospace;
-      font-size: 1.2rem;
-      text-align: center;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--color-text);
+      display: none;
+      z-index: 10;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .timer.warning {
+      background: #fee;
+      border-color: var(--color-error);
+      color: var(--color-error);
+      animation: pulse 0.5s ease-in-out infinite alternate;
+    }
+    
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.05); }
     }
     
     .step {
-      background: var(--color-surface);
-      border-left: 4px solid #2c5282;
-      padding: 12px 16px;
-      margin: 12px 0;
-      border-radius: 4px;
+      margin: 16px 0;
+      padding: 16px;
+      background: var(--color-bg);
+      border-radius: var(--radius-md);
+      border-left: 4px solid var(--color-primary);
     }
     
     .step-number {
       font-weight: 600;
       color: var(--color-primary-dark);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
     }
     
     .step-content {
@@ -607,90 +572,38 @@
       line-height: 1.6;
     }
     
-    .result-highlight {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: var(--color-surface);
-      padding: 16px;
-      border-radius: var(--radius-md);
-      text-align: center;
-      font-weight: 600;
-      font-size: 1.2rem;
-      margin: 16px 0;
-    }
-    
-    .tip-box {
-      background: var(--color-surface);
-      border: 2px solid #ffc107;
-      border-radius: var(--radius-md);
-      padding: 12px 16px;
-      margin-top: 16px;
-      color: #856404;
-      font-weight: 600;
-    }
-    
-    .written-calc {
-      font-family: 'Courier New', monospace;
-      font-size: 1.3rem;
-      line-height: 1.8;
-      background: var(--color-surface);
-      border: 2px solid #2c5282;
-      border-radius: var(--radius-md);
-      padding: 20px;
-      margin: 16px 0;
+    .difficulty-badge {
       display: inline-block;
-      min-width: 200px;
-    }
-    
-    .written-calc-row {
-      text-align: right;
-      padding: 4px 0;
-    }
-    
-    .written-calc-line {
-      border-top: 2px solid var(--color-text);
-      margin: 8px 0;
-      padding-top: 8px;
-    }
-    
-    .carry {
-      color: var(--color-primary-dark);
-      font-size: 0.85em;
-      vertical-align: super;
-    }
-    
-    .highlight-step {
-      background: #fef3c7;
-      padding: 2px 6px;
-      border-radius: 4px;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
       font-weight: 600;
+      margin-bottom: 16px;
     }
     
-    /* Touch-Optimierungen für alle Buttons */
-    button {
-      -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
-      touch-action: manipulation;
-      outline: none;
+    .difficulty-easy {
+      background: #d1fae5;
+      color: #065f46;
     }
     
-    button:active {
-      transform: scale(0.985);
-    }
-
-    button:focus-visible {
-      outline: 2px solid var(--color-accent);
-      outline-offset: 2px;
+    .difficulty-medium {
+      background: #fef3c7;
+      color: #92400e;
     }
     
-    /* 9:16 Mobile Optimierungen */
+    .difficulty-hard {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    
     @media (max-width: 640px) {
       .container {
         padding: 8px;
       }
       
       .card {
-        padding: 12px;
+        padding: 16px;
         margin-bottom: 8px;
-        border-radius: 16px;
       }
       
       .logo {
@@ -703,7 +616,7 @@
       }
       
       .task-text { 
-        font-size: clamp(1.5rem, 8vw, 2.2rem);
+        font-size: clamp(1.3rem, 8vw, 2rem);
         margin: 16px 0;
       }
       
@@ -713,18 +626,14 @@
       }
       
       .answers button {
-        min-height: 52px;
+        min-height: 60px;
         font-size: 1.1rem;
+        padding: 16px;
       }
       
       .btns { 
         grid-template-columns: 1fr;
         gap: 10px;
-      }
-      
-      .btns button {
-        min-height: 48px;
-        font-size: 1rem;
       }
       
       .controls { 
@@ -740,26 +649,15 @@
       
       .grades button {
         flex: 1;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         padding: 10px 8px;
       }
       
-      /* Modal spezifisch für Mobile */
-      .modal-content {
-        max-height: 95vh;
-        max-height: 95dvh;
-      }
-      
       .modal-body {
-        padding: 12px;
-      }
-      
-      .modal-title {
-        font-size: 1.1rem;
+        padding: 16px;
       }
     }
     
-    /* Extra optimiert für sehr schmale Geräte (typisch 9:16) */
     @media (max-width: 380px) {
       .logo {
         font-size: 1rem;
@@ -771,14 +669,13 @@
       }
       
       .grades button {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         padding: 8px 6px;
       }
       
       .icon-btn {
         width: 40px;
         height: 40px;
-        font-size: 1.2rem;
       }
     }
   </style>
@@ -786,7 +683,7 @@
 <body>
   <div class="app-wrapper">
     <div class="header">
-      <div class="logo"><span>🧮</span>Mathe üben</div>
+      <div class="logo">🧮 Mathe üben</div>
       <div class="stats">
         <div class="stat-box">Punkte: <span class="stat-value" id="score">0</span></div>
         <div class="stat-box">Gesamt: <span class="stat-value" id="total">0</span></div>
@@ -795,97 +692,104 @@
     </div>
     
     <div class="container">
-      <div class="card">
-        <div class="controls">
-          <div class="grades" id="grades">
-            <button data-g="1" class="on">1. Klasse</button>
-            <button data-g="2">2. Klasse</button>
-            <button data-g="3">3. Klasse</button>
-            <button data-g="4">4. Klasse</button>
-          </div>
-          <div style="display: flex; gap: 8px;">
-            <button class="icon-btn" id="snd">🔊</button>
-            <button class="icon-btn" id="history-btn">📊</button>
-            <button class="icon-btn" id="settings">⚙️</button>
-          </div>
+    <div class="card">
+      <div class="controls">
+        <div class="grades" id="grades">
+          <button data-g="1" class="on">1. Klasse</button>
+          <button data-g="2">2. Klasse</button>
+          <button data-g="3">3. Klasse</button>
+          <button data-g="4">4. Klasse</button>
         </div>
-        
-        <div style="position: relative;">
-          <div class="timer" id="timer" style="display: none;">⏱️ <span id="time">30</span>s</div>
-          <div class="task-area">
-            <div class="task-text" id="task">Klicke auf "Neue Aufgabe"</div>
-          </div>
-        </div>
-        
-        <div class="answers" id="ans"></div>
-        
-        <div class="msg" id="msg">Wähle eine Klassenstufe und klicke auf "Neue Aufgabe"</div>
-        
-        <div class="history" id="history"></div>
-        
-        <div class="btns">
-          <button class="help" id="help" disabled>💡 Erklärung</button>
-          <button id="history-btn-2">📊 Verlauf</button>
-          <button class="main" id="start">Neue Aufgabe</button>
+        <div style="display: flex; gap: 8px;">
+          <button class="icon-btn" id="snd">🔊</button>
+          <button class="icon-btn" id="history-btn">📊</button>
+          <button class="icon-btn" id="settings">⚙️</button>
         </div>
       </div>
-    </div><!-- .container -->
-  </div><!-- .app-wrapper -->
-  
-  <!-- Modals (außerhalb der App-Struktur) -->
-  <div class="modal" id="ov-help">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div class="modal-title">💡 Erklärung</div>
-        <button class="modal-close" id="cls-help">×</button>
+      
+      <div style="position: relative;">
+        <div class="timer" id="timer">⏱️ <span id="time">30</span>s</div>
+        <div class="task-area">
+          <div class="task-text" id="task">Klicke auf "Neue Aufgabe"</div>
+        </div>
       </div>
-      <div class="modal-body" id="mbody-help"></div>
-      <div class="modal-footer">
-        <button id="mok-help">Verstanden</button>
+      
+      <div class="answers" id="ans"></div>
+      
+      <div class="msg" id="msg">Wähle eine Klassenstufe und klicke auf "Neue Aufgabe"</div>
+      
+      <div class="history" id="history"></div>
+      
+      <div class="btns">
+        <button class="help" id="help" disabled>💡 Erklärung</button>
+        <button id="history-btn-2">📊 Verlauf</button>
+        <button class="main" id="start">Neue Aufgabe</button>
       </div>
     </div>
   </div>
-  
-  <div class="modal" id="ov-settings">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div class="modal-title">⚙️ Einstellungen</div>
-        <button class="modal-close" id="cls-settings">×</button>
-      </div>
-      <div class="modal-body">
-        <div class="settings-panel">
-          <div class="setting-row">
-            <div class="setting-label">Timer (30s)</div>
-            <div class="toggle" id="toggle-timer"></div>
-          </div>
-          <div class="setting-row">
-            <div class="setting-label">Sprachausgabe</div>
-            <div class="toggle on" id="toggle-sound"></div>
-          </div>
-          <div class="setting-row">
-            <div class="setting-label">Tastatur (1-4, Enter, E)</div>
-            <div class="toggle on" id="toggle-keys"></div>
-          </div>
+  </div>
+  </div>
+
+<div class="modal" id="ov-help">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">💡 Erklärung</div>
+      <button class="modal-close" id="cls-help">×</button>
+    </div>
+    <div class="modal-body" id="mbody-help"></div>
+    <div class="modal-footer">
+      <button id="mok-help">Verstanden</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="ov-settings">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">⚙️ Einstellungen</div>
+      <button class="modal-close" id="cls-settings">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="settings-panel">
+        <div class="setting-row">
+          <div class="setting-label">⏱️ Timer (30 Sekunden)</div>
+          <div class="toggle" id="toggle-timer"></div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-label">🔊 Sprachausgabe</div>
+          <div class="toggle on" id="toggle-sound"></div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-label">⌨️ Tastatur-Shortcuts</div>
+          <div class="toggle on" id="toggle-keys"></div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button id="mok-settings">Schließen</button>
+      <div style="margin-top: 20px; padding: 12px; background: var(--color-bg); border-radius: var(--radius-sm); font-size: 0.9rem;">
+        <strong>Tastatur-Shortcuts:</strong><br>
+        <kbd style="padding: 2px 6px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 4px; font-family: monospace;">Enter</kbd> = Neue Aufgabe<br>
+        <kbd style="padding: 2px 6px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 4px; font-family: monospace;">1-4</kbd> = Antwort auswählen<br>
+        <kbd style="padding: 2px 6px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 4px; font-family: monospace;">E</kbd> = Erklärung<br>
+        <kbd style="padding: 2px 6px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 4px; font-family: monospace;">Esc</kbd> = Modal schließen
       </div>
     </div>
-  </div>
-  
-  <div class="modal" id="ov-history">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div class="modal-title">📊 Deine Statistiken</div>
-        <button class="modal-close" id="cls-history">×</button>
-      </div>
-      <div class="modal-body" id="mbody-history"></div>
-      <div class="modal-footer">
-        <button id="mok-history">Schließen</button>
-      </div>
+    <div class="modal-footer">
+      <button id="mok-settings">OK</button>
     </div>
   </div>
+</div>
+
+<div class="modal" id="ov-history">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">📊 Statistiken</div>
+      <button class="modal-close" id="cls-history">×</button>
+    </div>
+    <div class="modal-body" id="mbody-history"></div>
+    <div class="modal-footer">
+      <button id="mok-history">OK</button>
+    </div>
+  </div>
+</div>
 
 <script>
 const $ = id => document.getElementById(id);
@@ -899,483 +803,864 @@ const state = {
   currentTask: null,
   answered: false,
   history: [],
-  settings: { timer: false, sound: true, keyboard: true },
-  voice: null,
+  settings: {
+    timer: false,
+    sound: true,
+    keyboard: true
+  },
+  timerInterval: null,
   timerValue: 30,
-  timerInterval: null
+  voice: null
 };
 
-const synth = 'speechSynthesis' in window ? window.speechSynthesis : null;
+// ==================== HILFSFUNKTIONEN ====================
 
-// Aufgabengenerierung
-// Zufallszahl
-function rand(min, max) {
+function rnd(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Hilfsfunktionen für "schlauere" Aufgaben
-function choice(arr) {
-  return arr[rand(0, arr.length - 1)];
+function pick(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function shuffleOptions(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
+function shuffle(arr) {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+    [copy[i], copy[j]] = [copy[j], copy[i]];
   }
-  return arr;
+  return copy;
 }
 
-/**
- * Erzeuge Antwortoptionen rund um die richtige Lösung:
- * - Nah dran (typische Rechenfehler)
- * - Alle positiv und im sinnvollen Bereich
- */
-function buildOptions(answer, cfg = {}) {
-  const min = cfg.min ?? 0;
-  const max = cfg.max ?? 9999;
-  const spread = cfg.spread ?? Math.max(3, Math.round((max - min) / 10));
+// ==================== KLASSE 1: Zahlenraum bis 20 ====================
+// Curriculum: Zahlen bis 20, Addition/Subtraktion, Zehnerübergang
 
-  const set = new Set();
-  set.add(answer);
-
-  let guard = 0;
-  // typische „knapp daneben“-Fehler
-  while (set.size < 4 && guard < 50) {
-    guard++;
-    let delta = rand(-spread, spread);
-    if (delta === 0) continue;
-    let wrong = answer + delta;
-    if (wrong < min || wrong > max) continue;
-    set.add(wrong);
-  }
-
-  // notfalls auffüllen
-  guard = 0;
-  while (set.size < 4 && guard < 50) {
-    guard++;
-    let wrong = rand(min, max);
-    if (wrong === answer) continue;
-    set.add(wrong);
-  }
-
-  const options = shuffleOptions(Array.from(set));
-  return { options, correctIndex: options.indexOf(answer) };
-}
-
-/**
- * Addition mit optionalem Zehnerübergang
- */
-function makeAddition(config) {
-  const {
-    minA, maxA,
-    minB, maxB,
-    sumMin = null,
-    sumMax = null,
-    requireBridge = false
-  } = config;
-
-  let attempts = 0;
-  while (attempts < 50) {
-    attempts++;
-    let a = rand(minA, maxA);
-    let b = rand(minB, maxB);
-    let s = a + b;
-
-    if (sumMin !== null && s < sumMin) continue;
-    if (sumMax !== null && s > sumMax) continue;
-    if (requireBridge && ((a % 10) + (b % 10) < 10)) continue; // kein Zehnerübergang
-
-    return { num1: a, num2: b, answer: s };
-  }
-
-  // Fallback
-  let a = rand(minA, maxA);
-  let b = rand(minB, maxB);
-  return { num1: a, num2: b, answer: a + b };
-}
-
-/**
- * Subtraktion mit optionalem „Borgen“
- */
-function makeSubtraction(config) {
-  const {
-    minResult,
-    maxResult,
-    minSub = 1,
-    maxSub = null,
-    requireBorrow = false
-  } = config;
-
-  let attempts = 0;
-  while (attempts < 50) {
-    attempts++;
-    let result = rand(minResult, maxResult);
-    let sub = rand(minSub, maxSub ?? result);
-    if (sub > result) {
-      // vertauschen, damit Ergebnis positiv bleibt
-      [sub, result] = [result, sub];
-    }
-    const minuend = result + sub;
-
-    if (requireBorrow && (minuend % 10) >= (sub % 10)) {
-      // wir wollen, dass hinten „geborgt“ werden muss (z.B. 42 - 7)
-      continue;
-    }
-
-    return { num1: minuend, num2: sub, answer: result };
-  }
-
-  // Fallback
-  let result = rand(minResult, maxResult);
-  let sub = rand(minSub, result);
-  const minuend = result + sub;
-  return { num1: minuend, num2: sub, answer: result };
-}
-
-/**
- * Kern-Aufgabengenerator pro Klassenstufe
- * - Klasse 1: Zahlzerlegungen + einfache Plus/Minus
- * - Klasse 2: Plus/Minus bis 100 mit Zehnerübergang, erstes Einmaleins
- * - Klasse 3: größere Zahlen, Multiplikation & Division aus dem Einmaleins
- * - Klasse 4: dreistellige Zahlen, schwierigere Mal- und Geteiltaufgaben
- */
-function createTask(grade) {
-  let num1, num2, answer, op, symbol;
-
-  // --- Aufgaben nach Klasse ---
-  if (grade === 1) {
-    const r = Math.random();
-    if (r < 0.5) {
-      // Zahlzerlegung: a + b = 10 (oder 6–10)
-      answer = rand(5, 10);
-      num1 = rand(1, answer - 1);
-      num2 = answer - num1;
-      op = 'add';
-      symbol = '+';
-    } else if (r < 0.8) {
-      // Addition bis 20 (oft mit Zehnerübergang)
-      const cfg = makeAddition({
-        minA: 2, maxA: 15,
-        minB: 2, maxB: 15,
-        sumMin: 6, sumMax: 20,
-        requireBridge: Math.random() < 0.6
-      });
-      num1 = cfg.num1;
-      num2 = cfg.num2;
-      answer = cfg.answer;
-      op = 'add';
-      symbol = '+';
-    } else {
-      // Subtraktion mit kleinem Ergebnis
-      const cfg = makeSubtraction({
-        minResult: 1,
-        maxResult: 10,
-        minSub: 1,
-        requireBorrow: false
-      });
-      num1 = cfg.num1;
-      num2 = cfg.num2;
-      answer = cfg.answer;
-      op = 'sub';
-      symbol = '−';
-    }
-  } else if (grade === 2) {
-    const r = Math.random();
-    if (r < 0.4) {
-      // Addition bis 100 mit Zehnerübergang
-      const cfg = makeAddition({
-        minA: 10, maxA: 80,
-        minB: 10, maxB: 80,
-        sumMin: 20, sumMax: 100,
-        requireBridge: true
-      });
-      num1 = cfg.num1;
-      num2 = cfg.num2;
-      answer = cfg.answer;
-      op = 'add';
-      symbol = '+';
-    } else if (r < 0.8) {
-      // Subtraktion bis 100, häufig mit „Borgen“
-      const cfg = makeSubtraction({
-        minResult: 5,
-        maxResult: 90,
-        minSub: 3,
-        requireBorrow: Math.random() < 0.7
-      });
-      num1 = cfg.num1;
-      num2 = cfg.num2;
-      answer = cfg.answer;
-      op = 'sub';
-      symbol = '−';
-    } else {
-      // Kleines Einmaleins
-      num1 = rand(2, 10);
-      num2 = rand(2, 10);
-      answer = num1 * num2;
-      op = 'mul';
-      symbol = '×';
-    }
-  } else if (grade === 3) {
-    const r = Math.random();
-    if (r < 0.35) {
-      // Plus mit 2-stelligen / 3-stelligen Zahlen
-      const cfg = makeAddition({
-        minA: 20, maxA: 150,
-        minB: 20, maxB: 150,
-        sumMin: 40, sumMax: 200,
-        requireBridge: true
-      });
-      num1 = cfg.num1;
-      num2 = cfg.num2;
-      answer = cfg.answer;
-      op = 'add';
-      symbol = '+';
-    } else if (r < 0.7) {
-      // Minus mit „Borgen“
-      const cfg = makeSubtraction({
-        minResult: 10,
-        maxResult: 150,
-        minSub: 5,
-        requireBorrow: Math.random() < 0.8
-      });
-      num1 = cfg.num1;
-      num2 = cfg.num2;
-      answer = cfg.answer;
-      op = 'sub';
-      symbol = '−';
-    } else if (r < 0.9) {
-      // 2-stellig × 1-stellig
-      num1 = rand(12, 99);
-      num2 = rand(2, 9);
-      answer = num1 * num2;
-      op = 'mul';
-      symbol = '×';
-    } else {
-      // Division aus dem Einmaleins
-      num2 = rand(2, 12);
-      answer = rand(2, 12);
-      num1 = num2 * answer;
-      op = 'div';
-      symbol = '÷';
-    }
+// 1. Addition im Zahlenraum bis 20 (mit Zehnerübergang)
+function createAdditionTask1() {
+  const useCarry = Math.random() < 0.5;
+  let a, b, sum;
+  
+  if (useCarry) {
+    // Mit Zehnerübergang (z.B. 8+5=13)
+    a = rnd(7, 9);
+    b = rnd(3, 9);
+    sum = a + b;
+    if (sum > 20) sum = a + rnd(2, 5);
   } else {
-    // Klasse 4
-    const r = Math.random();
-    if (r < 0.3) {
-      // 3-stellige Addition
-      const cfg = makeAddition({
-        minA: 100, maxA: 999,
-        minB: 100, maxB: 999,
-        sumMin: 200, sumMax: 1800,
-        requireBridge: true
-      });
-      num1 = cfg.num1;
-      num2 = cfg.num2;
-      answer = cfg.answer;
-      op = 'add';
-      symbol = '+';
-    } else if (r < 0.6) {
-      // 3-stellige Subtraktion
-      const cfg = makeSubtraction({
-        minResult: 50,
-        maxResult: 900,
-        minSub: 20,
-        requireBorrow: true
-      });
-      num1 = cfg.num1;
-      num2 = cfg.num2;
-      answer = cfg.answer;
-      op = 'sub';
-      symbol = '−';
-    } else if (r < 0.8) {
-      // Etwas schwierigere Multiplikation (2-stellig × 2-stellig)
-      num1 = rand(12, 99);
-      num2 = rand(12, 25);
-      answer = num1 * num2;
-      op = 'mul';
-      symbol = '×';
-    } else {
-      // Division mit 2-stelligem Ergebnis
-      num2 = rand(2, 25);
-      answer = rand(10, 50);
-      num1 = num2 * answer;
-      op = 'div';
-      symbol = '÷';
-    }
+    // Ohne Zehnerübergang (z.B. 7+2=9)
+    a = rnd(1, 9);
+    b = rnd(1, 9 - a);
   }
-
-  // Mit kleiner Wahrscheinlichkeit Sachaufgaben bevorzugen (ab Klasse 2 häufiger)
-  const useWordTaskChance = grade >= 2 ? 0.25 : 0.1;
-  if (Math.random() < useWordTaskChance) {
-    return createWordTask(grade);
-  }
-
-  const { options, correctIndex } = buildOptions(answer, {
-    min: 0,
-    max: grade <= 2 ? 120 : 2500,
-    spread: grade === 1 ? 5 : grade === 2 ? 10 : 30
-  });
-
+  
+  sum = a + b;
+  const correct = sum;
+  const wrong1 = sum + 1;
+  const wrong2 = sum - 1;
+  const wrong3 = a + b + rnd(2, 4);
+  
   return {
-    num1,
-    num2,
-    answer,
-    op,
-    problem: `${num1} ${symbol} ${num2} = ?`,
-    options,
-    correctIndex,
-    taskType: 'math'
+    problem: `${a} + ${b} = ?`,
+    context: "Addition bis 20",
+    taskType: 'addition',
+    difficulty: useCarry ? 'medium' : 'easy',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${a} + ${b} = ${sum}. ${useCarry ? `Tipp: Erst bis zur 10 rechnen: ${a} + ${10-a} = 10, dann noch ${b-(10-a)} dazu = ${sum}` : ''}`
   };
 }
 
-/**
- * Sachaufgaben je nach Klassenstufe
- * (nutzt weiterhin op/num1/num2/answer, damit deine Erklärung-Logik passt)
- */
-function createWordTask(grade) {
-  const templates = [
-    // --- Klasse 1–2: sehr einfache Geschichten ---
-    {
-      minGrade: 1,
-      maxGrade: 2,
-      op: 'add',
-      min1: 1,
-      max1: 10,
-      min2: 1,
-      max2: 10,
-      text: 'Lina hat {n1} Murmeln. Sie findet {n2} Murmeln dazu. Wie viele Murmeln hat sie jetzt insgesamt?'
-    },
-    {
-      minGrade: 1,
-      maxGrade: 2,
-      op: 'sub',
-      min1: 5,
-      max1: 15,
-      min2: 1,
-      max2: 8,
-      text: 'Ben hat {n1} Bauklötze. Er gibt {n2} Bauklötze an seine Freundin ab. Wie viele Bauklötze bleiben Ben?'
-    },
-    {
-      minGrade: 2,
-      maxGrade: 3,
-      op: 'add',
-      min1: 10,
-      max1: 60,
-      min2: 5,
-      max2: 40,
-      text: 'In einer Klasse sitzen {n1} Kinder. In der Parallelklasse sitzen {n2} Kinder. Wie viele Kinder sind das zusammen?'
-    },
-    // --- Klasse 2–3: Einmaleins / Gruppen ---
-    {
-      minGrade: 2,
-      maxGrade: 3,
-      op: 'mul',
-      min1: 2,
-      max1: 10,
-      min2: 2,
-      max2: 10,
-      text: 'Auf jedem Teller liegen {n1} Kekse. Es gibt {n2} Teller. Wie viele Kekse sind das insgesamt?'
-    },
-    {
-      minGrade: 3,
-      maxGrade: 4,
-      op: 'mul',
-      min1: 3,
-      max1: 12,
-      min2: 2,
-      max2: 9,
-      text: 'Ein Bus hat {n1} Sitzplätze pro Reihe. Es gibt {n2} Reihen. Wie viele Sitzplätze gibt es insgesamt im Bus?'
-    },
-    // --- Klasse 3–4: Division als faires Aufteilen ---
-    {
-      minGrade: 3,
-      maxGrade: 4,
-      op: 'div',
-      divMinFriends: 2,
-      divMaxFriends: 8,
-      divMinEach: 2,
-      divMaxEach: 12,
-      text: 'Es gibt {n1} Bonbons. Sie sollen gerecht auf {n2} Kinder verteilt werden. Wie viele Bonbons bekommt jedes Kind?'
-    },
-    // --- Klasse 4: Geld / größere Zahlen ---
-    {
-      minGrade: 4,
-      maxGrade: 4,
-      op: 'add',
-      min1: 120,
-      max1: 480,
-      min2: 50,
-      max2: 320,
-      text: 'Ein Ausflug kostet für die Busfahrt {n1} Euro und für den Eintritt {n2} Euro. Wie viel kostet der Ausflug insgesamt?'
-    },
-    {
-      minGrade: 4,
-      maxGrade: 4,
-      op: 'sub',
-      min1: 150,
-      max1: 500,
-      min2: 20,
-      max2: 140,
-      text: 'Mara hat {n1} Euro gespart. Sie kauft sich ein Spiel für {n2} Euro. Wie viel Geld hat sie danach noch übrig?'
-    }
+// 2. Subtraktion im Zahlenraum bis 20
+function createSubtractionTask1() {
+  const a = rnd(6, 20);
+  const b = rnd(2, a - 1);
+  const diff = a - b;
+  
+  const correct = diff;
+  const wrong1 = diff + 1;
+  const wrong2 = diff - 1;
+  const wrong3 = a + b;
+  
+  return {
+    problem: `${a} − ${b} = ?`,
+    context: "Subtraktion bis 20",
+    taskType: 'subtraction',
+    difficulty: a > 10 ? 'medium' : 'easy',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${a} − ${b} = ${diff}. Zur Probe: ${diff} + ${b} = ${a} ✓`
+  };
+}
+
+// 3. Verdoppeln und Halbieren
+function createDoublingTask1() {
+  const type = Math.random() < 0.5 ? 'double' : 'half';
+  
+  if (type === 'double') {
+    const num = rnd(3, 10);
+    const doubled = num * 2;
+    const correct = doubled;
+    
+    return {
+      problem: `Das Doppelte von ${num}`,
+      context: "Verdoppeln",
+      taskType: 'doubling',
+      difficulty: 'easy',
+      correctAnswer: correct,
+      options: shuffle([correct, doubled + 1, doubled - 2, doubled + 2]),
+      explanation: `Das Doppelte von ${num} ist ${num} + ${num} = ${doubled}`
+    };
+  } else {
+    const evenNum = rnd(2, 10) * 2;
+    const half = evenNum / 2;
+    const correct = half;
+    
+    return {
+      problem: `Die Hälfte von ${evenNum}`,
+      context: "Halbieren",
+      taskType: 'halving',
+      difficulty: 'easy',
+      correctAnswer: correct,
+      options: shuffle([correct, half + 1, half - 1, half + 2]),
+      explanation: `Die Hälfte von ${evenNum} ist ${half}. Das ist das Gleiche wie ${evenNum} ÷ 2 = ${half}`
+    };
+  }
+}
+
+// 4. Zahlenzerlegung (Zehner und Einer)
+function createDecompositionTask1() {
+  const num = rnd(11, 19);
+  const ones = num - 10;
+  
+  const correct = ones;
+  const wrong1 = ones + 1;
+  const wrong2 = ones - 1;
+  const wrong3 = 10 - ones;
+  
+  return {
+    problem: `${num} = 10 + ?`,
+    context: "Zahlen zerlegen",
+    taskType: 'decomposition',
+    difficulty: 'easy',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${num} = 10 + ${ones}. Die ${num} besteht aus 1 Zehner (10) und ${ones} Einern.`
+  };
+}
+
+// 5. Vergleichen: Größer, kleiner, gleich
+function createComparisonTask1() {
+  const a = rnd(5, 19);
+  const b = rnd(5, 19);
+  
+  while (Math.abs(a - b) < 2) {
+    b = rnd(5, 19);
+  }
+  
+  const larger = Math.max(a, b);
+  const smaller = Math.min(a, b);
+  
+  const questions = [
+    { q: 'Welche Zahl ist größer?', correct: larger },
+    { q: 'Welche Zahl ist kleiner?', correct: smaller }
   ];
-
-  const usable = templates.filter(t => grade >= t.minGrade && grade <= t.maxGrade);
-  const t = choice(usable.length ? usable : templates);
-
-  let num1, num2, answer, op = t.op;
-
-  if (t.op === 'div') {
-    // Spezialfall: wir steuern über „Kinder“ (divisor) + „Bonbons pro Kind“ (quotient)
-    const friends = rand(t.divMinFriends, t.divMaxFriends);
-    const each = rand(t.divMinEach, t.divMaxEach);
-    num2 = friends;        // Teiler
-    answer = each;         // Ergebnis
-    num1 = friends * each; // Dividend
-  } else if (t.op === 'mul') {
-    num1 = rand(t.min1, t.max1);
-    num2 = rand(t.min2, t.max2);
-    answer = num1 * num2;
-  } else if (t.op === 'add') {
-    num1 = rand(t.min1, t.max1);
-    num2 = rand(t.min2, t.max2);
-    answer = num1 + num2;
-  } else {
-    // sub
-    const cfg = makeSubtraction({
-      minResult: t.min1,
-      maxResult: t.max1,
-      minSub: t.min2,
-      maxSub: t.max2,
-      requireBorrow: grade >= 3
-    });
-    num1 = cfg.num1;
-    num2 = cfg.num2;
-    answer = cfg.answer;
-  }
-
-  let text = t.text
-    .replace('{n1}', num1)
-    .replace('{n2}', num2);
-
-  const { options, correctIndex } = buildOptions(answer, {
-    min: 0,
-    max: grade <= 2 ? 120 : 1000,
-    spread: grade === 1 ? 5 : grade === 2 ? 10 : 25
-  });
-
+  
+  const question = pick(questions);
+  const correct = question.correct;
+  
   return {
-    num1,
-    num2,
-    answer,
-    op,
-    problem: text,
-    options,
-    correctIndex,
-    taskType: 'word'
+    problem: `${a}  und  ${b}\n\n${question.q}`,
+    context: "Zahlen vergleichen",
+    taskType: 'comparison',
+    difficulty: 'easy',
+    correctAnswer: correct,
+    options: shuffle([correct, correct === larger ? smaller : larger, correct + 1, correct - 1]),
+    explanation: `${larger} ist größer als ${smaller}. ${larger} > ${smaller}`
   };
 }
+
+// ==================== KLASSE 2: Zahlenraum bis 100 ====================
+// Curriculum: Zahlen bis 100, Addition/Subtraktion, Einmaleins (2,5,10 dann 3,4,6,7,8,9), Geld, Uhrzeit
+
+// 6. Addition bis 100
+function createAdditionTask2() {
+  const a = rnd(15, 85);
+  const b = rnd(5, 40);
+  const sum = a + b;
+  
+  if (sum > 100) {
+    return createAdditionTask2();
+  }
+  
+  const correct = sum;
+  const wrong1 = sum + 10;
+  const wrong2 = sum - 10;
+  const wrong3 = a - b;
+  
+  return {
+    problem: `${a} + ${b} = ?`,
+    context: "Addition bis 100",
+    taskType: 'addition',
+    difficulty: 'medium',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${a} + ${b} = ${sum}. Tipp: Rechne in Schritten, z.B. erst +${Math.floor(b/10)*10}, dann +${b%10}`
+  };
+}
+
+// 7. Subtraktion bis 100
+function createSubtractionTask2() {
+  const a = rnd(25, 99);
+  const b = rnd(5, a - 5);
+  const diff = a - b;
+  
+  const correct = diff;
+  const wrong1 = diff + 10;
+  const wrong2 = diff - 10;
+  const wrong3 = a + b;
+  
+  return {
+    problem: `${a} − ${b} = ?`,
+    context: "Subtraktion bis 100",
+    taskType: 'subtraction',
+    difficulty: 'medium',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${a} − ${b} = ${diff}. Zur Probe: ${diff} + ${b} = ${a} ✓`
+  };
+}
+
+// 8. Einmaleins (2er, 3er, 4er, 5er, 10er Reihe hauptsächlich)
+function createMultiplicationTask2() {
+  const multiplicands = [2, 2, 3, 4, 5, 5, 10, 10]; // 2,5,10 häufiger
+  const factor1 = pick(multiplicands);
+  const factor2 = rnd(2, 10);
+  const product = factor1 * factor2;
+  
+  const correct = product;
+  const wrong1 = product + factor1;
+  const wrong2 = product - factor1;
+  const wrong3 = factor1 + factor2;
+  
+  return {
+    problem: `${factor1} × ${factor2} = ?`,
+    context: `Das kleine Einmaleins: ${factor1}er-Reihe`,
+    taskType: 'multiplication',
+    difficulty: factor1 <= 5 ? 'easy' : 'medium',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${factor1} × ${factor2} = ${product}. Das ist: ${factor1} + ${factor1} + ... (${factor2} mal)`
+  };
+}
+
+// 9. Division (Einmaleins-Umkehrung)
+function createDivisionTask2() {
+  const divisors = [2, 5, 10, 3, 4]; // Einfache Divisoren
+  const divisor = pick(divisors);
+  const quotient = rnd(2, 10);
+  const dividend = divisor * quotient;
+  
+  const correct = quotient;
+  const wrong1 = quotient + 1;
+  const wrong2 = quotient - 1;
+  const wrong3 = dividend - divisor;
+  
+  return {
+    problem: `${dividend} ÷ ${divisor} = ?`,
+    context: "Geteilt (ohne Rest)",
+    taskType: 'division',
+    difficulty: 'medium',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${dividend} ÷ ${divisor} = ${quotient}. Denn ${divisor} × ${quotient} = ${dividend}`
+  };
+}
+
+// 10. Rechnen mit Geld (Euro und Cent)
+function createMoneyTask2() {
+  const euros = rnd(1, 5);
+  const items = [
+    { name: '🍫 Schokolade', price: `${euros},50` },
+    { name: '🥤 Saft', price: `${euros},00` },
+    { name: '🍎 Apfel', price: '0,80' },
+    { name: '🍪 Kekse', price: `${euros},20` }
+  ];
+  
+  const item = pick(items);
+  const priceCents = Math.round(parseFloat(item.price.replace(',', '.')) * 100);
+  const paid = Math.ceil(priceCents / 100) * 100 + rnd(0, 2) * 100;
+  const change = paid - priceCents;
+  
+  const correct = (change / 100).toFixed(2).replace('.', ',');
+  const wrong1 = ((change + 50) / 100).toFixed(2).replace('.', ',');
+  const wrong2 = ((change - 50) / 100).toFixed(2).replace('.', ',');
+  const wrong3 = ((change + 100) / 100).toFixed(2).replace('.', ',');
+  
+  return {
+    problem: `Du kaufst: ${item.name} für ${item.price}€\n\nDu zahlst mit ${(paid/100).toFixed(2).replace('.', ',')}€\n\nWie viel Rückgeld?`,
+    context: "Rechnen mit Euro",
+    taskType: 'money',
+    difficulty: 'medium',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `Du zahlst ${(paid/100).toFixed(2).replace('.', ',')}€ und es kostet ${item.price}€. Rückgeld: ${correct}€`
+  };
+}
+
+// 11. Uhrzeit ablesen (volle und halbe Stunden, Viertelstunden)
+function createTimeTask2() {
+  const hour = rnd(1, 12);
+  const minuteOptions = [0, 15, 30, 45];
+  const minutes = pick(minuteOptions);
+  
+  let timeStr;
+  if (minutes === 0) {
+    timeStr = `${hour} Uhr`;
+  } else if (minutes === 15) {
+    timeStr = `Viertel nach ${hour}`;
+  } else if (minutes === 30) {
+    timeStr = `halb ${hour + 1}`;
+  } else {
+    timeStr = `Viertel vor ${hour + 1}`;
+  }
+  
+  const correct = `${hour}:${minutes.toString().padStart(2, '0')}`;
+  const wrong1 = `${hour + 1}:${minutes.toString().padStart(2, '0')}`;
+  const wrong2 = `${hour}:${(minutes + 15) % 60}`;
+  const wrong3 = `${hour}:${(minutes === 0 ? 30 : 0).toString().padStart(2, '0')}`;
+  
+  return {
+    problem: `Wie spät ist es?\n\n🕐 ${timeStr}`,
+    context: "Uhrzeit ablesen",
+    taskType: 'time',
+    difficulty: minutes === 30 ? 'medium' : 'easy',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${timeStr} = ${correct} Uhr. ${minutes === 30 ? `"halb ${hour + 1}" bedeutet 30 Minuten nach ${hour} Uhr` : ''}`
+  };
+}
+
+// 12. Größer/Kleiner/Gleich bis 100
+function createComparisonTask2() {
+  const a = rnd(20, 99);
+  const b = rnd(20, 99);
+  
+  while (Math.abs(a - b) < 5) {
+    b = rnd(20, 99);
+  }
+  
+  const larger = Math.max(a, b);
+  const smaller = Math.min(a, b);
+  
+  const questions = [
+    { q: 'Welche Zahl ist größer?', correct: larger },
+    { q: 'Welche Zahl ist kleiner?', correct: smaller }
+  ];
+  
+  const question = pick(questions);
+  const correct = question.correct;
+  
+  return {
+    problem: `${a}  und  ${b}\n\n${question.q}`,
+    context: "Zahlen vergleichen",
+    taskType: 'comparison',
+    difficulty: 'easy',
+    correctAnswer: correct,
+    options: shuffle([correct, correct === larger ? smaller : larger, correct + 5, correct - 5]),
+    explanation: `${larger} > ${smaller}. ${larger} ist größer als ${smaller}.`
+  };
+}
+
+// ==================== KLASSE 3: Zahlenraum bis 1000 ====================
+// Curriculum: Zahlen bis 1000, schriftliche Addition/Subtraktion, Einmaleins festigen, Division mit Rest, Längen, Gewichte
+
+// 13. Addition bis 1000
+function createAdditionTask3() {
+  const a = rnd(100, 850);
+  const b = rnd(50, 300);
+  const sum = a + b;
+  
+  if (sum > 1000) {
+    return createAdditionTask3();
+  }
+  
+  const correct = sum;
+  const wrong1 = sum + 100;
+  const wrong2 = sum - 100;
+  const wrong3 = a - b;
+  
+  return {
+    problem: `${a} + ${b} = ?`,
+    context: "Addition bis 1000",
+    taskType: 'addition',
+    difficulty: 'medium',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${a} + ${b} = ${sum}. Tipp: Rechne stellenweise (Hunderter + Hunderter, Zehner + Zehner, Einer + Einer)`
+  };
+}
+
+// 14. Subtraktion bis 1000
+function createSubtractionTask3() {
+  const a = rnd(200, 999);
+  const b = rnd(50, a - 50);
+  const diff = a - b;
+  
+  const correct = diff;
+  const wrong1 = diff + 100;
+  const wrong2 = diff - 100;
+  const wrong3 = a + b;
+  
+  return {
+    problem: `${a} − ${b} = ?`,
+    context: "Subtraktion bis 1000",
+    taskType: 'subtraction',
+    difficulty: 'medium',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${a} − ${b} = ${diff}. Zur Probe: ${diff} + ${b} = ${a} ✓`
+  };
+}
+
+// 15. Einmaleins festigen (alle Reihen)
+function createMultiplicationTask3() {
+  const factor1 = rnd(2, 10);
+  const factor2 = rnd(2, 10);
+  const product = factor1 * factor2;
+  
+  const correct = product;
+  const wrong1 = product + factor1;
+  const wrong2 = product - factor1;
+  const wrong3 = factor1 + factor2;
+  
+  return {
+    problem: `${factor1} × ${factor2} = ?`,
+    context: `Einmaleins: ${factor1}er-Reihe`,
+    taskType: 'multiplication',
+    difficulty: 'medium',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${factor1} × ${factor2} = ${product}. Das kleine Einmaleins solltest du auswendig können!`
+  };
+}
+
+// 16. Division mit Rest
+function createDivisionWithRestTask3() {
+  const divisor = rnd(3, 9);
+  const quotient = rnd(3, 12);
+  const remainder = rnd(1, divisor - 1);
+  const dividend = divisor * quotient + remainder;
+  
+  const correct = `${quotient} Rest ${remainder}`;
+  const wrong1 = `${quotient + 1} Rest ${remainder}`;
+  const wrong2 = `${quotient} Rest ${remainder + 1}`;
+  const wrong3 = `${quotient} Rest 0`;
+  
+  return {
+    problem: `${dividend} ÷ ${divisor} = ?`,
+    context: "Division mit Rest",
+    taskType: 'division_rest',
+    difficulty: 'hard',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${dividend} ÷ ${divisor} = ${quotient} Rest ${remainder}. Probe: ${divisor} × ${quotient} + ${remainder} = ${dividend}`
+  };
+}
+
+// 17. Längen umrechnen (m, cm)
+function createLengthTask3() {
+  const meters = rnd(2, 9);
+  const cm = rnd(10, 90);
+  
+  const type = Math.random() < 0.5 ? 'to_cm' : 'to_m';
+  
+  if (type === 'to_cm') {
+    const correct = meters * 100;
+    const wrong1 = meters * 10;
+    const wrong2 = meters * 100 + 10;
+    const wrong3 = meters + 100;
+    
+    return {
+      problem: `${meters} m = ? cm`,
+      context: "Längen: Meter → Zentimeter",
+      taskType: 'length',
+      difficulty: 'medium',
+      correctAnswer: correct,
+      options: shuffle([correct, wrong1, wrong2, wrong3]),
+      explanation: `1 m = 100 cm, also ${meters} m = ${meters} × 100 = ${correct} cm`
+    };
+  } else {
+    const totalCm = meters * 100 + cm;
+    const correct = `${meters} m ${cm} cm`;
+    const wrong1 = `${meters + 1} m ${cm} cm`;
+    const wrong2 = `${meters} m ${cm + 10} cm`;
+    const wrong3 = `${Math.floor(totalCm / 10)} m ${totalCm % 10} cm`;
+    
+    return {
+      problem: `${totalCm} cm = ? m ? cm`,
+      context: "Längen: Zentimeter → Meter",
+      taskType: 'length',
+      difficulty: 'hard',
+      correctAnswer: correct,
+      options: shuffle([correct, wrong1, wrong2, wrong3]),
+      explanation: `100 cm = 1 m. ${totalCm} cm = ${meters} m und ${cm} cm`
+    };
+  }
+}
+
+// 18. Gewichte (kg, g)
+function createWeightTask3() {
+  const kg = rnd(2, 9);
+  
+  const correct = kg * 1000;
+  const wrong1 = kg * 100;
+  const wrong2 = kg * 1000 + 100;
+  const wrong3 = kg + 1000;
+  
+  return {
+    problem: `${kg} kg = ? g`,
+    context: "Gewichte: Kilogramm → Gramm",
+    taskType: 'weight',
+    difficulty: 'medium',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `1 kg = 1000 g, also ${kg} kg = ${kg} × 1000 = ${correct} g`
+  };
+}
+
+// 19. Geometrie: Umfang
+function createPerimeterTask3() {
+  const length = rnd(5, 15);
+  const width = rnd(3, 10);
+  const perimeter = 2 * (length + width);
+  
+  const correct = perimeter;
+  const wrong1 = length + width;
+  const wrong2 = length * width;
+  const wrong3 = perimeter + 2;
+  
+  return {
+    problem: `Ein Rechteck ist ${length} cm lang und ${width} cm breit.\n\nWie lang ist der Umfang?`,
+    context: "Geometrie: Umfang",
+    taskType: 'perimeter',
+    difficulty: 'medium',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `Umfang = 2 × (Länge + Breite) = 2 × (${length} + ${width}) = 2 × ${length + width} = ${perimeter} cm`
+  };
+}
+
+// 20. Sachaufgabe mit 2 Schritten
+function createTwoStepTask3() {
+  const boxes = rnd(3, 6);
+  const itemsPerBox = rnd(4, 8);
+  const pricePerItem = rnd(2, 5);
+  
+  const totalItems = boxes * itemsPerBox;
+  const totalPrice = totalItems * pricePerItem;
+  
+  const correct = totalPrice;
+  const wrong1 = totalItems;
+  const wrong2 = boxes * pricePerItem;
+  const wrong3 = totalPrice + 10;
+  
+  return {
+    problem: `${boxes} Kisten mit je ${itemsPerBox} Stiften.\nEin Stift kostet ${pricePerItem}€.\n\nWie viel kosten alle Stifte zusammen?`,
+    context: "Sachaufgabe (2 Schritte)",
+    taskType: 'word_problem',
+    difficulty: 'hard',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `Schritt 1: ${boxes} × ${itemsPerBox} = ${totalItems} Stifte. Schritt 2: ${totalItems} × ${pricePerItem}€ = ${totalPrice}€`
+  };
+}
+
+// ==================== KLASSE 4: Zahlenraum bis 1.000.000 ====================
+// Curriculum: Zahlen bis 1 Million, schriftliche Multiplikation/Division, Brüche, Dezimalzahlen (Einführung)
+
+// 21. Große Zahlen lesen und schreiben
+function createLargeNumberTask4() {
+  const thousand = rnd(10, 999);
+  const number = thousand * 1000 + rnd(0, 999);
+  
+  const correct = number;
+  const wrong1 = number + 1000;
+  const wrong2 = number - 1000;
+  const wrong3 = thousand * 100 + rnd(0, 999);
+  
+  const questions = [
+    { q: `${thousand} Tausend = ?`, answer: thousand * 1000 },
+    { q: `Wie viele Tausender hat ${number}?`, answer: Math.floor(number / 1000) }
+  ];
+  
+  const question = pick(questions);
+  const correctAns = question.answer;
+  const wrong1Ans = correctAns + 10;
+  const wrong2Ans = correctAns - 10;
+  const wrong3Ans = correctAns * 10;
+  
+  return {
+    problem: question.q,
+    context: "Große Zahlen",
+    taskType: 'large_numbers',
+    difficulty: 'medium',
+    correctAnswer: correctAns,
+    options: shuffle([correctAns, wrong1Ans, wrong2Ans, wrong3Ans]),
+    explanation: `${question.q} = ${correctAns}. Tipp: 1000 = 1 Tausend, 10.000 = 10 Tausend`
+  };
+}
+
+// 22. Schriftliche Multiplikation (zweistellig × einstellig)
+function createMultiplicationTask4() {
+  const factor1 = rnd(12, 99);
+  const factor2 = rnd(2, 9);
+  const product = factor1 * factor2;
+  
+  const correct = product;
+  const wrong1 = factor1 + factor2;
+  const wrong2 = product + factor1;
+  const wrong3 = product - factor2;
+  
+  return {
+    problem: `${factor1} × ${factor2} = ?`,
+    context: "Schriftlich multiplizieren",
+    taskType: 'multiplication',
+    difficulty: 'hard',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${factor1} × ${factor2} = ${product}. Rechne schriftlich: Erst Einer, dann Zehner mit dem Faktor multiplizieren.`
+  };
+}
+
+// 23. Schriftliche Division (durch einstellige Zahlen)
+function createDivisionTask4() {
+  const divisor = rnd(2, 9);
+  const quotient = rnd(12, 99);
+  const dividend = divisor * quotient;
+  
+  const correct = quotient;
+  const wrong1 = quotient + 10;
+  const wrong2 = quotient - 10;
+  const wrong3 = dividend - divisor;
+  
+  return {
+    problem: `${dividend} ÷ ${divisor} = ?`,
+    context: "Schriftlich dividieren",
+    taskType: 'division',
+    difficulty: 'hard',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${dividend} ÷ ${divisor} = ${quotient}. Probe: ${quotient} × ${divisor} = ${dividend} ✓`
+  };
+}
+
+// 24. Brüche (Hälfte, Drittel, Viertel)
+function createFractionTask4() {
+  const fractions = [
+    { name: 'die Hälfte', divisor: 2, text: '1/2' },
+    { name: 'ein Drittel', divisor: 3, text: '1/3' },
+    { name: 'ein Viertel', divisor: 4, text: '1/4' }
+  ];
+  
+  const fraction = pick(fractions);
+  const whole = rnd(2, 8) * fraction.divisor;
+  const result = whole / fraction.divisor;
+  
+  const correct = result;
+  const wrong1 = result + 1;
+  const wrong2 = result - 1;
+  const wrong3 = whole - result;
+  
+  return {
+    problem: `${fraction.text} von ${whole} = ?`,
+    context: "Brüche berechnen",
+    taskType: 'fractions',
+    difficulty: 'medium',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${fraction.text} von ${whole}: ${whole} ÷ ${fraction.divisor} = ${result}. ${fraction.name} bedeutet durch ${fraction.divisor} teilen.`
+  };
+}
+
+// 25. Dezimalzahlen (Einführung: Euro und Cent)
+function createDecimalTask4() {
+  const euros = rnd(5, 20);
+  const cents = rnd(1, 9) * 10;
+  
+  const decimalPrice = `${euros},${cents.toString().padStart(2, '0')}`;
+  const totalCents = euros * 100 + cents;
+  
+  const correct = totalCents;
+  const wrong1 = totalCents + 10;
+  const wrong2 = totalCents - 10;
+  const wrong3 = euros + cents;
+  
+  return {
+    problem: `${decimalPrice}€ = ? Cent`,
+    context: "Dezimalzahlen: Euro → Cent",
+    taskType: 'decimals',
+    difficulty: 'medium',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${decimalPrice}€ = ${euros}€ und ${cents} Cent = ${totalCents} Cent (1€ = 100 Cent)`
+  };
+}
+
+// 26. Runden auf Zehner, Hunderter, Tausender
+function createRoundingTask4() {
+  const number = rnd(1345, 9876);
+  
+  const roundTypes = [
+    { name: 'Zehner', divisor: 10 },
+    { name: 'Hunderter', divisor: 100 },
+    { name: 'Tausender', divisor: 1000 }
+  ];
+  
+  const roundType = pick(roundTypes);
+  const rounded = Math.round(number / roundType.divisor) * roundType.divisor;
+  
+  const correct = rounded;
+  const wrong1 = Math.floor(number / roundType.divisor) * roundType.divisor;
+  const wrong2 = Math.ceil(number / roundType.divisor) * roundType.divisor;
+  const wrong3 = number;
+  
+  return {
+    problem: `Runde ${number} auf ${roundType.name}`,
+    context: "Runden",
+    taskType: 'rounding',
+    difficulty: 'medium',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `${number} auf ${roundType.name} gerundet = ${rounded}. Regel: 0-4 abrunden, 5-9 aufrunden.`
+  };
+}
+
+// 27. Flächeninhalt (Rechteck)
+function createAreaTask4() {
+  const length = rnd(8, 20);
+  const width = rnd(5, 15);
+  const area = length * width;
+  
+  const correct = area;
+  const wrong1 = 2 * (length + width);
+  const wrong2 = length + width;
+  const wrong3 = area + 10;
+  
+  return {
+    problem: `Ein Rechteck ist ${length} cm lang und ${width} cm breit.\n\nWie groß ist die Fläche?`,
+    context: "Geometrie: Flächeninhalt",
+    taskType: 'area',
+    difficulty: 'medium',
+    correctAnswer: area,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `Flächeninhalt = Länge × Breite = ${length} cm × ${width} cm = ${area} cm²`
+  };
+}
+
+// 28. Sachaufgabe mit mehreren Schritten
+function createComplexWordProblem4() {
+  const people = rnd(3, 6);
+  const ticketPrice = rnd(8, 15);
+  const snackPrice = rnd(3, 6);
+  
+  const ticketTotal = people * ticketPrice;
+  const snackTotal = people * snackPrice;
+  const grandTotal = ticketTotal + snackTotal;
+  
+  const correct = grandTotal;
+  const wrong1 = ticketTotal;
+  const wrong2 = ticketTotal + snackPrice;
+  const wrong3 = grandTotal - 5;
+  
+  return {
+    problem: `${people} Personen gehen ins Kino.\nEin Ticket kostet ${ticketPrice}€.\nSnacks kosten ${snackPrice}€ pro Person.\n\nWie viel zahlen sie insgesamt?`,
+    context: "Sachaufgabe (mehrere Schritte)",
+    taskType: 'word_problem',
+    difficulty: 'hard',
+    correctAnswer: correct,
+    options: shuffle([correct, wrong1, wrong2, wrong3]),
+    explanation: `Tickets: ${people} × ${ticketPrice}€ = ${ticketTotal}€. Snacks: ${people} × ${snackPrice}€ = ${snackTotal}€. Gesamt: ${ticketTotal}€ + ${snackTotal}€ = ${grandTotal}€`
+  };
+}
+
+// ==================== HAUPTGENERATOR ====================
+
+function createTask(grade) {
+  let taskGenerators = [];
+  
+  switch(grade) {
+    case 1:
+      // Zahlenraum bis 20: Addition, Subtraktion, Verdoppeln/Halbieren, Zerlegen, Vergleichen
+      taskGenerators = [
+        createAdditionTask1,
+        createAdditionTask1,  // Häufiger
+        createSubtractionTask1,
+        createSubtractionTask1,  // Häufiger
+        createDoublingTask1,
+        createDecompositionTask1,
+        createComparisonTask1
+      ];
+      break;
+      
+    case 2:
+      // Zahlenraum bis 100: Addition, Subtraktion, Einmaleins (2,5,10 Reihen), Geld, Uhrzeit
+      taskGenerators = [
+        createAdditionTask2,
+        createSubtractionTask2,
+        createMultiplicationTask2,
+        createMultiplicationTask2,  // Häufiger (Einmaleins üben!)
+        createDivisionTask2,
+        createMoneyTask2,
+        createTimeTask2,
+        createComparisonTask2
+      ];
+      break;
+      
+    case 3:
+      // Zahlenraum bis 1000: Alle 4 Grundrechenarten, Einmaleins festigen, Größen
+      taskGenerators = [
+        createAdditionTask3,
+        createSubtractionTask3,
+        createMultiplicationTask3,
+        createMultiplicationTask3,  // Häufiger (Einmaleins festigen!)
+        createDivisionWithRestTask3,
+        createLengthTask3,
+        createWeightTask3,
+        createPerimeterTask3,
+        createTwoStepTask3
+      ];
+      break;
+      
+    case 4:
+      // Zahlenraum bis 1 Million: Schriftliche Verfahren, Brüche, Dezimalzahlen
+      taskGenerators = [
+        createLargeNumberTask4,
+        createMultiplicationTask4,
+        createDivisionTask4,
+        createFractionTask4,
+        createDecimalTask4,
+        createRoundingTask4,
+        createAreaTask4,
+        createComplexWordProblem4
+      ];
+      break;
+  }
+  
+  const generator = pick(taskGenerators);
+  const task = generator();
+  
+  const correctIndex = task.options.findIndex(opt => 
+    opt.toString() === task.correctAnswer.toString()
+  );
+  
+  return {
+    ...task,
+    correctIndex: correctIndex,
+    grade: grade
+  };
+}
+
+// ==================== SCHRIFTLICHE RECHENVERFAHREN ====================
+
 // Schriftliche Addition
 function generateWrittenAddition(num1, num2, sum) {
   const str1 = String(num1);
@@ -1385,10 +1670,11 @@ function generateWrittenAddition(num1, num2, sum) {
   const pad1 = str1.padStart(maxLen, ' ');
   const pad2 = str2.padStart(maxLen, ' ');
   
-  let html = '<div class="written-calc">';
-  html += '<div class="written-calc-row" style="text-align: right; padding-right: 30px;">';
+  let html = '<div style="background: var(--color-bg); padding: 20px; border-radius: var(--radius-md); margin: 20px 0;">';
+  html += '<div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; color: var(--color-primary-dark);">📝 Schriftlich rechnen:</div>';
+  html += '<div style="font-family: monospace; font-size: 1.3rem; line-height: 1.8; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: var(--radius-sm); padding: 16px; display: inline-block; min-width: 150px;">';
   
-  // Erste Zahl mit Überträgen
+  // Überträge berechnen
   let carries = [];
   let currentCarry = 0;
   
@@ -1407,23 +1693,24 @@ function generateWrittenAddition(num1, num2, sum) {
   }
   
   // Zeige Überträge
+  html += '<div style="text-align: right; padding-right: 30px; color: var(--color-accent-dark); font-size: 0.9rem;">';
   for (let i = 0; i < maxLen; i++) {
     if (carries[i] === 1) {
-      html += `<span class="carry">¹</span>`;
+      html += '<span style="font-weight: 700;">¹</span>';
     } else {
       html += '<span style="visibility: hidden;">¹</span>';
     }
   }
   html += '</div>';
   
-  html += `<div class="written-calc-row">  ${pad1}</div>`;
-  html += `<div class="written-calc-row">+ ${pad2}</div>`;
-  html += `<div class="written-calc-row written-calc-line">= ${sum}</div>`;
+  html += `<div style="text-align: right;">  ${pad1}</div>`;
+  html += `<div style="text-align: right;">+ ${pad2}</div>`;
+  html += `<div style="text-align: right; border-top: 2px solid var(--color-text); padding-top: 4px; margin-top: 4px; font-weight: 700; color: var(--color-success);">= ${sum}</div>`;
   html += '</div>';
   
   // Schrittweise Erklärung
   html += '<div style="margin-top: 20px;">';
-  html += '<strong>Schritt für Schritt:</strong>';
+  html += '<strong style="color: var(--color-primary-dark);">Schritt für Schritt:</strong>';
   
   currentCarry = 0;
   let stepNum = 1;
@@ -1433,37 +1720,31 @@ function generateWrittenAddition(num1, num2, sum) {
     const d2 = pad2[i] === ' ' ? 0 : parseInt(pad2[i]);
     const position = ['Einer', 'Zehner', 'Hunderter', 'Tausender'][maxLen - 1 - i];
     
-    html += '<div class="step">';
-    html += `<div class="step-number">Schritt ${stepNum}:</div>`;
-    html += '<div class="step-content">';
+    html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-bg); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm);">';
+    html += `<div style="font-weight: 600; color: var(--color-primary-dark); margin-bottom: 4px;">Schritt ${stepNum}: ${position}</div>`;
+    html += '<div>';
     
+    const digitSum = d1 + d2 + currentCarry;
     if (currentCarry > 0) {
-      html += `${position}: ${d1} + ${d2} + <span class="carry">1</span> (Übertrag) = `;
-      const digitSum = d1 + d2 + currentCarry;
-      if (digitSum >= 10) {
-        html += `<span class="highlight-step">${digitSum}</span> → Schreibe ${digitSum % 10}, merke 1`;
-        currentCarry = 1;
-      } else {
-        html += `<span class="highlight-step">${digitSum}</span>`;
-        currentCarry = 0;
-      }
+      html += `${d1} + ${d2} + <span style="color: var(--color-accent-dark); font-weight: 600;">1</span> (Übertrag) = `;
     } else {
-      html += `${position}: ${d1} + ${d2} = `;
-      const digitSum = d1 + d2;
-      if (digitSum >= 10) {
-        html += `<span class="highlight-step">${digitSum}</span> → Schreibe ${digitSum % 10}, merke 1`;
-        currentCarry = 1;
-      } else {
-        html += `<span class="highlight-step">${digitSum}</span>`;
-      }
+      html += `${d1} + ${d2} = `;
+    }
+    
+    if (digitSum >= 10) {
+      html += `<span style="background: var(--color-accent); color: var(--color-surface); padding: 2px 6px; border-radius: 4px; font-weight: 600;">${digitSum}</span>`;
+      html += ` → Schreibe <strong>${digitSum % 10}</strong>, merke <strong>1</strong>`;
+      currentCarry = 1;
+    } else {
+      html += `<span style="background: var(--color-success); color: var(--color-surface); padding: 2px 6px; border-radius: 4px; font-weight: 600;">${digitSum}</span>`;
+      currentCarry = 0;
     }
     
     html += '</div></div>';
     stepNum++;
   }
   
-  html += '</div>';
-  
+  html += '</div></div>';
   return html;
 }
 
@@ -1476,8 +1757,9 @@ function generateWrittenSubtraction(num1, num2, diff) {
   const pad1 = str1.padStart(maxLen, ' ');
   const pad2 = str2.padStart(maxLen, ' ');
   
-  let html = '<div class="written-calc">';
-  html += '<div class="written-calc-row" style="text-align: right; padding-right: 30px;">';
+  let html = '<div style="background: var(--color-bg); padding: 20px; border-radius: var(--radius-md); margin: 20px 0;">';
+  html += '<div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; color: var(--color-primary-dark);">📝 Schriftlich rechnen:</div>';
+  html += '<div style="font-family: monospace; font-size: 1.3rem; line-height: 1.8; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: var(--radius-sm); padding: 16px; display: inline-block; min-width: 150px;">';
   
   // Berechne Borgen
   let borrows = [];
@@ -1497,23 +1779,24 @@ function generateWrittenSubtraction(num1, num2, diff) {
   }
   
   // Zeige Borgen
+  html += '<div style="text-align: right; padding-right: 30px; color: var(--color-error); font-size: 0.9rem;">';
   for (let i = 0; i < maxLen; i++) {
     if (borrows[i] === 1) {
-      html += `<span class="carry" style="color: #e53e3e;">⁻¹</span>`;
+      html += '<span style="font-weight: 700;">⁻¹</span>';
     } else {
       html += '<span style="visibility: hidden;">⁻¹</span>';
     }
   }
   html += '</div>';
   
-  html += `<div class="written-calc-row">  ${pad1}</div>`;
-  html += `<div class="written-calc-row">− ${pad2}</div>`;
-  html += `<div class="written-calc-row written-calc-line">= ${diff}</div>`;
+  html += `<div style="text-align: right;">  ${pad1}</div>`;
+  html += `<div style="text-align: right;">− ${pad2}</div>`;
+  html += `<div style="text-align: right; border-top: 2px solid var(--color-text); padding-top: 4px; margin-top: 4px; font-weight: 700; color: var(--color-success);">= ${diff}</div>`;
   html += '</div>';
   
   // Schrittweise Erklärung
   html += '<div style="margin-top: 20px;">';
-  html += '<strong>Schritt für Schritt:</strong>';
+  html += '<strong style="color: var(--color-primary-dark);">Schritt für Schritt:</strong>';
   
   nums1 = pad1.split('').map(c => c === ' ' ? 0 : parseInt(c));
   let stepNum = 1;
@@ -1523,51 +1806,57 @@ function generateWrittenSubtraction(num1, num2, diff) {
     const d2 = pad2[i] === ' ' ? 0 : parseInt(pad2[i]);
     const position = ['Einer', 'Zehner', 'Hunderter', 'Tausender'][maxLen - 1 - i];
     
-    html += '<div class="step">';
-    html += `<div class="step-number">Schritt ${stepNum}:</div>`;
-    html += '<div class="step-content">';
+    html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-bg); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm);">';
+    html += `<div style="font-weight: 600; color: var(--color-primary-dark); margin-bottom: 4px;">Schritt ${stepNum}: ${position}</div>`;
+    html += '<div>';
     
     if (d1 < d2) {
-      html += `${position}: ${d1} ist kleiner als ${d2} → Borge 10 von der nächsten Stelle<br>`;
-      html += `${d1} + 10 = ${d1 + 10}, dann ${d1 + 10} − ${d2} = <span class="highlight-step">${d1 + 10 - d2}</span>`;
+      html += `${d1} ist kleiner als ${d2} → <span style="color: var(--color-error); font-weight: 600;">Borge 10</span> von der nächsten Stelle<br>`;
+      html += `${d1} + 10 = ${d1 + 10}, dann ${d1 + 10} − ${d2} = <span style="background: var(--color-success); color: var(--color-surface); padding: 2px 6px; border-radius: 4px; font-weight: 600;">${d1 + 10 - d2}</span>`;
       if (i > 0) {
         nums1[i - 1] -= 1;
-        html += `<br><small>(Nächste Stelle wird um 1 verringert)</small>`;
       }
     } else {
-      html += `${position}: ${d1} − ${d2} = <span class="highlight-step">${d1 - d2}</span>`;
+      html += `${d1} − ${d2} = <span style="background: var(--color-success); color: var(--color-surface); padding: 2px 6px; border-radius: 4px; font-weight: 600;">${d1 - d2}</span>`;
     }
     
     html += '</div></div>';
     stepNum++;
   }
   
-  html += '</div>';
-  
+  html += '</div></div>';
   return html;
 }
 
-// Schriftliche Multiplikation (verbessert mit Gittermethode)
+// Schriftliche Multiplikation
 function generateWrittenMultiplication(num1, num2, product) {
   const str1 = String(num1);
   const str2 = String(num2);
   
-  // Für größere Zahlen: Zeige Gittermethode
-  if (str1.length >= 3 && str2.length >= 2) {
-    return generateGridMultiplication(num1, num2, product);
+  let html = '<div style="background: var(--color-bg); padding: 20px; border-radius: var(--radius-md); margin: 20px 0;">';
+  html += '<div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; color: var(--color-primary-dark);">📝 Schriftlich multiplizieren:</div>';
+  
+  // Wenn beide Zahlen mehrstellig sind, zeige Gittermethode
+  if (str1.length >= 2 && str2.length >= 2) {
+    html += generateGridMultiplication(num1, num2, product);
+    html += '</div>';
+    return html;
   }
   
+  // Standard schriftliche Multiplikation
+  html += '<div style="font-family: monospace; font-size: 1.3rem; line-height: 1.8; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: var(--radius-sm); padding: 16px; display: inline-block; min-width: 150px;">';
+  
+  html += `<div style="text-align: right;">  ${str1}</div>`;
+  html += `<div style="text-align: right;">× ${str2}</div>`;
+  html += `<div style="text-align: right; border-top: 2px solid var(--color-text); padding-top: 4px; margin-top: 4px; font-weight: 700; color: var(--color-success);">= ${product}</div>`;
+  html += '</div>';
+  
+  // Schrittweise Erklärung
+  html += '<div style="margin-top: 20px;">';
+  html += '<strong style="color: var(--color-primary-dark);">Schritt für Schritt:</strong>';
+  
   if (str2.length === 1) {
-    // Einfache Multiplikation mit einstelligem Multiplikator
-    let html = '<div class="written-calc">';
-    html += `<div class="written-calc-row">  ${str1}</div>`;
-    html += `<div class="written-calc-row">× ${str2}</div>`;
-    html += `<div class="written-calc-row written-calc-line">= ${product}</div>`;
-    html += '</div>';
-    
-    html += '<div style="margin-top: 20px;">';
-    html += '<strong>Schritt für Schritt:</strong>';
-    
+    // Einstelliger Multiplikator
     let carry = 0;
     const multiplier = parseInt(str2);
     
@@ -1575,20 +1864,20 @@ function generateWrittenMultiplication(num1, num2, product) {
       const digit = parseInt(str1[i]);
       const position = ['Einer', 'Zehner', 'Hunderter'][str1.length - 1 - i];
       
-      html += '<div class="step">';
-      html += `<div class="step-number">Schritt ${str1.length - i}:</div>`;
-      html += '<div class="step-content">';
+      html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-bg); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm);">';
+      html += `<div style="font-weight: 600; color: var(--color-primary-dark); margin-bottom: 4px;">Schritt ${str1.length - i}: ${position}</div>`;
+      html += '<div>';
       
       const prod = digit * multiplier + carry;
       
       if (carry > 0) {
-        html += `${position}: ${digit} × ${multiplier} + ${carry} (Übertrag) = <span class="highlight-step">${prod}</span>`;
+        html += `${digit} × ${multiplier} + ${carry} (Übertrag) = <span style="background: var(--color-accent); color: var(--color-surface); padding: 2px 6px; border-radius: 4px; font-weight: 600;">${prod}</span>`;
       } else {
-        html += `${position}: ${digit} × ${multiplier} = <span class="highlight-step">${prod}</span>`;
+        html += `${digit} × ${multiplier} = <span style="background: var(--color-accent); color: var(--color-surface); padding: 2px 6px; border-radius: 4px; font-weight: 600;">${prod}</span>`;
       }
       
       if (prod >= 10 && i > 0) {
-        html += ` → Schreibe ${prod % 10}, merke ${Math.floor(prod / 10)}`;
+        html += ` → Schreibe <strong>${prod % 10}</strong>, merke <strong>${Math.floor(prod / 10)}</strong>`;
         carry = Math.floor(prod / 10);
       } else {
         carry = 0;
@@ -1596,86 +1885,36 @@ function generateWrittenMultiplication(num1, num2, product) {
       
       html += '</div></div>';
     }
-    
-    html += '</div>';
-    return html;
   }
   
-  // Mehrstufige Multiplikation
-  let html = '<div class="written-calc">';
-  html += `<div class="written-calc-row">    ${str1}</div>`;
-  html += `<div class="written-calc-row">  × ${str2}</div>`;
-  html += '<div class="written-calc-row" style="border-top: 2px solid var(--color-text); margin-top: 4px; padding-top: 4px;">Zwischenergebnisse:</div>';
-  
-  const partials = [];
-  for (let i = str2.length - 1; i >= 0; i--) {
-    const digit = parseInt(str2[i]);
-    const partial = num1 * digit * Math.pow(10, str2.length - 1 - i);
-    partials.push(partial);
-    const zeros = '0'.repeat(str2.length - 1 - i);
-    html += `<div class="written-calc-row">${partial}${zeros.length > partial.toString().length ? ' (×' + Math.pow(10, str2.length - 1 - i) + ')' : ''}</div>`;
-  }
-  
-  html += '<div class="written-calc-row" style="border-top: 2px solid var(--color-text); margin-top: 4px; padding-top: 4px;">Summe:</div>';
-  html += `<div class="written-calc-row">= ${product}</div>`;
-  html += '</div>';
-  
-  html += '<div style="margin-top: 20px;">';
-  html += '<strong>Schritt für Schritt:</strong>';
-  
-  for (let i = str2.length - 1, step = 1; i >= 0; i--, step++) {
-    const digit = parseInt(str2[i]);
-    const position = ['Einer', 'Zehner', 'Hunderter'][str2.length - 1 - i];
-    const partial = num1 * digit;
-    const multiplier = Math.pow(10, str2.length - 1 - i);
-    
-    html += '<div class="step">';
-    html += `<div class="step-number">Schritt ${step}:</div>`;
-    html += '<div class="step-content">';
-    html += `${position} von ${num2}: ${num1} × ${digit}`;
-    if (multiplier > 1) {
-      html += ` × ${multiplier}`;
-    }
-    html += ` = <span class="highlight-step">${partial * multiplier}</span>`;
-    html += '</div></div>';
-  }
-  
-  html += '<div class="step">';
-  html += `<div class="step-number">Letzter Schritt:</div>`;
-  html += '<div class="step-content">';
-  html += 'Addiere alle Zwischenergebnisse:<br>';
-  html += partials.join(' + ') + ` = <span class="highlight-step">${product}</span>`;
   html += '</div></div>';
-  
-  html += '</div>';
-  
   return html;
 }
 
-// Gittermethode für Multiplikation (Kästchen-Darstellung)
+// Gittermethode für Multiplikation (wie im Bild)
 function generateGridMultiplication(num1, num2, product) {
   const str1 = String(num1);
   const str2 = String(num2);
   
   let html = '<div style="margin: 20px 0;">';
-  html += '<strong>🔢 Gittermethode (Kästchen-Multiplikation):</strong>';
+  html += '<strong style="color: var(--color-primary-dark); font-size: 1.1rem;">🔢 Gittermethode (Kästchen-Rechnen):</strong>';
   html += '</div>';
   
   // Erstelle das Gitter
-  html += '<div style="display: inline-block; border: 2px solid #2c5282; background: var(--color-surface);">';
-  html += '<table style="border-collapse: collapse; font-family: monospace; font-size: 1.1rem;">';
+  html += '<div style="display: inline-block; background: var(--color-surface); border-radius: var(--radius-sm); padding: 10px; box-shadow: var(--shadow-sm);">';
+  html += '<table style="border-collapse: collapse; font-family: monospace; font-size: 1.2rem;">';
   
   // Kopfzeile mit den Ziffern von num1
-  html += '<tr><td style="padding: 8px; border: 1px solid var(--color-border);"></td>';
+  html += '<tr><td style="padding: 12px; border: 2px solid var(--color-border); background: var(--color-bg);"></td>';
   for (let i = 0; i < str1.length; i++) {
-    html += `<td style="padding: 8px; border: 1px solid var(--color-border); text-align: center; background: var(--color-primary-light); font-weight: 600;">${str1[i]}</td>`;
+    html += `<td style="padding: 12px; border: 2px solid var(--color-border); text-align: center; background: var(--color-primary-light); font-weight: 700; color: var(--color-primary-dark);">${str1[i]}</td>`;
   }
   html += '</tr>';
   
   // Für jede Ziffer von num2
   for (let j = 0; j < str2.length; j++) {
     html += '<tr>';
-    html += `<td style="padding: 8px; border: 1px solid var(--color-border); text-align: center; background: var(--color-primary-light); font-weight: 600;">${str2[j]}</td>`;
+    html += `<td style="padding: 12px; border: 2px solid var(--color-border); text-align: center; background: var(--color-primary-light); font-weight: 700; color: var(--color-primary-dark);">${str2[j]}</td>`;
     
     // Für jede Ziffer von num1
     for (let i = 0; i < str1.length; i++) {
@@ -1685,11 +1924,17 @@ function generateGridMultiplication(num1, num2, product) {
       const tens = Math.floor(prod / 10);
       const ones = prod % 10;
       
-      html += '<td style="padding: 4px; border: 1px solid var(--color-border); width: 50px; height: 50px; position: relative;">';
+      html += '<td style="padding: 0; border: 2px solid var(--color-border); width: 60px; height: 60px; position: relative; background: white;">';
       html += '<div style="position: relative; width: 100%; height: 100%;">';
-      html += '<div style="position: absolute; top: 2px; left: 4px; font-size: 0.9rem; color: var(--color-primary-dark); font-weight: 600;">' + (tens > 0 ? tens : '') + '</div>';
-      html += '<div style="position: absolute; bottom: 2px; right: 4px; font-size: 0.9rem; color: var(--color-primary-dark); font-weight: 600;">' + ones + '</div>';
-      html += '<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-left: 1px solid #a0aec0; transform: rotate(45deg); transform-origin: top left;"></div>';
+      
+      // Diagonale Linie
+      html += '<svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" viewBox="0 0 100 100" preserveAspectRatio="none">';
+      html += '<line x1="0" y1="0" x2="100" y2="100" stroke="var(--color-border)" stroke-width="2"/>';
+      html += '</svg>';
+      
+      // Zahlen
+      html += '<div style="position: absolute; top: 4px; left: 8px; font-size: 1rem; color: var(--color-primary-dark); font-weight: 600;">' + (tens > 0 ? tens : '·') + '</div>';
+      html += '<div style="position: absolute; bottom: 4px; right: 8px; font-size: 1rem; color: var(--color-primary-dark); font-weight: 600;">' + ones + '</div>';
       html += '</div>';
       html += '</td>';
     }
@@ -1699,46 +1944,58 @@ function generateGridMultiplication(num1, num2, product) {
   html += '</table>';
   html += '</div>';
   
-  // Erklärung der Diagonalen-Addition
+  // Erklärung
   html += '<div style="margin-top: 24px;">';
-  html += '<strong>So rechnest du das Ergebnis aus:</strong>';
+  html += '<strong style="color: var(--color-primary-dark);">So funktioniert\'s:</strong>';
   html += '</div>';
   
-  html += '<div class="step">';
-  html += '<div class="step-number">Schritt 1: Multiplizieren</div>';
-  html += '<div class="step-content">';
-  html += 'Jede Ziffer wird mit jeder anderen multipliziert. Das Ergebnis wird in das Kästchen eingetragen:<br>';
-  html += `<strong>Zehner</strong> oben links, <strong>Einer</strong> unten rechts`;
-  html += '</div></div>';
+  html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-bg); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm);">';
+  html += '<div style="font-weight: 600; color: var(--color-primary-dark); margin-bottom: 8px;">Schritt 1: Multiplizieren</div>';
+  html += '<div>Jede Ziffer mit jeder multiplizieren. Die <strong>Zehner</strong> kommen oben links, die <strong>Einer</strong> unten rechts ins Kästchen.</div>';
+  html += '</div>';
   
-  html += '<div class="step">';
-  html += '<div class="step-number">Schritt 2: Diagonal addieren</div>';
-  html += '<div class="step-content">';
-  html += 'Addiere die Zahlen entlang der Diagonalen (von rechts unten nach links oben).<br>';
-  html += 'Bei Überträgen merke dir die Zehnerstelle für die nächste Diagonale.';
-  html += '</div></div>';
+  html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-bg); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm);">';
+  html += '<div style="font-weight: 600; color: var(--color-primary-dark); margin-bottom: 8px;">Schritt 2: Diagonal addieren</div>';
+  html += '<div>Addiere die Zahlen entlang der Diagonalen (von rechts unten nach links oben). Bei Übertrag zur nächsten Diagonale dazuzählen.</div>';
+  html += '</div>';
   
-  html += '<div class="step">';
-  html += '<div class="step-number">Ergebnis:</div>';
-  html += '<div class="step-content">';
-  html += `${num1} × ${num2} = <span class="highlight-step">${product}</span>`;
-  html += '</div></div>';
+  html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-success); color: white; border-radius: var(--radius-sm);">';
+  html += `<div style="font-weight: 700; font-size: 1.1rem;">✓ Ergebnis: ${num1} × ${num2} = ${product}</div>`;
+  html += '</div>';
   
-  html += '<div class="tip-box">';
-  html += '💡 Die Gittermethode ist besonders praktisch bei großen Zahlen, weil man sich keine Überträge merken muss!';
+  html += '<div style="padding: 12px; margin-top: 12px; background: #e8f4f8; border-radius: var(--radius-sm); border-left: 4px solid #3498db;">';
+  html += '💡 <strong>Tipp:</strong> Die Gittermethode ist super für große Zahlen, weil du dir keine Überträge merken musst!';
   html += '</div>';
   
   return html;
 }
 
-// Schriftliche Division (klassische deutsche Darstellung)
-function generateWrittenDivision(dividend, divisor, quotient) {
-  const dividendStr = String(dividend);
-  let html = '<div class="written-calc" style="text-align: left; font-size: 1.4rem; line-height: 2;">';
+// Schriftliche Division (klassische deutsche Darstellung - verbessert)
+function generateWrittenDivision(dividend, divisor, quotient, remainder = 0) {
+  // Parse quotient if it contains "Rest"
+  let actualQuotient = quotient;
+  let actualRemainder = remainder;
   
-  // Kopfzeile: dividend : divisor = quotient
-  html += `<div style="border-bottom: 2px solid var(--color-text); padding-bottom: 8px; margin-bottom: 12px;">`;
-  html += `<strong>${dividend} : ${divisor} = ${quotient}</strong>`;
+  if (typeof quotient === 'string' && quotient.includes('Rest')) {
+    const parts = quotient.split('Rest');
+    actualQuotient = parseInt(parts[0].trim());
+    actualRemainder = parseInt(parts[1].trim());
+  }
+  
+  const dividendStr = String(dividend);
+  
+  let html = '<div style="background: var(--color-bg); padding: 20px; border-radius: var(--radius-md); margin: 20px 0;">';
+  html += '<div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; color: var(--color-primary-dark);">📝 Schriftlich dividieren:</div>';
+  
+  // Hauptdarstellung
+  html += '<div style="font-family: monospace; font-size: 1.4rem; line-height: 2; background: var(--color-surface); border: 2px solid var(--color-primary); border-radius: var(--radius-sm); padding: 20px; display: inline-block; min-width: 250px;">';
+  
+  // Kopfzeile
+  html += `<div style="border-bottom: 2px solid var(--color-text); padding-bottom: 8px; margin-bottom: 12px; font-weight: 700;">`;
+  html += `${dividend} : ${divisor} = <span style="color: var(--color-success);">${actualQuotient}</span>`;
+  if (actualRemainder > 0) {
+    html += ` <span style="color: var(--color-accent-dark);">Rest ${actualRemainder}</span>`;
+  }
   html += `</div>`;
   
   // Berechne die Schritte
@@ -1751,40 +2008,45 @@ function generateWrittenDivision(dividend, divisor, quotient) {
     if (currentNumber >= divisor) {
       const digit = Math.floor(currentNumber / divisor);
       const product = digit * divisor;
-      const remainder = currentNumber - product;
+      const stepRemainder = currentNumber - product;
       
       steps.push({
         currentNumber,
         digit,
         product,
-        remainder,
+        remainder: stepRemainder,
         nextDigit: i < dividendStr.length - 1 ? dividendStr[i + 1] : null
       });
       
-      currentNumber = remainder;
+      currentNumber = stepRemainder;
     }
   }
   
-  // Zeige die Rechnung
+  // Zeige die Rechnung untereinander
   for (let i = 0; i < steps.length; i++) {
     const step = steps[i];
     
-    html += `<div style="margin: 8px 0;">`;
+    html += `<div style="margin: 12px 0; padding-left: ${i * 10}px;">`;
+    
     if (i === 0) {
-      html += `<span style="color: #666;">−</span>${step.product.toString().padStart(String(step.currentNumber).length, ' ')}`;
+      html += `<div><span style="color: var(--color-text-light);">−</span>${String(step.product).padStart(String(step.currentNumber).length, ' ')}</div>`;
     } else {
-      html += `<span style="visibility: hidden;">−</span>${step.currentNumber}`;
-      html += `<br><span style="color: #666;">−</span>${step.product.toString().padStart(String(step.currentNumber).length, ' ')}`;
+      html += `<div style="margin-bottom: 4px;">${step.currentNumber}</div>`;
+      html += `<div><span style="color: var(--color-text-light);">−</span>${String(step.product).padStart(String(step.currentNumber).length, ' ')}</div>`;
     }
-    html += `<br><span style="border-top: 2px solid var(--color-text); display: inline-block; padding-top: 4px;">`;
+    
+    html += `<div style="border-top: 2px solid var(--color-text); display: inline-block; padding-top: 4px; margin-top: 2px;">`;
+    
     if (step.nextDigit !== null) {
-      html += `<span style="visibility: hidden;">${' '.repeat(String(step.remainder).length)}</span>${step.remainder}${step.nextDigit}`;
+      // Zeige Rest und nächste Ziffer
+      html += `<span style="font-weight: 700; color: var(--color-primary-dark);">${step.remainder}</span><span style="color: var(--color-accent);">${step.nextDigit}</span>`;
     } else if (step.remainder === 0) {
-      html += `<span style="visibility: hidden;">${' '.repeat(String(step.remainder).length)}</span>  0`;
+      html += `<span style="font-weight: 700; color: var(--color-success);">0</span>`;
     } else {
-      html += `<span style="visibility: hidden;">${' '.repeat(String(step.remainder).length)}</span>${step.remainder}`;
+      html += `<span style="font-weight: 700; color: var(--color-accent-dark);">${step.remainder}</span>`;
     }
-    html += `</span>`;
+    
+    html += `</div>`;
     html += `</div>`;
   }
   
@@ -1792,576 +2054,172 @@ function generateWrittenDivision(dividend, divisor, quotient) {
   
   // Schrittweise Erklärung
   html += '<div style="margin-top: 24px;">';
-  html += '<strong>Schritt für Schritt:</strong>';
+  html += '<strong style="color: var(--color-primary-dark); font-size: 1.1rem;">Schritt für Schritt:</strong>';
   
   for (let i = 0; i < steps.length; i++) {
     const step = steps[i];
     
-    html += '<div class="step">';
-    html += `<div class="step-number">Schritt ${i + 1}:</div>`;
-    html += '<div class="step-content">';
+    html += '<div style="padding: 12px; margin: 8px 0; background: var(--color-bg); border-left: 4px solid var(--color-primary); border-radius: var(--radius-sm);">';
+    html += `<div style="font-weight: 600; color: var(--color-primary-dark); margin-bottom: 8px;">Schritt ${i + 1}:</div>`;
+    html += '<div style="line-height: 1.8;">';
     
-    html += `${step.currentNumber} : ${divisor} = <span class="highlight-step">${step.digit}</span>`;
-    html += `<br>Rechnung: ${step.digit} × ${divisor} = ${step.product}`;
-    html += `<br>Subtraktion: ${step.currentNumber} − ${step.product} = ${step.remainder}`;
+    html += `<strong>${step.currentNumber} : ${divisor} = <span style="background: var(--color-accent); color: var(--color-surface); padding: 2px 8px; border-radius: 4px;">${step.digit}</span></strong><br>`;
+    html += `Rechnung: ${step.digit} × ${divisor} = ${step.product}<br>`;
+    html += `Subtraktion: ${step.currentNumber} − ${step.product} = ${step.remainder}`;
     
     if (step.nextDigit !== null) {
-      html += `<br><small style="color: var(--color-primary-dark);">→ Hole die nächste Ziffer (${step.nextDigit}) herunter</small>`;
+      html += `<br><small style="color: var(--color-primary-dark); font-weight: 600;">→ Hole die nächste Ziffer (${step.nextDigit}) herunter → ${step.remainder}${step.nextDigit}</small>`;
     }
     
     html += '</div></div>';
   }
   
-  if (steps[steps.length - 1].remainder > 0) {
-    html += '<div class="tip-box">';
-    html += `Es bleibt ein Rest von ${steps[steps.length - 1].remainder}`;
+  // Rest-Behandlung
+  if (actualRemainder > 0 || steps[steps.length - 1].remainder > 0) {
+    const finalRemainder = actualRemainder > 0 ? actualRemainder : steps[steps.length - 1].remainder;
+    html += '<div style="padding: 12px; margin: 12px 0; background: #fff4e6; border-radius: var(--radius-sm); border-left: 4px solid var(--color-accent);">';
+    html += `<strong style="color: var(--color-accent-dark);">📌 Es bleibt ein Rest von ${finalRemainder}</strong><br>`;
+    html += `Das bedeutet: ${dividend} = ${actualQuotient} × ${divisor} + ${finalRemainder}`;
     html += '</div>';
   }
   
+  // Probe
+  html += '<div style="padding: 12px; margin: 12px 0; background: var(--color-success); color: white; border-radius: var(--radius-sm);">';
+  html += '<div style="font-weight: 700; margin-bottom: 4px;">✓ Probe:</div>';
+  html += `${actualQuotient} × ${divisor}`;
+  if (actualRemainder > 0) {
+    html += ` + ${actualRemainder}`;
+  }
+  html += ` = ${dividend} ✓`;
   html += '</div>';
   
+  html += '</div></div>';
   return html;
 }
 
-// Erklärung generieren
+// ==================== ERKLÄRUNGSFUNKTION ====================
+
 function generateExplanation(task) {
-  if (!task) return '';
+  const difficultyBadge = task.difficulty === 'easy' ? 'difficulty-easy' : 
+                          task.difficulty === 'medium' ? 'difficulty-medium' : 
+                          'difficulty-hard';
   
-  let html = '<div style="line-height: 1.8;">';
+  const difficultyText = task.difficulty === 'easy' ? 'Leicht' : 
+                         task.difficulty === 'medium' ? 'Mittel' : 
+                         'Schwer';
   
-  if (task.taskType === 'word') {
-    html += `<div class="calculation">${task.problem}</div>`;
-    html += `<div style="margin: 20px 0; padding: 16px; background: #e6fffa; border-radius: var(--radius-md); border-left: 4px solid #38b2ac;">`;
-    html += `<strong>🤔 Was ist gefragt?</strong><br>`;
-    html += `Wir müssen herausfinden: Wie lautet die Antwort?`;
-    html += `</div>`;
+  let html = `
+    <div class="difficulty-badge ${difficultyBadge}">${difficultyText}</div>
+    <p style="margin-bottom: 16px;"><strong>Aufgabe:</strong><br>${task.problem.replace(/\n/g, '<br>')}</p>
+    <p style="margin-bottom: 16px;"><strong>✓ Richtige Antwort:</strong> ${task.correctAnswer}</p>
+  `;
+  
+  // Füge schriftliches Rechnen hinzu, wenn angebracht
+  
+  if (task.taskType === 'addition') {
+    const matches = task.problem.match(/(\d+)\s*\+\s*(\d+)/);
+    if (matches && task.grade >= 3) {
+      const num1 = parseInt(matches[1]);
+      const num2 = parseInt(matches[2]);
+      if (num1 >= 20 || num2 >= 20) {
+        html += generateWrittenAddition(num1, num2, task.correctAnswer);
+      }
+    }
+  } else if (task.taskType === 'subtraction') {
+    const matches = task.problem.match(/(\d+)\s*−\s*(\d+)/);
+    if (matches && task.grade >= 3) {
+      const num1 = parseInt(matches[1]);
+      const num2 = parseInt(matches[2]);
+      if (num1 >= 20) {
+        html += generateWrittenSubtraction(num1, num2, task.correctAnswer);
+      }
+    }
+  } else if (task.taskType === 'multiplication') {
+    const matches = task.problem.match(/(\d+)\s*×\s*(\d+)/);
+    if (matches) {
+      const num1 = parseInt(matches[1]);
+      const num2 = parseInt(matches[2]);
+      // Zeige schriftliches Rechnen ab Klasse 3 für größere Zahlen
+      if (task.grade >= 3 && (num1 >= 11 || num2 >= 11)) {
+        html += generateWrittenMultiplication(num1, num2, task.correctAnswer);
+      }
+    }
+  } else if (task.taskType === 'division' || task.taskType === 'division_rest') {
+    const matches = task.problem.match(/(\d+)\s*÷\s*(\d+)/);
+    if (matches && task.grade >= 3) {
+      const num1 = parseInt(matches[1]);
+      const num2 = parseInt(matches[2]);
+      if (num1 >= 20) {
+        html += generateWrittenDivision(num1, num2, task.correctAnswer);
+      }
+    }
   }
   
-  const { num1, num2, answer, op } = task;
-  
-  if (op === 'add') {
-    html += `<div style="margin: 20px 0; padding: 16px; background: #F5F0E8; border-radius: var(--radius-lg); border: 2px solid #E8B86D;">`;
-    html += `<div style="font-size: 1.3rem; font-weight: 600; color: #C39759; margin-bottom: 12px;">📝 Die Aufgabe:</div>`;
-    html += `<div style="font-size: 2rem; font-weight: 600; text-align: center; color: #2c3e50;">${num1} + ${num2} = ?</div>`;
-    html += `</div>`;
-    
-    if (num1 >= 20 || num2 >= 20) {
-      // Schriftlich rechnen für große Zahlen
-      html += `<div style="margin: 20px 0;"><strong>✏️ Schriftlich rechnen:</strong></div>`;
-      html += generateWrittenAddition(num1, num2, answer);
-    } else if (num1 <= 10 && num2 <= 10) {
-      // === 1. KLASSE: Visuelle Erklärung ===
-      html += '<div style="margin: 20px 0;">';
-      
-      // Schritt 1: Mit Emojis zeigen
-      html += '<div style="padding: 20px; background: #E5F2ED; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #7BA591;">';
-      html += '<div style="font-weight: 600; color: #6B9085; margin-bottom: 12px; font-size: 1.2rem;">👀 Schau es dir an:</div>';
-      
-      html += `<div style="margin-bottom: 16px; padding: 12px; background: var(--color-surface); border-radius: var(--radius-md);">`;
-      html += `<div style="color: #6B9085; font-weight: 600; margin-bottom: 8px;">Du hast ${num1} Äpfel 🍎:</div>`;
-      html += '<div style="font-size: 2rem; line-height: 1.5;">';
-      for (let i = 0; i < num1; i++) {
-        html += '🍎 ';
-      }
-      html += '</div>';
-      html += `<div style="margin-top: 8px; color: #7f8c8d; font-size: 0.9rem;">Zähle: ${Array.from({length: num1}, (_, i) => i + 1).join(', ')}</div>`;
-      html += '</div>';
-      
-      html += `<div style="text-align: center; font-size: 2rem; color: #E8B86D; font-weight: 600; margin: 12px 0;">➕</div>`;
-      
-      html += `<div style="margin-bottom: 16px; padding: 12px; background: var(--color-surface); border-radius: var(--radius-md);">`;
-      html += `<div style="color: #6B9085; font-weight: 600; margin-bottom: 8px;">Du bekommst ${num2} Äpfel dazu 🍎:</div>`;
-      html += '<div style="font-size: 2rem; line-height: 1.5;">';
-      for (let i = 0; i < num2; i++) {
-        html += '🍏 ';
-      }
-      html += '</div>';
-      html += '</div>';
-      
-      html += `<div style="margin-top: 16px; padding: 16px; background: #E8B86D; border-radius: var(--radius-md);">`;
-      html += `<div style="color: var(--color-surface); font-weight: 600; margin-bottom: 8px;">✨ Zusammen hast du:</div>`;
-      html += '<div style="font-size: 2rem; line-height: 1.5;">';
-      for (let i = 0; i < num1; i++) {
-        html += '🍎 ';
-      }
-      for (let i = 0; i < num2; i++) {
-        html += '🍏 ';
-      }
-      html += '</div>';
-      html += `<div style="margin-top: 12px; padding: 12px; background: var(--color-surface); border-radius: var(--radius-sm); text-align: center;">`;
-      html += `<strong style="color: #E8B86D; font-size: 1.3rem;">Zähle alle: ${Array.from({length: answer}, (_, i) => i + 1).join(', ')}</strong>`;
-      html += '</div>';
-      html += '</div>';
-      html += '</div>';
-      
-      // Zahlenstrahl
-      html += '<div style="padding: 20px; background: #E8F2F4; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #88B5A5;">';
-      html += '<div style="font-weight: 600; color: #6B8A7E; margin-bottom: 12px; font-size: 1.2rem;">📏 Auf dem Zahlenstrahl:</div>';
-      html += '<div style="position: relative; padding: 20px 0;">';
-      html += '<div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">';
-      const start = Math.max(0, num1 - 2);
-      const end = answer + 2;
-      for (let i = start; i <= end; i++) {
-        const isStart = i === num1;
-        const isEnd = i === answer;
-        html += `<div style="text-align: center; flex: 1;">`;
-        html += `<div style="font-size: ${isStart || isEnd ? '1.5rem' : '1.2rem'}; font-weight: ${isStart || isEnd ? '700' : '400'}; color: ${isStart ? 'var(--color-error)' : (isEnd ? '#27ae60' : '#7f8c8d')};">${i}</div>`;
-        if (isStart) html += '<div style="font-size: 1.5rem; margin-top: 4px;">👆</div>';
-        if (isEnd) html += '<div style="font-size: 1.5rem; margin-top: 4px;">🎯</div>';
-        html += '</div>';
-      }
-      html += '</div>';
-      html += `<div style="background: var(--color-surface); padding: 12px; border-radius: var(--radius-md); margin-top: 16px;">`;
-      html += `<strong style="color: #6B8A7E;">So gehts:</strong><br>`;
-      html += `1️⃣ Starte bei <strong style="color: var(--color-error);">${num1}</strong> 👆<br>`;
-      html += `2️⃣ Hüpfe <strong style="color: #E8B86D;">${num2}-mal nach rechts</strong> ➡️<br>`;
-      html += `3️⃣ Du landest bei <strong style="color: #88B894;">${answer}</strong> 🎯`;
-      html += '</div>';
-      html += '</div>';
-      html += '</div>';
-      
-      // Weiterzählen
-      if (num2 <= 5) {
-        html += '<div style="padding: 20px; background: #F5F0E8; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #E8B86D;">';
-        html += '<div style="font-weight: 600; color: #C39759; margin-bottom: 12px; font-size: 1.2rem;">👆 Zähle weiter:</div>';
-        let current = num1;
-        html += `<div style="font-size: 1.1rem; margin-bottom: 16px; color: #7f8c8d;">Wir starten bei <strong style="color: var(--color-error); font-size: 1.3rem;">${num1}</strong> und zählen <strong style="color: #E8B86D;">${num2}</strong> weiter...</div>`;
-        for (let i = 0; i < num2; i++) {
-          current++;
-          const isLast = i === num2 - 1;
-          html += `<div style="padding: 12px; margin: 8px 0; background: ${isLast ? '#27ae60' : 'var(--color-surface)'}; border-radius: var(--radius-md); border: 2px solid ${isLast ? '#27ae60' : '#d68910'}; color: ${isLast ? 'var(--color-surface)' : '#2c3e50'};">`;
-          html += `<strong>${i + 1}. Schritt:</strong> ${num1} + ${i + 1} = <strong style="font-size: 1.3rem;">${current}</strong>`;
-          if (isLast) html += ' ✅';
-          html += '</div>';
-        }
-        html += '</div>';
-      }
-      
-      html += '</div>';
-    } else {
-      // === 2.-4. KLASSE: Kompakte Erklärung ===
-      html += '<div style="margin: 20px 0;">';
-      html += '<div class="step">';
-      html += '<div class="step-number">So rechnest du:</div>';
-      html += '<div class="step-content">';
-      html += `Beginne mit ${num1} und zähle ${num2} dazu:<br>`;
-      
-      if (num2 <= 5) {
-        let current = num1;
-        let steps = [];
-        for (let i = 0; i < num2; i++) {
-          current++;
-          steps.push(current);
-        }
-        html += steps.join(' → ');
-      } else {
-        html += `${num1} + ${num2} = <span class="highlight-step">${answer}</span>`;
-      }
-      
-      html += '</div></div>';
-      html += '</div>';
-    }
-    
-    html += `<div style="margin: 20px 0; padding: 20px; background: linear-gradient(135deg, #88B894 0%, #7BA591 100%); border-radius: var(--radius-lg); text-align: center; color: var(--color-surface);">`;
-    html += `<div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 8px;">🎉 Die Antwort ist ${answer}!</div>`;
-    html += `<div style="font-size: 1rem; opacity: 0.9;">Super gemacht!</div>`;
-    html += `</div>`;
-    html += `<div style="padding: 16px; background: #E5F2ED; border-radius: var(--radius-md); border-left: 4px solid #1abc9c;">💡 <strong>Tipp:</strong> Du kannst es auch umgekehrt rechnen: ${num2} + ${num1} = ${answer}</div>`;
-    
-  } else if (op === 'sub') {
-    html += `<div style="margin: 20px 0; padding: 16px; background: #F8EDE8; border-radius: var(--radius-lg); border: 3px solid var(--color-error);">`;
-    html += `<div style="font-size: 1.3rem; font-weight: 600; color: #B8675D; margin-bottom: 12px;">📝 Die Aufgabe:</div>`;
-    html += `<div style="font-size: 2rem; font-weight: 600; text-align: center; color: #2c3e50;">${num1} − ${num2} = ?</div>`;
-    html += `</div>`;
-    
-    if (num1 >= 20 || num2 >= 20) {
-      // Schriftlich rechnen
-      html += `<div style="margin: 20px 0;"><strong>✏️ Schriftlich rechnen:</strong></div>`;
-      html += generateWrittenSubtraction(num1, num2, answer);
-    } else if (num1 <= 10 && num2 <= 10) {
-      // === 1. KLASSE: Visuelle Erklärung ===
-      html += '<div style="margin: 20px 0;">';
-      
-      html += '<div style="padding: 20px; background: #F8F5EA; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #E8B86D;">';
-      html += '<div style="font-weight: 600; color: #C39759; margin-bottom: 12px; font-size: 1.2rem;">👀 Schau es dir an:</div>';
-      
-      html += `<div style="margin-bottom: 16px; padding: 12px; background: var(--color-surface); border-radius: var(--radius-md);">`;
-      html += `<div style="color: #C39759; font-weight: 600; margin-bottom: 8px;">Du hast ${num1} Äpfel 🍎:</div>`;
-      html += '<div style="font-size: 2rem; line-height: 1.5;">';
-      for (let i = 0; i < num1; i++) {
-        html += '🍎 ';
-      }
-      html += '</div>';
-      html += `<div style="margin-top: 8px; color: #7f8c8d; font-size: 0.9rem;">Zähle: ${Array.from({length: num1}, (_, i) => i + 1).join(', ')}</div>`;
-      html += '</div>';
-      
-      html += `<div style="text-align: center; font-size: 2rem; color: var(--color-error); font-weight: 600; margin: 12px 0;">➖</div>`;
-      
-      html += `<div style="margin-bottom: 16px; padding: 12px; background: var(--color-surface); border-radius: var(--radius-md);">`;
-      html += `<div style="color: var(--color-error); font-weight: 600; margin-bottom: 8px;">Du isst ${num2} Äpfel 🍎:</div>`;
-      html += '<div style="font-size: 2rem; line-height: 1.5;">';
-      for (let i = 0; i < num2; i++) {
-        html += '<span style="opacity: 0.3; text-decoration: line-through;">🍎</span> ';
-      }
-      html += '</div>';
-      html += `<div style="margin-top: 8px; color: var(--color-error); font-weight: 600;">Diese ${num2} sind weg!</div>`;
-      html += '</div>';
-      
-      html += `<div style="margin-top: 16px; padding: 16px; background: #88B894; border-radius: var(--radius-md);">`;
-      html += `<div style="color: var(--color-surface); font-weight: 600; margin-bottom: 8px;">✨ Es bleiben übrig:</div>`;
-      html += '<div style="font-size: 2rem; line-height: 1.5;">';
-      for (let i = 0; i < answer; i++) {
-        html += '🍎 ';
-      }
-      html += '</div>';
-      html += `<div style="margin-top: 12px; padding: 12px; background: var(--color-surface); border-radius: var(--radius-sm); text-align: center;">`;
-      html += `<strong style="color: #88B894; font-size: 1.3rem;">Zähle: ${answer > 0 ? Array.from({length: answer}, (_, i) => i + 1).join(', ') : '0 (keine mehr übrig)'}</strong>`;
-      html += '</div>';
-      html += '</div>';
-      html += '</div>';
-      
-      html += '<div style="padding: 20px; background: #E8F2F4; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #88B5A5;">';
-      html += '<div style="font-weight: 600; color: #6B8A7E; margin-bottom: 12px; font-size: 1.2rem;">📏 Auf dem Zahlenstrahl:</div>';
-      html += '<div style="position: relative; padding: 20px 0;">';
-      html += '<div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">';
-      const subStart = Math.max(0, answer - 1);
-      const subEnd = num1 + 1;
-      for (let i = subStart; i <= subEnd; i++) {
-        const isStart = i === num1;
-        const isEnd = i === answer;
-        html += `<div style="text-align: center; flex: 1;">`;
-        html += `<div style="font-size: ${isStart || isEnd ? '1.5rem' : '1.2rem'}; font-weight: ${isStart || isEnd ? '700' : '400'}; color: ${isStart ? 'var(--color-error)' : (isEnd ? '#27ae60' : '#7f8c8d')};">${i}</div>`;
-        if (isStart) html += '<div style="font-size: 1.5rem; margin-top: 4px;">👆</div>';
-        if (isEnd) html += '<div style="font-size: 1.5rem; margin-top: 4px;">🎯</div>';
-        html += '</div>';
-      }
-      html += '</div>';
-      html += `<div style="background: var(--color-surface); padding: 12px; border-radius: var(--radius-md); margin-top: 16px;">`;
-      html += `<strong style="color: #6B8A7E;">So gehts:</strong><br>`;
-      html += `1️⃣ Starte bei <strong style="color: var(--color-error);">${num1}</strong> 👆<br>`;
-      html += `2️⃣ Hüpfe <strong style="color: var(--color-error);">${num2}-mal nach links</strong> ⬅️<br>`;
-      html += `3️⃣ Du landest bei <strong style="color: #88B894;">${answer}</strong> 🎯`;
-      html += '</div>';
-      html += '</div>';
-      html += '</div>';
-      
-      if (num2 <= 5) {
-        html += '<div style="padding: 20px; background: #F8EDE8; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid var(--color-error);">';
-        html += '<div style="font-weight: 600; color: #B8675D; margin-bottom: 12px; font-size: 1.2rem;">👆 Zähle rückwärts:</div>';
-        let current = num1;
-        html += `<div style="font-size: 1.1rem; margin-bottom: 16px; color: #7f8c8d;">Wir starten bei <strong style="color: var(--color-error); font-size: 1.3rem;">${num1}</strong> und zählen <strong style="color: var(--color-error);">${num2}</strong> zurück...</div>`;
-        for (let i = 0; i < num2; i++) {
-          current--;
-          const isLast = i === num2 - 1;
-          html += `<div style="padding: 12px; margin: 8px 0; background: ${isLast ? '#27ae60' : 'var(--color-surface)'}; border-radius: var(--radius-md); border: 2px solid ${isLast ? '#27ae60' : '#var(--color-error)'}; color: ${isLast ? 'var(--color-surface)' : '#2c3e50'};">`;
-          html += `<strong>${i + 1}. Schritt:</strong> ${num1} − ${i + 1} = <strong style="font-size: 1.3rem;">${current}</strong>`;
-          if (isLast) html += ' ✅';
-          html += '</div>';
-        }
-        html += '</div>';
-      }
-      
-      html += '</div>';
-    } else {
-      // === 2.-4. KLASSE: Kompakte Erklärung ===
-      html += '<div style="margin: 20px 0;">';
-      html += '<div class="step">';
-      html += '<div class="step-number">So rechnest du:</div>';
-      html += '<div class="step-content">';
-      html += `Beginne mit ${num1} und ziehe ${num2} ab:<br>`;
-      html += `${num1} − ${num2} = <span class="highlight-step">${answer}</span>`;
-      html += '</div></div>';
-      html += '</div>';
-    }
-    
-    html += `<div style="margin: 20px 0; padding: 20px; background: linear-gradient(135deg, #88B894 0%, #7BA591 100%); border-radius: var(--radius-lg); text-align: center; color: var(--color-surface);">`;
-    html += `<div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 8px;">🎉 Die Antwort ist ${answer}!</div>`;
-    html += `<div style="font-size: 1rem; opacity: 0.9;">Super gemacht!</div>`;
-    html += `</div>`;
-    html += `<div style="padding: 16px; background: #E5F2ED; border-radius: var(--radius-md); border-left: 4px solid #1abc9c;">💡 <strong>Tipp:</strong> Zum Überprüfen: ${answer} + ${num2} = ${num1} ✓</div>`;
-    
-  } else if (op === 'mul') {
-    html += `<div style="margin: 20px 0; padding: 16px; background: #EEE9F0; border-radius: var(--radius-lg); border: 2px solid #A77BA5;">`;
-    html += `<div style="font-size: 1.3rem; font-weight: 600; color: #8B6B8A; margin-bottom: 12px;">📝 Die Aufgabe:</div>`;
-    html += `<div style="font-size: 2rem; font-weight: 600; text-align: center; color: #2c3e50;">${num1} × ${num2} = ?</div>`;
-    html += `</div>`;
-    
-    if (num1 >= 20 || num2 >= 11) {
-      // Schriftlich rechnen
-      html += `<div style="margin: 20px 0;"><strong>✏️ Schriftlich rechnen:</strong></div>`;
-      html += generateWrittenMultiplication(num1, num2, answer);
-    } else if (num1 <= 10 && num2 <= 5) {
-      // === 1. KLASSE: Visuelle Erklärung ===
-      html += '<div style="margin: 20px 0;">';
-      
-      html += '<div style="padding: 20px; background: #E8F2F4; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #88B5A5;">';
-      html += '<div style="font-weight: 600; color: #6B8A7E; margin-bottom: 12px; font-size: 1.2rem;">👀 Schau es dir an:</div>';
-      html += `<div style="margin-bottom: 16px; color: #7f8c8d; font-size: 1.1rem;">${num1} × ${num2} bedeutet: <strong style="color: #A77BA5;">${num2} Gruppen</strong> mit je <strong style="color: #7BA591;">${num1} Süßigkeiten</strong></div>`;
-      
-      for (let group = 0; group < num2; group++) {
-        html += `<div style="margin: 12px 0; padding: 12px; background: var(--color-surface); border-radius: var(--radius-md); border: 2px solid #88B5A5;">`;
-        html += `<div style="color: #6B8A7E; font-weight: 600; margin-bottom: 8px;">${group + 1}. Gruppe (${num1} Stück):</div>`;
-        html += '<div style="font-size: 2rem; line-height: 1.5;">';
-        for (let i = 0; i < num1; i++) {
-          html += '🍬 ';
-        }
-        html += '</div>';
-        html += '</div>';
-      }
-      
-      html += `<div style="margin-top: 16px; padding: 16px; background: #A77BA5; border-radius: var(--radius-md);">`;
-      html += `<div style="color: var(--color-surface); font-weight: 600; margin-bottom: 8px;">✨ Alle zusammen:</div>`;
-      html += '<div style="font-size: 2rem; line-height: 1.5;">';
-      for (let i = 0; i < answer && i < 50; i++) {
-        html += '🍬 ';
-      }
-      if (answer > 50) html += '...';
-      html += '</div>';
-      html += `<div style="margin-top: 12px; padding: 12px; background: var(--color-surface); border-radius: var(--radius-sm); text-align: center;">`;
-      html += `<strong style="color: #A77BA5; font-size: 1.3rem;">Das sind ${answer} Süßigkeiten!</strong>`;
-      html += '</div>';
-      html += '</div>';
-      html += '</div>';
-      
-      if (num2 <= 4) {
-        html += '<div style="padding: 20px; background: #F8F5EA; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #E8B86D;">';
-        html += '<div style="font-weight: 600; color: #C39759; margin-bottom: 12px; font-size: 1.2rem;">➕ Als Plus-Aufgabe:</div>';
-        const parts = [];
-        for (let i = 0; i < num2; i++) {
-          parts.push(num1);
-        }
-        html += `<div style="padding: 16px; background: var(--color-surface); border-radius: var(--radius-md); margin-bottom: 12px;">`;
-        html += `<div style="font-size: 1.2rem; margin-bottom: 12px; color: #7f8c8d;">Mal-Rechnen ist mehrfaches Plus-Rechnen!</div>`;
-        html += `<div style="font-size: 1.5rem; font-weight: 600; text-align: center; color: #E8B86D; padding: 12px; background: #F8F5EA; border-radius: var(--radius-sm);">`;
-        html += parts.join(' + ') + ` = <strong style="color: #88B894;">${answer}</strong>`;
-        html += '</div>';
-        html += '</div>';
-        let current = 0;
-        for (let i = 0; i < num2; i++) {
-          current += num1;
-          const isLast = i === num2 - 1;
-          html += `<div style="padding: 12px; margin: 8px 0; background: ${isLast ? '#27ae60' : 'var(--color-surface)'}; border-radius: var(--radius-md); border: 2px solid ${isLast ? '#27ae60' : '#f39c12'}; color: ${isLast ? 'var(--color-surface)' : '#2c3e50'};">`;
-          html += `<strong>${i + 1}. Gruppe:</strong> ${i > 0 ? current - num1 + ' + ' : ''}${num1} = <strong style="font-size: 1.3rem;">${current}</strong>`;
-          if (isLast) html += ' ✅';
-          html += '</div>';
-        }
-        html += '</div>';
-      }
-      
-      html += '<div style="padding: 20px; background: #E5F2ED; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #7BA591;">';
-      html += '<div style="font-weight: 600; color: #6B9085; margin-bottom: 12px; font-size: 1.2rem;">📚 Das Kleine Einmaleins:</div>';
-      html += `<div style="padding: 16px; background: var(--color-surface); border-radius: var(--radius-md);">`;
-      html += `<div style="margin-bottom: 12px; color: #7f8c8d;">Die <strong style="color: #7BA591;">${num1}er-Reihe</strong>:</div>`;
-      html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px;">';
-      for (let i = 1; i <= 10; i++) {
-        const result = num1 * i;
-        const isAnswer = i === num2;
-        html += `<div style="padding: 10px; background: ${isAnswer ? '#1abc9c' : '#f8f9fa'}; border-radius: var(--radius-sm); text-align: center; border: 2px solid ${isAnswer ? '#1abc9c' : '#e0e0e0'}; color: ${isAnswer ? 'var(--color-surface)' : '#2c3e50'}; font-weight: ${isAnswer ? '700' : '600'};">`;
-        html += `${num1} × ${i} = ${result}`;
-        if (isAnswer) html += ' 🎯';
-        html += '</div>';
-      }
-      html += '</div>';
-      html += '</div>';
-      html += '</div>';
-      
-      html += '</div>';
-    } else {
-      // === 2.-4. KLASSE: Kompakte Erklärung ===
-      html += '<div style="margin: 20px 0;">';
-      html += '<div class="step">';
-      html += '<div class="step-number">Das Kleine Einmaleins:</div>';
-      html += '<div class="step-content">';
-      html += `${num1} × ${num2} bedeutet: ${num1} wird ${num2}-mal addiert<br>`;
-      
-      if (num2 <= 4) {
-        const parts = [];
-        for (let i = 0; i < num2; i++) {
-          parts.push(num1);
-        }
-        html += parts.join(' + ') + ` = <span class="highlight-step">${answer}</span>`;
-      } else {
-        html += `${num1} × ${num2} = <span class="highlight-step">${answer}</span>`;
-      }
-      
-      html += '</div></div>';
-      html += '</div>';
-    }
-    
-    html += `<div style="margin: 20px 0; padding: 20px; background: linear-gradient(135deg, #88B894 0%, #7BA591 100%); border-radius: var(--radius-lg); text-align: center; color: var(--color-surface);">`;
-    html += `<div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 8px;">🎉 Die Antwort ist ${answer}!</div>`;
-    html += `<div style="font-size: 1rem; opacity: 0.9;">Super gemacht!</div>`;
-    html += `</div>`;
-    html += `<div style="padding: 16px; background: #E5F2ED; border-radius: var(--radius-md); border-left: 4px solid #1abc9c;">💡 <strong>Tipp:</strong> Zum Überprüfen durch Division: ${answer} ÷ ${num2} = ${num1} ✓</div>`;
-    
-  } else if (op === 'div') {
-    html += `<div style="margin: 20px 0; padding: 16px; background: #E8F2F4; border-radius: var(--radius-lg); border: 2px solid #7BA591;">`;
-    html += `<div style="font-size: 1.3rem; font-weight: 600; color: #6B8A7E; margin-bottom: 12px;">📝 Die Aufgabe:</div>`;
-    html += `<div style="font-size: 2rem; font-weight: 600; text-align: center; color: #2c3e50;">${num1} ÷ ${num2} = ?</div>`;
-    html += `</div>`;
-    
-    if (num1 >= 100 || (num1 >= 20 && num2 >= 3)) {
-      // Schriftlich rechnen
-      html += `<div style="margin: 20px 0;"><strong>✏️ Schriftlich rechnen:</strong></div>`;
-      html += generateWrittenDivision(num1, num2, answer);
-    } else if (num1 <= 15 && num2 <= 5) {
-      // === 1. KLASSE: Visuelle Erklärung ===
-      html += '<div style="margin: 20px 0;">';
-      
-      html += '<div style="padding: 20px; background: #F8F5EA; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #E8B86D;">';
-      html += '<div style="font-weight: 600; color: #C39759; margin-bottom: 12px; font-size: 1.2rem;">🤔 Was bedeutet das?</div>';
-      html += `<div style="padding: 16px; background: var(--color-surface); border-radius: var(--radius-md); margin-bottom: 12px;">`;
-      html += `<div style="font-size: 1.1rem; color: #7f8c8d; margin-bottom: 8px;">Wir haben <strong style="color: #E8B86D;">${num1} Kekse</strong> 🍪</div>`;
-      html += `<div style="font-size: 1.1rem; color: #7f8c8d;">Wir möchten sie <strong style="color: #7BA591;">fair an ${num2} Freunde</strong> verteilen 👥</div>`;
-      html += `<div style="font-size: 1.2rem; font-weight: 600; color: #6B8A7E; margin-top: 12px;">❓ Wie viele bekommt jeder?</div>`;
-      html += '</div>';
-      html += '</div>';
-      
-      html += '<div style="padding: 20px; background: #E5F2ED; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #7BA591;">';
-      html += '<div style="font-weight: 600; color: #6B9085; margin-bottom: 12px; font-size: 1.2rem;">👀 Teile die Kekse auf:</div>';
-      html += `<div style="margin-bottom: 16px; padding: 12px; background: var(--color-surface); border-radius: var(--radius-md);">`;
-      html += `<div style="color: #6B9085; font-weight: 600; margin-bottom: 8px;">So viele Kekse haben wir (${num1}):</div>`;
-      html += '<div style="font-size: 2rem; line-height: 1.5;">';
-      for (let i = 0; i < num1; i++) {
-        html += '🍪 ';
-      }
-      html += '</div>';
-      html += '</div>';
-      html += `<div style="text-align: center; font-size: 1.5rem; color: #7BA591; font-weight: 600; margin: 12px 0;">➗ Teile fair auf ${num2} Freunde auf:</div>`;
-      for (let friend = 0; friend < num2; friend++) {
-        html += `<div style="margin: 12px 0; padding: 12px; background: var(--color-surface); border-radius: var(--radius-md); border: 2px solid #7BA591;">`;
-        html += `<div style="color: #6B9085; font-weight: 600; margin-bottom: 8px;">👤 ${friend + 1}. Freund bekommt:</div>`;
-        html += '<div style="font-size: 2rem; line-height: 1.5;">';
-        for (let i = 0; i < answer; i++) {
-          html += '🍪 ';
-        }
-        html += '</div>';
-        html += `<div style="margin-top: 8px; color: #7f8c8d; font-size: 0.9rem;">Das sind ${answer} Kekse</div>`;
-        html += '</div>';
-      }
-      html += `<div style="margin-top: 16px; padding: 16px; background: #7BA591; border-radius: var(--radius-md); text-align: center;">`;
-      html += `<div style="color: var(--color-surface); font-weight: 600; font-size: 1.2rem;">✨ Jeder Freund bekommt ${answer} Kekse!</div>`;
-      html += `<div style="color: var(--color-surface); margin-top: 8px; opacity: 0.9;">Alle bekommen gleich viel - das ist fair! ✅</div>`;
-      html += '</div>';
-      html += '</div>';
-      
-      html += '<div style="padding: 20px; background: #EEE9F0; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #A77BA5;">';
-      html += '<div style="font-weight: 600; color: #8B6B8A; margin-bottom: 12px; font-size: 1.2rem;">🔄 Der Trick: Geteilt ↔ Mal</div>';
-      html += `<div style="padding: 16px; background: var(--color-surface); border-radius: var(--radius-md); margin-bottom: 12px;">`;
-      html += `<div style="font-size: 1.1rem; color: #7f8c8d; margin-bottom: 12px;">Geteilt und Mal sind <strong style="color: #A77BA5;">Gegensätze</strong>!</div>`;
-      html += '<div style="display: grid; gap: 12px; margin-top: 12px;">';
-      html += `<div style="padding: 12px; background: #EEE9F0; border-radius: var(--radius-sm); border-left: 4px solid #8e44ad;">`;
-      html += `<strong style="color: #A77BA5;">Mal-Rechnung:</strong> ${num2} Freunde × ${answer} Kekse = ${num1} Kekse`;
-      html += '</div>';
-      html += `<div style="padding: 12px; background: #E8F2F4; border-radius: var(--radius-sm); border-left: 4px solid #3498db;">`;
-      html += `<strong style="color: #7BA591;">Geteilt-Rechnung:</strong> ${num1} Kekse ÷ ${num2} Freunde = ${answer} Kekse`;
-      html += '</div>';
-      html += '</div>';
-      html += '</div>';
-      html += `<div style="padding: 12px; background: #E5F2ED; border-radius: var(--radius-sm); border-left: 4px solid #1abc9c;">`;
-      html += `💡 <strong>Merke dir:</strong> Wenn du das Einmaleins kennst, kannst du auch teilen!`;
-      html += '</div>';
-      html += '</div>';
-      
-      html += '<div style="padding: 20px; background: #E5F2ED; border-radius: var(--radius-lg); margin-bottom: 20px; border: 2px solid #7BA591;">';
-      html += '<div style="font-weight: 600; color: #6B9085; margin-bottom: 12px; font-size: 1.2rem;">📚 Finde es im Einmaleins:</div>';
-      html += `<div style="padding: 16px; background: var(--color-surface); border-radius: var(--radius-md); margin-bottom: 12px;">`;
-      html += `<div style="margin-bottom: 12px; color: #7f8c8d;">Suche in der <strong style="color: #7BA591;">${num2}er-Reihe</strong>: Welche Zahl × ${num2} = ${num1}?</div>`;
-      html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px;">';
-      for (let i = 1; i <= 10; i++) {
-        const result = num2 * i;
-        const isAnswer = i === answer;
-        html += `<div style="padding: 10px; background: ${isAnswer ? '#1abc9c' : '#f8f9fa'}; border-radius: var(--radius-sm); text-align: center; border: 2px solid ${isAnswer ? '#1abc9c' : '#e0e0e0'}; color: ${isAnswer ? 'var(--color-surface)' : '#2c3e50'}; font-weight: ${isAnswer ? '700' : '600'};">`;
-        html += `${num2} × ${i} = ${result}`;
-        if (isAnswer) html += ' 🎯';
-        html += '</div>';
-      }
-      html += '</div>';
-      if (answer <= 10) {
-        html += `<div style="margin-top: 12px; padding: 12px; background: #7BA591; color: var(--color-surface); border-radius: var(--radius-sm); text-align: center; font-weight: 600;">`;
-        html += `Gefunden! ${num2} × ${answer} = ${num1} ➡️ Also ist ${num1} ÷ ${num2} = ${answer}`;
-        html += '</div>';
-      }
-      html += '</div>';
-      html += '</div>';
-      
-      html += '</div>';
-    } else {
-      // === 2.-4. KLASSE: Kompakte Erklärung ===
-      html += '<div style="margin: 20px 0;">';
-      html += '<div class="step">';
-      html += '<div class="step-number">Was bedeutet das?</div>';
-      html += '<div class="step-content">';
-      html += `Wir teilen ${num1} in ${num2} gleiche Teile.<br>`;
-      html += `Oder: Wie oft passt ${num2} in ${num1}?`;
-      html += '</div></div>';
-      html += '</div>';
-      html += '<div style="margin: 20px 0;">';
-      html += '<div class="step">';
-      html += '<div class="step-number">So rechnest du:</div>';
-      html += '<div class="step-content">';
-      html += `${num2} × ${answer} = ${num1}<br>`;
-      html += `Also: ${num1} ÷ ${num2} = <span class="highlight-step">${answer}</span>`;
-      html += '</div></div>';
-      html += '</div>';
-    }
-    
-    html += `<div style="margin: 20px 0; padding: 20px; background: linear-gradient(135deg, #88B894 0%, #7BA591 100%); border-radius: var(--radius-lg); text-align: center; color: var(--color-surface);">`;
-    html += `<div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 8px;">🎉 Die Antwort ist ${answer}!</div>`;
-    html += `<div style="font-size: 1rem; opacity: 0.9;">Super gemacht!</div>`;
-    html += `</div>`;
-    html += `<div style="padding: 16px; background: #E5F2ED; border-radius: var(--radius-md); border-left: 4px solid #1abc9c;">💡 <strong>Tipp:</strong> Zum Überprüfen: ${answer} × ${num2} = ${num1} ✓</div>`;
-  }
-  
-  html += '</div>';
+  html += `<p><strong>💡 Erklärung:</strong><br>${task.explanation}</p>`;
   
   return html;
 }
 
-// Speichern & Laden
+// ==================== STATE MANAGEMENT ====================
+
 function saveState() {
   try {
-    localStorage.setItem('mathApp', JSON.stringify({
+    localStorage.setItem('mathState', JSON.stringify({
+      grade: state.grade,
       score: state.score,
       total: state.total,
+      streak: state.streak,
       maxStreak: state.maxStreak,
+      history: state.history.slice(-50),
       settings: state.settings
     }));
   } catch (e) {
-    // Falls localStorage nicht verfügbar ist, einfach leise ignorieren
+    console.error('Save failed:', e);
   }
 }
 
 function loadState() {
   try {
-    const saved = JSON.parse(localStorage.getItem('mathApp'));
+    const saved = localStorage.getItem('mathState');
     if (saved) {
-      state.score = saved.score || 0;
-      state.total = saved.total || 0;
-      state.maxStreak = saved.maxStreak || 0;
-      state.settings = {...state.settings, ...saved.settings};
+      const data = JSON.parse(saved);
+      state.grade = data.grade || 1;
+      state.score = data.score || 0;
+      state.total = data.total || 0;
+      state.streak = data.streak || 0;
+      state.maxStreak = data.maxStreak || 0;
+      state.history = data.history || [];
+      state.settings = { ...state.settings, ...data.settings };
+      
+      $('grades').querySelectorAll('button').forEach(b => {
+        b.classList.toggle('on', +b.dataset.g === state.grade);
+      });
+      
+      $('snd').textContent = state.settings.sound ? '🔊' : '🔇';
     }
-  } catch (e) {}
+  } catch (e) {
+    console.error('Load failed:', e);
+  }
 }
 
-// Sprachausgabe
+// ==================== SPRACHAUSGABE ====================
+
 function speak(text) {
-  if (!state.settings.sound || !synth) return;
-  synth.cancel();
+  if (!state.settings.sound || !speechSynthesis) return;
+  speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = 'de-DE';
   utterance.rate = 0.85;
   if (state.voice) utterance.voice = state.voice;
-  synth.speak(utterance);
+  speechSynthesis.speak(utterance);
 }
 
-if (synth) {
-  synth.onvoiceschanged = () => {
-    state.voice = synth.getVoices().find(v => v.lang.startsWith('de')) || null;
-  };
-}
+speechSynthesis.onvoiceschanged = () => {
+  state.voice = speechSynthesis.getVoices().find(v => v.lang.startsWith('de')) || null;
+};
 
-// Timer
+// ==================== TIMER ====================
+
 function startTimer() {
   if (!state.settings.timer) return;
   stopTimer();
@@ -2393,29 +2251,17 @@ function stopTimer() {
     clearInterval(state.timerInterval);
     state.timerInterval = null;
   }
-  // Immer ausblenden, egal ob Timer in den Settings an/aus ist
-  if ($('timer')) {
+  if (state.settings.timer) {
     $('timer').style.display = 'none';
   }
 }
 
-// UI Updates
-function bumpStat(id) {
-  const el = $(id);
-  if (!el) return;
-  el.classList.remove('bump');
-  // Reflow-Trick, damit die Animation erneut abgespielt wird
-  void el.offsetWidth;
-  el.classList.add('bump');
-}
+// ==================== UI UPDATES ====================
 
 function updateStats() {
   $('score').textContent = state.score;
   $('total').textContent = state.total;
   $('streak').textContent = state.streak;
-  bumpStat('score');
-  bumpStat('total');
-  bumpStat('streak');
 }
 
 function updateHistory() {
@@ -2463,12 +2309,18 @@ function showHistoryModal() {
   $('ov-history').classList.add('show');
 }
 
-// Aufgabe starten
+// ==================== AUFGABE STARTEN ====================
+
 function startNewTask() {
   state.currentTask = createTask(state.grade);
   state.answered = false;
   
-  $('task').textContent = state.currentTask.problem;
+  let displayText = state.currentTask.problem;
+  if (state.currentTask.context) {
+    displayText = `<div class="task-context">${state.currentTask.context}</div>${displayText}`;
+  }
+  $('task').innerHTML = displayText.replace(/\n/g, '<br>');
+  
   $('msg').className = 'msg';
   $('msg').textContent = 'Wähle die richtige Antwort';
   $('help').disabled = false;
@@ -2481,24 +2333,21 @@ function startNewTask() {
     $('ans').appendChild(btn);
   });
   
-  let spokenText;
-  if (state.currentTask.taskType === 'word') {
-    spokenText = state.currentTask.problem;
-  } else {
-    spokenText = state.currentTask.problem
-      .replace(/\+/g, ' plus ')
-      .replace(/−/g, ' minus ')
-      .replace(/×/g, ' mal ')
-      .replace(/÷/g, ' geteilt durch ')
-      .replace(/\?/g, '')
-      .replace(/=/g, ' gleich ');
-  }
-  speak(spokenText);
+  const spokenText = state.currentTask.problem
+    .replace(/\n/g, '. ')
+    .replace(/\+/g, ' plus ')
+    .replace(/−/g, ' minus ')
+    .replace(/×/g, ' mal ')
+    .replace(/÷/g, ' geteilt durch ')
+    .replace(/\?/g, '')
+    .replace(/=/g, ' gleich ');
   
+  speak(spokenText);
   startTimer();
 }
 
-// Antwort prüfen
+// ==================== ANTWORT PRÜFEN ====================
+
 function answerQuestion(selectedIndex) {
   if (state.answered) return;
   
@@ -2520,20 +2369,25 @@ function answerQuestion(selectedIndex) {
       state.maxStreak = state.streak;
     }
     $('msg').className = 'msg ok';
-    $('msg').textContent = '✅ Richtig! Super gemacht!';
-    speak('Richtig! Super gemacht!');
+    const encouragements = ['Super!', 'Richtig!', 'Toll gemacht!', 'Prima!', 'Klasse!'];
+    $('msg').textContent = `✅ ${pick(encouragements)}`;
+    speak(`${pick(encouragements)} Das war richtig!`);
   } else {
     state.streak = 0;
     if (selectedIndex >= 0) {
       buttons[selectedIndex].classList.add('no');
     }
     $('msg').className = 'msg no';
-    $('msg').textContent = `Leider falsch. Die richtige Antwort ist: ${state.currentTask.options[correctIndex]}`;
-    speak('Leider falsch. Versuch es beim nächsten Mal noch einmal.');
+    $('msg').textContent = `Die richtige Antwort ist: ${state.currentTask.correctAnswer}`;
+    speak('Das war leider nicht richtig. Versuch es beim nächsten Mal noch einmal.');
   }
   
+  let historyText = state.currentTask.problem.substring(0, 60);
+  if (state.currentTask.problem.length > 60) historyText += '...';
+  historyText += ` → ${state.currentTask.correctAnswer}`;
+  
   state.history.push({
-    problem: state.currentTask.problem.replace('?', state.currentTask.options[correctIndex]),
+    problem: historyText,
     correct: isCorrect
   });
   
@@ -2542,7 +2396,8 @@ function answerQuestion(selectedIndex) {
   saveState();
 }
 
-// Event Listeners
+// ==================== EVENT LISTENERS ====================
+
 $('grades').onclick = e => {
   const btn = e.target.closest('button[data-g]');
   if (!btn) return;
@@ -2550,6 +2405,7 @@ $('grades').onclick = e => {
   state.grade = +btn.dataset.g;
   $('grades').querySelectorAll('button').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
+  saveState();
 };
 
 $('start').onclick = startNewTask;
@@ -2591,21 +2447,21 @@ $('settings').onclick = () => {
 // Toggle controls
 $('toggle-timer').onclick = () => {
   state.settings.timer = !state.settings.timer;
-  $('toggle-timer').classList.toggle('on', state.settings.timer);
+  $('toggle-timer').classList.toggle('on');
   if (!state.settings.timer) stopTimer();
   saveState();
 };
 
 $('toggle-sound').onclick = () => {
   state.settings.sound = !state.settings.sound;
-  $('toggle-sound').classList.toggle('on', state.settings.sound);
+  $('toggle-sound').classList.toggle('on');
   $('snd').textContent = state.settings.sound ? '🔊' : '🔇';
   saveState();
 };
 
 $('toggle-keys').onclick = () => {
   state.settings.keyboard = !state.settings.keyboard;
-  $('toggle-keys').classList.toggle('on', state.settings.keyboard);
+  $('toggle-keys').classList.toggle('on');
   saveState();
 };
 
@@ -2636,7 +2492,8 @@ document.onkeydown = e => {
   }
 };
 
-// Initialize
+// ==================== INITIALISIERUNG ====================
+
 loadState();
 updateStats();
 updateHistory();
