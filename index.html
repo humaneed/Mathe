@@ -3123,79 +3123,27 @@ function normalizeSpeechText(raw) {
 function scoreVoice(v) {
   const name = (v.name || '').toLowerCase();
   const lang = (v.lang || '').toLowerCase();
-
   let s = 0;
-  if (lang.startsWith('de-de')) s += 40;
-  else if (lang.startsWith('de')) s += 25;
 
-  // häufige weibliche Namen/Marker (je nach OS)
-  const prefer = [
-    /female|frau|weib/i,
-    /anna|sandra|helena|katrin|katja|hedda|anja|marlene|vicki|clara|lea/i,
-    /google.*deutsch/i,
-    /microsoft.*(katja|hedda|anja|marlene|sandra)/i
-  ];
+  if (lang.startsWith('de-de')) s += 50;
+  else if (lang.startsWith('de')) s += 30;
 
-  for (const r of prefer) {
-    if (r.test(v.name || '')) s += 35;
-  }
+  // GANZ WICHTIG: Natural/Neural/Online/Enhanced hart bevorzugen
+  if (/natural|neural|online|enhanced|premium|ai/i.test(name)) s += 120;
 
-  // male-hints leicht abwerten
-  if (/male|mann|markus|stefan|bernd|hans/i.test(name)) s -= 15;
+  // Google/Apple Stimmen sind oft angenehmer
+  if (/google|apple|siri/i.test(name)) s += 60;
 
-  // lokale Stimmen sind oft stabiler offline
-  if (v.localService) s += 6;
+  // weiblich / typische weibliche Namen (heuristisch)
+  if (/female|frau|weib/i.test(name)) s += 40;
+  if (/katja|hedda|anja|sandra|anna|helena|marlene|vicki/i.test(name)) s += 35;
 
+  // typische “roboter”-/standard-stimmen leicht abwerten
+  if (/microsoft\s*(sam|david|mark|stefan)/i.test(v.name || '')) s -= 40;
+  if (/default|standard/i.test(name)) s -= 10;
+
+  if (v.localService) s += 8;
   return s;
-}
-
-function loadVoicePreference() {
-  try {
-    const saved = localStorage.getItem('matheVoiceName');
-    return saved || '';
-  } catch { return ''; }
-}
-
-function saveVoicePreference(name) {
-  try { localStorage.setItem('matheVoiceName', name || ''); } catch {}
-}
-
-function setupVoices() {
-  if (!('speechSynthesis' in window)) return;
-
-  const voices = speechSynthesis.getVoices() || [];
-  state.voicesDE = voices.filter(v => (v.lang || '').toLowerCase().startsWith('de'));
-
-  if (!state.voicesDE.length) {
-    state.voice = null;
-    return;
-  }
-
-  // 1) Wenn Nutzer schon eine Stimme hatte → wiederverwenden
-  const preferredName = loadVoicePreference();
-  if (preferredName) {
-    const found = state.voicesDE.find(v => v.name === preferredName);
-    if (found) {
-      state.voice = found;
-      state.voiceIndex = Math.max(0, state.voicesDE.indexOf(found));
-      return;
-    }
-  }
-
-  // 2) Sonst: bestes Match (weiblich/kinderfreundlich)
-  const sorted = [...state.voicesDE].sort((a, b) => scoreVoice(b) - scoreVoice(a));
-  state.voice = sorted[0];
-  state.voiceIndex = Math.max(0, state.voicesDE.indexOf(state.voice));
-  saveVoicePreference(state.voice?.name);
-}
-
-// optional: Stimme wechseln (falls du später UI willst)
-function nextGermanVoice() {
-  if (!state.voicesDE?.length) return;
-  state.voiceIndex = (state.voiceIndex + 1) % state.voicesDE.length;
-  state.voice = state.voicesDE[state.voiceIndex];
-  saveVoicePreference(state.voice?.name);
-  speak('Hallo! Ich bin deine neue Stimme.');
 }
 
 function speak(text) {
